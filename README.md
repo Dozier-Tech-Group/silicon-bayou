@@ -34,6 +34,8 @@ Gator Parish is the in-universe region for these alligators.
 
 This cut ships **four owner-minted tokens**, a static gallery, and a written protocol plan. No public sale, staking, recipes, yield, or SBIR/STTR engine — see [PLAN.md](PLAN.md).
 
+**Launch status:** see [LAUNCH.md](LAUNCH.md). Hybrid genesis art is in progress — do not pin or mint the current photoreal portraits or `generator/out` pixels. Robinhood Chain mainnet is chain ID **4663**, gas in ETH, RPC `https://rpc.mainnet.chain.robinhood.com`, explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com).
+
 ## What you get
 
 | Token | Class | File |
@@ -122,7 +124,8 @@ Images are local until you pin them. A typical flow:
 2. Edit each `metadata/*.json` `image` field from `ipfs://REPLACE_ME/N.png` to `ipfs://<IMAGES_CID>/N.png`.
 3. Upload the four JSON files (not the images folder) so `1.json` … `4.json` sit at the root of that CID.
 4. Set `BASE_URI=ipfs://<JSON_CID>/` and call `setBaseURI` (or redeploy if you have not minted yet).
-5. OpenSea indexes Robinhood Chain collections after the contract is live. Filter OpenSea by Robinhood Chain and open the contract address. Listing needs a **deployed address**; this repo does not include one until you deploy.
+5. Verify `tokenURI(1)` on a trusted RPC, then `npm run freeze-uri` (permanent).
+6. OpenSea indexes Robinhood Chain collections after the contract is live. Filter OpenSea by Robinhood Chain and open the contract address. Listing needs a **deployed address**; this repo does not include one until you deploy. Confirm the address on Blockscout — fake OpenSea collections exist.
 
 You can browse locally before any of that:
 
@@ -130,27 +133,40 @@ You can browse locally before any of that:
 npm run gallery
 ```
 
-Then open [http://localhost:4173/gallery/](http://localhost:4173/gallery/) — or just open `gallery/index.html` in a browser. No wallet connect in this MVP.
+Then open [http://localhost:4173/gallery/](http://localhost:4173/gallery/) — or just open `gallery/index.html` in a browser.
+
+The live collection, wallet connect, bounty board, and cash-out flow live on
+the merged website at **`/bayou`** (`merged-website`). This gallery stays a
+local card preview. `BountyBoard.sol` + `MergedCredit.sol` are the on-chain
+stub (`npm run deploy:bounty:testnet`); the website does not wait on a deploy.
 
 ## Contract
 
-`contracts/SiliconBayou.sol` — OpenZeppelin ERC-721 + Ownable:
+`contracts/SiliconBayou.sol` — OpenZeppelin ERC-721 + ERC-2981, **not upgradeable**:
 
 - Name `Silicon Bayou`, symbol `BAYOU`
-- `mint` / `mintBatch` — owner only
-- `setBaseURI` — owner only
+- `mint` / `mintBatch` — owner only, paused-safe, `MAX_BATCH = 32`
+- `setBaseURI` then **`freezeURI`** — freeze is permanent
+- `pause` / `unpause` — emergency stop on mint and transfer
+- Ownable2Step — no instant owner handoff; cannot renounce until URI is frozen
+- ERC-2981 royalties capped at 10% (`MAX_ROYALTY_BPS = 1000`); default 5%
 - `tokenURI(id)` → `{baseURI}{id}.json`
 
-No pause, no royalties hook, no staking.
+No staking, no public sale, no proxy. See [SECURITY.md](SECURITY.md).
+
+**Security gate before mainnet:** `npm test` and `npm run security` must pass. Do not mint or pin until hybrid art is user-okayed (`GENESIS_ART_READY`).
+
+Local `npm run gallery` (`serve` on port 4173) applies CSP / nosniff headers from `serve.json`. GitHub Pages does not send those headers; each gallery page also has a CSP meta tag.
 
 ## Repo layout
 
 ```text
 art/gators/           Source PFPs
 metadata/             OpenSea JSON + images/1–4.png
-contracts/            SiliconBayou.sol
-scripts/deploy.js     Deploy + mint 1–4
-gallery/index.html    Local preview
+contracts/            SiliconBayou.sol, BountyBoard.sol, MergedCredit.sol
+scripts/deploy.js     Deploy + mint 1–4 (GENESIS_ART_READY hold)
+gallery/              Local preview (CSP meta + rel=noopener)
+SECURITY.md           Threat model, freeze URI, 2-step owner, Safe
 PLAN.md               Future protocol (not built)
 ```
 

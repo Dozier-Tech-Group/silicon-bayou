@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
   if (!deployer) {
-    throw new Error("No signer. Set PRIVATE_KEY in .env");
+    throw new Error("No signer. Set PRIVATE_KEY in .env (never paste the key into chat).");
   }
 
   console.log("Network :", hre.network.name);

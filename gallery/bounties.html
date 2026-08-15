@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    />
     <title>Bounty board — Silicon Bayou closed alpha</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -68,7 +72,7 @@
       <div class="panel">
         <h2>What you would do on GitHub</h2>
         <ol>
-          <li>Open <a href="https://github.com/Dozier-Tech-Group/silicon-bayou/issues">github.com/Dozier-Tech-Group/silicon-bayou/issues</a></li>
+          <li>Open <a href="https://github.com/Dozier-Tech-Group/silicon-bayou/issues" target="_blank" rel="noopener noreferrer">github.com/Dozier-Tech-Group/silicon-bayou/issues</a></li>
           <li>Comment on the matching issue (or open one) with your GitHub username.</li>
           <li>If you later send a fix, open a pull request. The <strong>first merge wins</strong> the bounty.</li>
         </ol>

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
 import {SiliconBayou} from "../contracts/SiliconBayou.sol";
@@ -38,5 +38,46 @@ contract SiliconBayouTest is Test {
         vm.prank(stranger);
         vm.expectRevert();
         nft.mint(stranger);
+    }
+
+    function test_pauseBlocksMint() public {
+        nft.pause();
+        vm.expectRevert();
+        nft.mint(owner);
+    }
+
+    function test_twoStepOwnership() public {
+        nft.transferOwnership(stranger);
+        assertEq(nft.owner(), owner);
+        vm.prank(stranger);
+        nft.acceptOwnership();
+        assertEq(nft.owner(), stranger);
+    }
+
+    function test_freezeURIThenSetBaseURIReverts() public {
+        nft.freezeURI();
+        vm.expectRevert(SiliconBayou.SiliconBayouUriFrozen.selector);
+        nft.setBaseURI("ipfs://MUTATE/");
+    }
+
+    function test_royaltyBpsCap() public {
+        vm.expectRevert(abi.encodeWithSelector(SiliconBayou.SiliconBayouRoyaltyTooHigh.selector, uint96(1001)));
+        nft.setDefaultRoyalty(owner, 1001);
+        nft.setDefaultRoyalty(owner, 1000);
+        (address receiver, uint256 amount) = nft.royaltyInfo(1, 10_000);
+        assertEq(receiver, owner);
+        assertEq(amount, 1000);
+    }
+
+    function testFuzz_royaltyAboveCapReverts(uint96 bps) public {
+        bps = uint96(bound(bps, uint256(nft.MAX_ROYALTY_BPS()) + 1, type(uint96).max));
+        vm.expectRevert(abi.encodeWithSelector(SiliconBayou.SiliconBayouRoyaltyTooHigh.selector, bps));
+        nft.setDefaultRoyalty(owner, bps);
+    }
+
+    function testFuzz_mintBatchCap(uint256 count) public {
+        count = bound(count, nft.MAX_BATCH() + 1, nft.MAX_BATCH() + 200);
+        vm.expectRevert(abi.encodeWithSelector(SiliconBayou.SiliconBayouBatchTooLarge.selector, count));
+        nft.mintBatch(owner, count);
     }
 }

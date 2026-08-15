@@ -51,12 +51,17 @@ npm run wallet
 4. **Go live**
 
 ```powershell
+npm test
+npm run security
 npm run compile
 npm run deploy:mainnet
 # if BASE_URI was empty at deploy:
 npm run set-base-uri
+npm run freeze-uri
 npx hardhat verify --network robinhood <CONTRACT_ADDRESS> "<BASE_URI>"
 ```
+
+`npm test` / `npm run security` is the gate. Do not skip it. See [SECURITY.md](SECURITY.md). Do not weaken `GENESIS_ART_READY`.
 
 5. **OpenSea** — open the explorer + `https://opensea.io/item/robinhood/<addr>/1`. Replace tester placeholders in `testers/fixtures.json`, then `npm run mint:testers` if you want extras.
 

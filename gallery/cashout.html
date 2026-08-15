@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    />
     <title>Get USD — Silicon Bayou closed alpha</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -78,7 +82,7 @@
       <p>
         Pass for Tester A: you can explain those three hops in your own words
         in under 15 minutes. File confusion as a GitHub issue on
-        <a href="https://github.com/Dozier-Tech-Group/silicon-bayou/issues">Dozier-Tech-Group/silicon-bayou</a>.
+        <a href="https://github.com/Dozier-Tech-Group/silicon-bayou/issues" target="_blank" rel="noopener noreferrer">Dozier-Tech-Group/silicon-bayou</a>.
       </p>
       <footer>
         Closed alpha · no payouts · no mergedpublic.com production hookup ·
@@ -86,10 +90,38 @@
       </footer>
     </div>
     <script>
+      const ROBINHOOD_MAINNET = "0x1237"; // 4663
+      const ROBINHOOD_TESTNET = "0xb626"; // 46630
       const status = document.getElementById("wallet-status");
-      document.getElementById("connect-wallet").addEventListener("click", () => {
-        status.textContent =
-          "Demo connected: 0x1111…1111 (Pat Rivers fixture). Not a real wallet. Do not send real money.";
+
+      function shortAddr(addr) {
+        const a = String(addr || "");
+        if (a.length < 10) return a;
+        return `${a.slice(0, 6)}…${a.slice(-4)}`;
+      }
+
+      document.getElementById("connect-wallet").addEventListener("click", async () => {
+        const eth = window.ethereum;
+        if (!eth || typeof eth.request !== "function") {
+          status.textContent =
+            "No injected wallet. Demo only — not connected. This page never pays out. Do not send real money.";
+          return;
+        }
+        try {
+          const chainId = String(await eth.request({ method: "eth_chainId" })).toLowerCase();
+          if (chainId !== ROBINHOOD_MAINNET && chainId !== ROBINHOOD_TESTNET) {
+            status.textContent =
+              `Wrong network (${chainId}). Switch to Robinhood Chain 4663 (or testnet 46630). Never trust this page for payouts.`;
+            return;
+          }
+          const accounts = await eth.request({ method: "eth_requestAccounts" });
+          const account = accounts && accounts[0] ? accounts[0] : "";
+          status.textContent =
+            `Connected ${shortAddr(account)} on chain ${chainId}. Demo only — balances shown by wallets are not used for payouts.`;
+        } catch (err) {
+          status.textContent =
+            "Wallet request failed or was rejected. This page never pays out. Do not send real money.";
+        }
       });
       document.getElementById("skip-wallet").addEventListener("click", () => {
         status.textContent =

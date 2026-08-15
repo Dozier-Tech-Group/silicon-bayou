@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
 import {MergedCredit} from "../contracts/MergedCredit.sol";
@@ -31,7 +31,24 @@ contract BountyBoardTest is Test {
     function test_cannotSettleTwice() public {
         board.fund(7, 50);
         board.settle(7, winner);
-        vm.expectRevert();
+        vm.expectRevert(BountyBoard.BountyBoardAlreadySettled.selector);
         board.settle(7, winner);
+    }
+
+    function test_withdrawTwiceReverts() public {
+        board.fund(8, 10);
+        board.settle(8, winner);
+        vm.startPrank(winner);
+        board.withdraw();
+        vm.expectRevert(BountyBoard.BountyBoardNothingToWithdraw.selector);
+        board.withdraw();
+        vm.stopPrank();
+    }
+
+    function testFuzz_fundAndSettle(uint256 reward) public {
+        reward = bound(reward, 1, 500);
+        board.fund(99, reward);
+        board.settle(99, winner);
+        assertEq(board.claimable(winner), reward);
     }
 }

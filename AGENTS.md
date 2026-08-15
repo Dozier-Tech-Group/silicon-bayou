@@ -48,8 +48,8 @@ No live contract yet. `deployments/` is empty. **Do not invent an address.**
 3. Pin images, then JSON, to IPFS. Folder CIDs. `image` = `ipfs://<IMAGES_CID>/N.png`. JSON root = `1.json`…`4.json`.
 4. Robinhood Chain **mainnet** config: chain ID **4663**, gas in **ETH**. `RPC_URL=https://rpc.mainnet.chain.robinhood.com` (Alchemy `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}` if public RPC flakes).
 5. Fund the deployer with ETH on Robinhood mainnet. `PRIVATE_KEY` in `.env` only. **Never commit. Never print. Never paste into chat.**
-6. Deploy BAYOU ERC-721: `npm run deploy:mainnet` (rehearse first with `npm run deploy:testnet`, chain ID **46630**).
-7. `setBaseURI("ipfs://<JSON_CID>/")` if you did not deploy with that `BASE_URI`. Trailing slash required. `tokenURI(1)` → `{BASE_URI}1.json`.
+6. Security gate, then deploy BAYOU ERC-721: `npm test` and `npm run security` **must pass** before `npm run deploy:mainnet` (rehearse first with `npm run deploy:testnet`, chain ID **46630**). Do not skip the gate.
+7. `setBaseURI("ipfs://<JSON_CID>/")` if you did not deploy with that `BASE_URI`. Trailing slash required. `tokenURI(1)` → `{BASE_URI}1.json`. Then **`freezeURI`** — irreversible. See `SECURITY.md`.
 8. Tokens 1–4 mint in the deploy script. Do not write a second mint path unless mint failed.
 9. Verify on [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com). Constructor arg = the `BASE_URI` you deployed with. Plugin is not in `package.json` yet — paste source or `npm i -D @nomicfoundation/hardhat-verify` then `npx hardhat verify --network robinhood <ADDRESS> "ipfs://<JSON_CID>/"`.
 10. OpenSea → filter **Robinhood Chain** → open the contract. Share with 2–3 testers (`TESTERS.md`). Gallery: `npm run gallery` → http://localhost:4173/gallery/ · live preview https://dozier-tech-group.github.io/silicon-bayou/gallery/
@@ -64,12 +64,15 @@ copy .env.example .env
 npm install
 npm run compile
 npm test
+npm run security
 npm run gallery
 npm run deploy:testnet
 npm run deploy:mainnet
 ```
 
-`.env`: `PRIVATE_KEY`, `RPC_URL`, `BASE_URI` (trailing slash), optional `MINT_TO`. Hardhat networks: `robinhood` (4663), `robinhoodTestnet` (46630). Contract: `contracts/SiliconBayou.sol` — name `Silicon Bayou`, symbol `BAYOU`, owner-only `mint` / `mintBatch` / `setBaseURI`. Solidity 0.8.24 / Shanghai. Official deploy docs: https://docs.robinhood.com/chain/deploy-smart-contracts/
+`.env`: `PRIVATE_KEY`, `RPC_URL`, `BASE_URI` (trailing slash), optional `MINT_TO`. Hardhat networks: `robinhood` (4663), `robinhoodTestnet` (46630). Contract: `contracts/SiliconBayou.sol` — name `Silicon Bayou`, symbol `BAYOU`, owner-only `mint` / `mintBatch` / `setBaseURI` / `freezeURI` / `pause`. Ownable2Step, Pausable, ERC-2981 (max 10% royalty), URI freeze. Solidity **0.8.24** frozen / Shanghai. Not upgradeable. Official deploy docs: https://docs.robinhood.com/chain/deploy-smart-contracts/
+
+**Security gate:** `npm test` and `npm run security` before any `deploy:mainnet`. Optional: `forge test` if Foundry is on PATH. Threat model and owner rotation: `SECURITY.md`. Recommend a Gnosis Safe as production owner. Never paste `PRIVATE_KEY`. Do not weaken the `GENESIS_ART_READY` hold.
 
 ## Git
 

@@ -8,10 +8,17 @@
     "test": "hardhat test && vitest run",
     "test:contracts": "hardhat test",
     "test:app": "vitest run",
+    "security": "solhint contracts/SiliconBayou.sol contracts/BountyBoard.sol contracts/MergedCredit.sol && hardhat test",
+    "freeze-uri": "hardhat run scripts/freeze-uri.js --network robinhood",
     "deploy:testnet": "hardhat run scripts/deploy.js --network robinhoodTestnet",
     "deploy:mainnet": "hardhat run scripts/deploy.js --network robinhood",
     "deploy:bounty:testnet": "hardhat run scripts/deploy-bounty.js --network robinhoodTestnet",
     "deploy:bounty:mainnet": "hardhat run scripts/deploy-bounty.js --network robinhood",
+    "pin": "node scripts/pin.mjs",
+    "wallet": "node scripts/check-wallet.mjs",
+    "set-base-uri": "hardhat run scripts/set-base-uri.js --network robinhood",
+    "mint:genesis": "hardhat run scripts/mint-genesis.js --network robinhood",
+    "mint:testers": "hardhat run scripts/mint-to-tester.js --network robinhood",
     "gallery": "npx --yes serve . -p 4173"
   },
   "dependencies": {
@@ -24,6 +31,7 @@
     "chai": "^4.5.0",
     "happy-dom": "^17.6.3",
     "hardhat": "^2.26.3",
+    "solhint": "^5.2.0",
     "vitest": "^3.2.4"
   }
 }

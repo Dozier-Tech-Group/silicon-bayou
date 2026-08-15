@@ -1,0 +1,7 @@
+node_modules/
+lib/
+out/
+test/
+script/
+cache/
+artifacts/

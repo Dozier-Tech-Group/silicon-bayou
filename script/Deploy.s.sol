@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.24;
 
 import {Script, console} from "forge-std/Script.sol";
 import {SiliconBayou} from "../contracts/SiliconBayou.sol";
@@ -7,7 +7,7 @@ import {SiliconBayou} from "../contracts/SiliconBayou.sol";
 /// @notice Deploys SiliconBayou and mints tokens 1-4 to the deployer (or MINT_TO).
 contract Deploy is Script {
     function run() external {
-        string memory baseURI = vm.envOr("BASE_URI", string("ipfs://REPLACE_ME/"));
+        string memory baseURI = vm.envOr("BASE_URI", string("https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/"));
         address recipient = vm.envOr("MINT_TO", msg.sender);
 
         vm.startBroadcast();

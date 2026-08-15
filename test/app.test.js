@@ -77,3 +77,44 @@ describe("bounty board page", () => {
     expect(text).toMatch(/BAYOU-1/);
   });
 });
+
+describe("zero-trust gallery edges", () => {
+  it("external links use rel=noopener and pages ship a CSP meta", () => {
+    for (const relPath of ["gallery/index.html", "gallery/bounties.html", "gallery/cashout.html"]) {
+      const { html, document } = loadHtml(relPath);
+      expect(html).toMatch(/Content-Security-Policy/);
+      const externals = [...document.querySelectorAll('a[href^="http"]')];
+      expect(externals.length).toBeGreaterThan(0);
+      for (const a of externals) {
+        expect(a.getAttribute("rel") || "").toMatch(/noopener/);
+      }
+    }
+  });
+
+  it("does not fetch or innerHTML GitHub issue titles", () => {
+    const { html } = loadHtml("gallery/bounties.html");
+    expect(html).not.toMatch(/api\.github\.com/);
+    expect(html).not.toMatch(/innerHTML/);
+  });
+
+  it("wallet connect checks Robinhood chain 4663 and never treats balances as payouts", () => {
+    const { html } = loadHtml("gallery/cashout.html");
+    expect(html).toMatch(/0x1237/);
+    expect(html).toMatch(/4663/);
+    expect(html).toMatch(/not used for payouts|never pays out/i);
+    expect(html).not.toMatch(/eth_getBalance/);
+  });
+
+  it("gallery escapes interpolated token fields", () => {
+    const { html } = loadHtml("gallery/index.html");
+    expect(html).toMatch(/function escapeHtml/);
+  });
+});
+
+describe("deploy hold", () => {
+  it("keeps GENESIS_ART_READY as a hard stop", () => {
+    const src = readFileSync(resolve(root, "scripts/deploy.js"), "utf8");
+    expect(src).toMatch(/GENESIS_ART_READY/);
+    expect(src).toMatch(/HOLD/);
+  });
+});
