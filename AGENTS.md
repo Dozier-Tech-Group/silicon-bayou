@@ -25,11 +25,17 @@ Gators are the visual / capability layer of that bet. Four tokens in this repo a
 
 ## Art (critical)
 
-The user **rejected** funky pixel gators. Do **not** mint, pin, or ship `generator/out` JPGs.
+Two looks are **rejected**. Do not mint, pin, or ship either:
 
-- **Hero art (ship these):** `art/gators/*.png` and `metadata/images/1.png`–`4.png` — HD, clean, beautiful portraits.
+- Funky **16-bit pixel** PFPs (`generator/out` JPGs). Never ship `generator/out`.
+- Too-**photoreal cinematic 3D**. Not a photo.
+
+**Target: HYBRID** — stylized illustrated / premium painted PFP. Readable collectible silhouette from the pixel set + clean lighting/finish from the cinematic set. Not a sprite, not a photo.
+
+- Hero files: `art/gators/*.png` and `metadata/images/1.png`–`4.png`. Another agent is regenerating these **now**.
+- **Do not mint or pin until the user okays the hybrid set.**
 - Token map: #1 Engineering · #2 Testing · #3 Construction · #4 Capital.
-- `generator/` is a **paused experiment** only. Do not run `generate.py`, do not `--count 10000`, do not treat samples as the drop.
+- `generator/` is a **paused experiment** only. Do not run `generate.py`, do not `--count 10000`.
 
 ## Launch — execute in this order
 
@@ -37,7 +43,7 @@ No live contract yet. `deployments/` is empty. **Do not invent an address.**
 
 `scripts/deploy.js` **deploys and mints 1–4 in one tx**. Set `BASE_URI` before mainnet deploy when you can.
 
-1. Freeze the 4 HD gators (`art/gators/` + `metadata/images/1-4.png`).
+1. Freeze the 4 **hybrid** gators (`art/gators/` + `metadata/images/1-4.png`) **after the user okays them**. Not pixel sprites. Not photoreal 3D.
 2. Freeze metadata JSON (`metadata/1.json`–`4.json`). Keep OpenSea attributes; swap only `image` CIDs.
 3. Pin images, then JSON, to IPFS. Folder CIDs. `image` = `ipfs://<IMAGES_CID>/N.png`. JSON root = `1.json`…`4.json`.
 4. Robinhood Chain **mainnet** config: chain ID **4663**, gas in **ETH**. `RPC_URL=https://rpc.mainnet.chain.robinhood.com` (Alchemy `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}` if public RPC flakes).

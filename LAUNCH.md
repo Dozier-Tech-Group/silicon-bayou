@@ -1,58 +1,67 @@
-# Phase 0 launch checklist
+# Silicon Bayou — Robinhood Chain launch
 
-Execute in order. Do not skip ahead to mint or OpenSea.
+**HOLD on art / IPFS / mint.** Two looks are rejected: funky **16-bit pixel** PFPs (`generator/out`) and too-**photoreal cinematic 3D**. Target is **HYBRID** — stylized illustrated / premium painted PFP: readable collectible silhouette from the pixel set + clean lighting/finish from the cinematic set. Not a sprite, not a photo.
 
-**Status:** no address in `deployments/`. Metadata `image` fields are still `ipfs://REPLACE_ME/N.png`. There is no live BAYOU contract until step 6 succeeds.
+Another agent is regenerating `art/gators/*.png` now. Do **not** pin, freeze, or mint until the **user okays** the hybrid set in `art/gators/` and `metadata/images/1.png`–`4.png`. Never ship `generator/out`.
 
-`scripts/deploy.js` deploys `SiliconBayou` and **mints tokens 1–4 in the same run**. Prefer a real `BASE_URI` in `.env` before mainnet deploy.
+Official network ([docs](https://docs.robinhood.com/chain/connecting/)):
 
-| # | Do this | Done when |
-|---|---------|-----------|
-| 1 | Freeze 4 HD gators | `art/gators/*.png` and `metadata/images/1.png`–`4.png` are the ship portraits — not `generator/out` JPGs |
-| 2 | Freeze metadata JSON | `metadata/1.json`–`4.json` attributes locked; only `image` CIDs may change |
-| 3 | Pin images, then JSON, to IPFS | Images folder CID + JSON folder CID. Each `image` is `ipfs://<IMAGES_CID>/N.png`. JSON CID root has `1.json`…`4.json` |
-| 4 | Mainnet RPC | `.env` → `RPC_URL=https://rpc.mainnet.chain.robinhood.com` (or Alchemy mainnet). Chain ID **4663**. Gas is ETH |
-| 5 | Fund deployer | Wallet on Robinhood mainnet has ETH. `PRIVATE_KEY` in `.env` only — never commit, never print |
-| 6 | Deploy BAYOU | `npm run deploy:mainnet` (rehearse: testnet RPC + `npm run deploy:testnet`, chain ID **46630**). Save the printed address to `deployments/` |
-| 7 | Set base URI | `BASE_URI=ipfs://<JSON_CID>/` (trailing slash). If deploy used `REPLACE_ME`, owner calls `setBaseURI` |
-| 8 | Mint 1–4 | Already done by step 6. Confirm `tokenURI(1)` and `nextTokenId == 5` |
-| 9 | Verify | [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com) — constructor arg must match the deployed `BASE_URI` |
-| 10 | OpenSea + testers | OpenSea → Robinhood Chain → contract address. Send 2–3 people `TESTERS.md` |
+| | Mainnet | Testnet |
+|---|---|---|
+| Name | Robinhood Chain | Robinhood Chain Testnet |
+| Chain ID | **4663** | 46630 |
+| Gas | ETH | ETH |
+| Public RPC | `https://rpc.mainnet.chain.robinhood.com` | `https://rpc.testnet.chain.robinhood.com` |
+| Explorer | [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com) | [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
+| OpenSea | [collections/chain/robinhood](https://opensea.io/collections/chain/robinhood) | — |
 
-## Commands
+Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`.
+
+## Top 10
+
+| # | Item | Status | Notes |
+|---|---|---|---|
+| 1 | Art freeze for launch | **HOLD** | Waiting on user-okayed **hybrid** painted PFPs in `art/gators/*.png`. Pixel sprites and photoreal 3D are both rejected. |
+| 2 | Metadata freeze | **DONE** (traits) / **HOLD** (images) | Names `Silicon Bayou #N`, class, specialty, stats locked. No yield promises. `image` stays unset/`REPLACE_ME` until hybrid art + pin. |
+| 3 | IPFS pin images + metadata | **HOLD** | Guard: `GENESIS_ART_READY=1` required. No pin keys in env. `npm run pin` → `scripts/pin.mjs` (HD `metadata/images/1-4` only). |
+| 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer in `hardhat.config.js`, `foundry.toml`, `.env.example`. |
+| 5 | Funded deployer wallet | **BLOCKED** | No `.env`, no `PRIVATE_KEY`. Only human step besides hybrid art. See below. |
+| 6 | Deploy ERC-721 mainnet | **BLOCKED** | Compile path ready: `npm run compile` then `npm run deploy:mainnet`. Guarded until `GENESIS_ART_READY=1` + funded key. |
+| 7 | Set baseURI | **BLOCKED** | `npm run set-base-uri` after pin. |
+| 8 | Mint genesis 1–4 | **HOLD** | Same guard. Tokens 1–4 = Engineering / Testing / Construction / Capital. |
+| 9 | Verify on Blockscout | **BLOCKED** | After deploy: `forge verify-contract <addr> contracts/SiliconBayou.sol:SiliconBayou --chain-id 4663 --verifier blockscout --verifier-url https://robinhoodchain.blockscout.com/api/` |
+| 10 | OpenSea + testers | **BLOCKED** | After deploy: `https://opensea.io/item/robinhood/<addr>/1` and `https://opensea.io/assets/robinhood/<addr>`. Testers in `testers/fixtures.json` are still placeholders. |
+
+**Live links:** none yet (no contract address).
+
+## Only remaining human steps
+
+1. **Hybrid art** — user okays stylized illustrated / premium painted PFPs (not sprite, not photo). Drop them in `art/gators/*.png` and copy to `metadata/images/1.png`–`4.png`. Then `$env:GENESIS_ART_READY="1"`.
+2. **Funded wallet** — create/export a deployer locally (do not paste the key into chat):
 
 ```powershell
-cd C:\Users\gdozi\Projects\silicon-bayou
 copy .env.example .env
-npm install
-npm test
-npm run gallery
-# .env RPC_URL = testnet public RPC, then:
-npm run deploy:testnet
-# .env RPC_URL = mainnet public RPC (or Alchemy), BASE_URI = ipfs://<JSON_CID>/, then:
+# Set PRIVATE_KEY in .env only.
+# Add Robinhood Chain in the wallet: chain ID 4663, RPC https://rpc.mainnet.chain.robinhood.com, symbol ETH
+# Bridge ETH: https://docs.robinhood.com/chain/connecting/
+npm run wallet
+```
+
+3. **Optional pin key** — one of `PINATA_JWT` / `NFT_STORAGE_KEY` / `WEB3_STORAGE_TOKEN` / `LIGHTHOUSE_API_KEY`, then `npm run pin`.
+4. **Go live**
+
+```powershell
+npm run compile
 npm run deploy:mainnet
+# if BASE_URI was empty at deploy:
+npm run set-base-uri
+npx hardhat verify --network robinhood <CONTRACT_ADDRESS> "<BASE_URI>"
 ```
 
-If you deployed with a placeholder URI:
+5. **OpenSea** — open the explorer + `https://opensea.io/item/robinhood/<addr>/1`. Replace tester placeholders in `testers/fixtures.json`, then `npm run mint:testers` if you want extras.
 
-```powershell
-npx hardhat console --network robinhood
-# const nft = await ethers.getContractAt("SiliconBayou", "<address>")
-# await (await nft.setBaseURI("ipfs://<JSON_CID>/")).wait()
-```
+## Guards
 
-Verify (plugin not installed by default):
-
-```powershell
-npx hardhat verify --network robinhood <CONTRACT_ADDRESS> "ipfs://<JSON_CID>/"
-```
-
-Or paste address + source on Blockscout.
-
-## Do not
-
-- Ship, pin, or mint `generator/` pixel JPGs (paused; look rejected).
-- Invent a contract address.
-- Commit `.env` or print `PRIVATE_KEY`.
-- Force-push or edit git config.
-- Build SBIR, staking, 10k drop, KYC, or fake bridges.
+- `scripts/pin.mjs` and `scripts/deploy.js` / `mint-genesis.js` refuse to run unless `GENESIS_ART_READY=1`.
+- BASE_URI containing `generator/out` is rejected.
+- Never commit `.env`. Never print `PRIVATE_KEY`.
