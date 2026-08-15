@@ -5,9 +5,13 @@
   "description": "Silicon Bayou — Louisiana alligator capability NFTs on Robinhood Chain. NFT layer for Merged Public.",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test",
+    "test": "hardhat test && vitest run",
+    "test:contracts": "hardhat test",
+    "test:app": "vitest run",
     "deploy:testnet": "hardhat run scripts/deploy.js --network robinhoodTestnet",
     "deploy:mainnet": "hardhat run scripts/deploy.js --network robinhood",
+    "deploy:bounty:testnet": "hardhat run scripts/deploy-bounty.js --network robinhoodTestnet",
+    "deploy:bounty:mainnet": "hardhat run scripts/deploy-bounty.js --network robinhood",
     "gallery": "npx --yes serve . -p 4173"
   },
   "dependencies": {
@@ -17,6 +21,9 @@
     "@nomicfoundation/hardhat-ethers": "^3.1.0",
     "dotenv": "^16.6.1",
     "ethers": "^6.15.0",
-    "hardhat": "^2.26.3"
+    "chai": "^4.5.0",
+    "happy-dom": "^17.6.3",
+    "hardhat": "^2.26.3",
+    "vitest": "^3.2.4"
   }
 }

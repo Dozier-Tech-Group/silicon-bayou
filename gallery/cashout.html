@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Get USD — Silicon Bayou closed alpha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="alpha.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <nav>
+        <a class="brand-name" href="index.html">Silicon Bayou</a>
+        <div class="nav-links">
+          <a href="index.html">Collection</a>
+          <a href="bounties.html">Bounties</a>
+          <a href="cashout.html">Get USD</a>
+        </div>
+        <span class="chip">Closed alpha</span>
+      </nav>
+
+      <p class="alpha">
+        Invite-only test (2–3 people). <strong>Do not send real money.</strong>
+        Do not use a wallet with significant funds. Nothing here pays out.
+      </p>
+
+      <h1>Get USD</h1>
+      <p class="lede">
+        This page is a <strong>practice script</strong>, not a bank or a bridge.
+        After you read the three steps, you should be able to tell a friend how
+        value would eventually reach Robinhood or Coinbase — and that it does
+        <strong>not</strong> happen in this alpha.
+      </p>
+
+      <div class="panel">
+        <h2>Wallet (optional)</h2>
+        <p>Skip if you do not have a wallet. Connecting here is a demo only.</p>
+        <div class="actions">
+          <button class="primary" type="button" id="connect-wallet">Connect wallet</button>
+          <button type="button" id="skip-wallet">Skip — no wallet</button>
+        </div>
+        <p id="wallet-status">Not connected. Do not use a wallet with significant funds.</p>
+      </div>
+
+      <article class="step">
+        <h2>Step 1 — Value starts on-chain (not USD yet)</h2>
+        <p>
+          If Silicon Bayou ever paid a bounty, it would show up as crypto on
+          <strong>Robinhood Chain</strong> (or as a non-cash credit). That is
+          not dollars in a bank. This alpha does <strong>not</strong> send any
+          of it.
+        </p>
+      </article>
+      <article class="step">
+        <h2>Step 2 — Move it to an exchange you already use</h2>
+        <p>
+          You would withdraw or bridge that asset to an exchange that can sell
+          it — typically <strong>Robinhood</strong> or <strong>Coinbase</strong>,
+          if and when they support the asset. That hop is <strong>not live</strong>
+          here. There is no button that moves real funds.
+        </p>
+      </article>
+      <article class="step">
+        <h2>Step 3 — Sell to USD, then to your bank</h2>
+        <p>
+          On the exchange, you would sell the asset for USD and withdraw to a
+          linked bank account — the same way you cash out stock or crypto today.
+          KYC, taxes, and exchange rules still apply. <strong>Do not send real money</strong>
+          to try this.
+        </p>
+      </article>
+
+      <p>
+        Pass for Tester A: you can explain those three hops in your own words
+        in under 15 minutes. File confusion as a GitHub issue on
+        <a href="https://github.com/Dozier-Tech-Group/silicon-bayou/issues">Dozier-Tech-Group/silicon-bayou</a>.
+      </p>
+      <footer>
+        Closed alpha · no payouts · no mergedpublic.com production hookup ·
+        <a href="index.html">Back to collection</a>
+      </footer>
+    </div>
+    <script>
+      const status = document.getElementById("wallet-status");
+      document.getElementById("connect-wallet").addEventListener("click", () => {
+        status.textContent =
+          "Demo connected: 0x1111…1111 (Pat Rivers fixture). Not a real wallet. Do not send real money.";
+      });
+      document.getElementById("skip-wallet").addEventListener("click", () => {
+        status.textContent =
+          "Skipped. You can still read the three Get USD steps without a wallet.";
+      });
+    </script>
+  </body>
+</html>

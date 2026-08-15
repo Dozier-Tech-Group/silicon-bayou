@@ -1,0 +1,80 @@
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --ink: #ffffff;
+  --muted: rgba(255, 255, 255, 0.45);
+  --faint: rgba(255, 255, 255, 0.28);
+  --line: rgba(255, 255, 255, 0.08);
+  --edu: #3b9eed;
+  --sport: #14c8a6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--edu); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 1.25rem 2.6rem; }
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 0 0.6rem;
+  flex-wrap: wrap;
+}
+.brand-name, h1, h2, h3 {
+  font-family: "Space Grotesk", sans-serif;
+}
+.brand-name { font-weight: 700; color: rgba(255,255,255,0.82); }
+.nav-links { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; }
+.chip {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+}
+.alpha {
+  margin: 0.8rem 0 1.2rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(255, 196, 0, 0.28);
+  background: rgba(255, 196, 0, 0.06);
+  border-radius: 10px;
+  color: #f0d78c;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); letter-spacing: -0.03em; margin: 0.4rem 0 0.6rem; }
+.lede, p, li { color: var(--muted); line-height: 1.6; }
+.lede strong, li strong { color: rgba(255,255,255,0.82); }
+.step, .bounty, .panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.05rem 1.1rem 1.15rem;
+  margin: 0 0 0.85rem;
+}
+.step h2, .bounty h2 { margin: 0 0 0.4rem; font-size: 1.05rem; color: var(--ink); }
+.actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0; }
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--edu);
+}
+button.primary { background: #12324a; border-color: rgba(59,158,237,0.45); }
+#wallet-status { font-size: 0.9rem; }
+.bounty[data-bounty] { border-left: 3px solid var(--sport); }
+.meta { font-size: 0.78rem; color: var(--faint); margin-top: 0.45rem; }
+footer { margin-top: 2rem; font-size: 0.85rem; color: var(--muted); }

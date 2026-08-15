@@ -1,5 +1,7 @@
 node_modules/
 out/
+# Generative drop can be 10k JPGs — keep a few samples only
+generator/out/
 cache/
 cache_hardhat/
 artifacts/

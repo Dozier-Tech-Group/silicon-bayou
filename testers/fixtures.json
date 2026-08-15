@@ -1,0 +1,50 @@
+{
+  "alpha": {
+    "inviteOnly": true,
+    "maxTesters": 3,
+    "warning": "Do not send real money. Do not use a wallet with significant funds."
+  },
+  "testers": [
+    {
+      "id": "A",
+      "name": "Pat Rivers",
+      "role": "Dad cash-out",
+      "wallet": "0x1111111111111111111111111111111111111111",
+      "github": "pat-rivers-alpha"
+    },
+    {
+      "id": "B",
+      "name": "Jordan Bayou",
+      "role": "Bounty hunter",
+      "wallet": "0x2222222222222222222222222222222222222222",
+      "github": "jordan-bayou-alpha"
+    },
+    {
+      "id": "C",
+      "name": "Sam Parish",
+      "role": "Collector",
+      "wallet": "0x3333333333333333333333333333333333333333",
+      "github": "sam-parish-alpha"
+    }
+  ],
+  "bounties": [
+    {
+      "id": "BAYOU-1",
+      "title": "Confirm the four gator class labels",
+      "reward": "Alpha credit (not cash)",
+      "status": "open"
+    },
+    {
+      "id": "BAYOU-2",
+      "title": "Walk the Get USD steps as a non-crypto person",
+      "reward": "Alpha credit (not cash)",
+      "status": "open"
+    },
+    {
+      "id": "BAYOU-3",
+      "title": "Screenshot the Capital Gator card with stats",
+      "reward": "Alpha credit (not cash)",
+      "status": "open"
+    }
+  ]
+}

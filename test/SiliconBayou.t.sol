@@ -24,6 +24,16 @@ contract SiliconBayouTest is Test {
         assertEq(nft.tokenURI(4), "ipfs://CID/4.json");
     }
 
+    function test_ownerCanMintOneThroughFour() public {
+        for (uint256 i = 1; i <= 4; i++) {
+            uint256 tokenId = nft.mint(owner);
+            assertEq(tokenId, i);
+            assertEq(nft.ownerOf(i), owner);
+            assertEq(nft.tokenURI(i), string.concat("ipfs://CID/", vm.toString(i), ".json"));
+        }
+        assertEq(nft.nextTokenId(), 5);
+    }
+
     function test_nonOwnerCannotMint() public {
         vm.prank(stranger);
         vm.expectRevert();
