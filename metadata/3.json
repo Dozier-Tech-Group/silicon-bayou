@@ -1,0 +1,15 @@
+{
+  "name": "Silicon Bayou #3",
+  "description": "Construction Gator of Silicon Bayou — capability layer for merged (Merged, Inc.), the open source institutional network. A Louisiana alligator from Gator Parish in hard hat and field kit, built for site work and welding. Cryptographic identity; not a legal contract.",
+  "image": "ipfs://REPLACE_ME/3.png",
+  "external_url": "https://www.mergedpublic.com",
+  "attributes": [
+    { "trait_type": "Class", "value": "Construction" },
+    { "trait_type": "Region", "value": "Gator Parish" },
+    { "trait_type": "Specialty", "value": "Field Construction & Welding" },
+    { "trait_type": "Engineering", "value": 38, "display_type": "number", "max_value": 100 },
+    { "trait_type": "Testing", "value": 42, "display_type": "number", "max_value": 100 },
+    { "trait_type": "Construction", "value": 93, "display_type": "number", "max_value": 100 },
+    { "trait_type": "Capital", "value": 32, "display_type": "number", "max_value": 100 }
+  ]
+}

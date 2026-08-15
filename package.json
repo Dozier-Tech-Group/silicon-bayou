@@ -1,0 +1,22 @@
+{
+  "name": "silicon-bayou",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Silicon Bayou — Louisiana alligator capability NFTs on Robinhood Chain. NFT layer for Merged Public.",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network robinhoodTestnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network robinhood",
+    "gallery": "npx --yes serve . -p 4173"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.2.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.1.0",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.26.3"
+  }
+}

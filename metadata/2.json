@@ -1,0 +1,15 @@
+{
+  "name": "Silicon Bayou #2",
+  "description": "Testing Gator of Silicon Bayou — capability layer for merged (Merged, Inc.), the open source institutional network. A Louisiana alligator inspector from Gator Parish, built for QA, safety, and verification. Cryptographic identity; not a legal contract.",
+  "image": "ipfs://REPLACE_ME/2.png",
+  "external_url": "https://www.mergedpublic.com",
+  "attributes": [
+    { "trait_type": "Class", "value": "Testing" },
+    { "trait_type": "Region", "value": "Gator Parish" },
+    { "trait_type": "Specialty", "value": "Inspection & Quality Assurance" },
+    { "trait_type": "Engineering", "value": 44, "display_type": "number", "max_value": 100 },
+    { "trait_type": "Testing", "value": 94, "display_type": "number", "max_value": 100 },
+    { "trait_type": "Construction", "value": 40, "display_type": "number", "max_value": 100 },
+    { "trait_type": "Capital", "value": 30, "display_type": "number", "max_value": 100 }
+  ]
+}
