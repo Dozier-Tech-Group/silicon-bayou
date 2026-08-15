@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -16,13 +16,15 @@
         --panel: #161b22;
         --ink: #ffffff;
         --muted: rgba(255, 255, 255, 0.45);
-        --line: rgba(255, 255, 255, 0.06);
+        --faint: rgba(255, 255, 255, 0.28);
+        --line: rgba(255, 255, 255, 0.08);
         --edu: #3b9eed;
         --sport: #14c8a6;
         --map: #46d07a;
         --core: #7c74f0;
       }
       * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
         font-family: Inter, ui-sans-serif, system-ui, sans-serif;
@@ -40,30 +42,52 @@
           linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
         background-size: 80px 80px;
       }
-      header, footer, main { position: relative; }
-      header {
-        max-width: 1100px;
+      a { color: var(--edu); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .wrap {
+        position: relative;
+        max-width: 1120px;
         margin: 0 auto;
-        padding: 2.5rem 1.25rem 1.25rem;
+        padding: 0 1.25rem;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.15rem 0 0.4rem;
+        flex-wrap: wrap;
       }
       .brand {
         display: flex;
         align-items: center;
         gap: 0.65rem;
-        margin-bottom: 1.25rem;
       }
-      .mark {
-        width: 28px;
-        height: 28px;
-        display: block;
-      }
+      .mark { width: 28px; height: 28px; display: block; }
       .brand-name {
         font-family: "Space Grotesk", sans-serif;
         font-weight: 700;
         font-size: 1.05rem;
         letter-spacing: -0.01em;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.82);
       }
+      .nav-meta {
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+      }
+      .chip {
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: 999px;
+        padding: 0.28rem 0.7rem;
+      }
+      .hero { padding: 2.1rem 0 1.6rem; }
       .tag {
         color: rgba(255, 255, 255, 0.4);
         font-size: 11px;
@@ -72,97 +96,370 @@
         font-weight: 500;
       }
       h1 {
-        margin: 0.65rem 0 0.45rem;
+        margin: 0.7rem 0 0.55rem;
         font-family: "Space Grotesk", sans-serif;
-        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-size: clamp(2.15rem, 5.4vw, 3.45rem);
         letter-spacing: -0.03em;
+        line-height: 1.05;
         background: linear-gradient(135deg, var(--edu), var(--sport));
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
       }
-      p.lede {
-        max-width: 42rem;
+      .lede {
+        max-width: 44rem;
         color: var(--muted);
-        line-height: 1.6;
-        font-weight: 400;
+        line-height: 1.65;
+        font-size: 1.02rem;
+        margin: 0 0 1.35rem;
       }
-      a { color: var(--edu); }
-      .grid {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 1.25rem 3rem;
+      .lede strong { color: rgba(255,255,255,0.78); font-weight: 600; }
+      .facts {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.25rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 0 0 0.4rem;
       }
-      article {
+      .fact {
         background: var(--panel);
         border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
+        border-radius: 12px;
+        padding: 0.9rem 1rem;
       }
-      article img {
+      .fact b {
+        display: block;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .fact span {
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+      section { padding: 0.5rem 0 2.4rem; }
+      h2 {
+        margin: 0 0 0.35rem;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.45rem;
+        letter-spacing: -0.02em;
+      }
+      .section-copy {
+        color: var(--muted);
+        max-width: 40rem;
+        line-height: 1.6;
+        margin: 0 0 1.2rem;
+        font-size: 0.95rem;
+      }
+      .collection {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.15rem;
+      }
+      .card {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        padding: 0;
+      }
+      .card:hover,
+      .card:focus-visible {
+        border-color: rgba(59, 158, 237, 0.55);
+        outline: none;
+      }
+      .card img {
         display: block;
         width: 100%;
         aspect-ratio: 1 / 1;
         object-fit: cover;
         background: #0b1c16;
       }
-      .body { padding: 1rem 1rem 1.15rem; }
-      h2 {
-        margin: 0 0 0.25rem;
-        font-size: 1.05rem;
+      .body { padding: 1.05rem 1.1rem 1.2rem; }
+      .card h3 {
+        margin: 0 0 0.2rem;
         font-family: "Space Grotesk", sans-serif;
+        font-size: 1.12rem;
       }
-      .class { color: var(--sport); font-size: 0.8rem; margin-bottom: 0.6rem; }
-      dl {
-        margin: 0;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 0.28rem 0.75rem;
+      .class {
+        color: var(--sport);
         font-size: 0.82rem;
+        font-weight: 500;
+        margin-bottom: 0.85rem;
+      }
+      .attrs {
+        display: grid;
+        gap: 0.42rem;
+      }
+      .attr {
+        display: grid;
+        grid-template-columns: 7.2rem 1fr auto;
+        gap: 0.55rem;
+        align-items: center;
+        font-size: 0.78rem;
         color: var(--muted);
       }
-      dt { font-variant-numeric: tabular-nums; }
-      dd { margin: 0; color: var(--ink); text-align: right; }
+      .attr b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+      .bar {
+        height: 4px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        border-radius: 99px;
+        background: var(--edu);
+      }
+      .attr.primary .bar i { background: var(--sport); }
+      .network {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .net {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.05rem 1.1rem 1.15rem;
+        border-top: 3px solid var(--edu);
+      }
+      .net.sport { border-top-color: var(--sport); }
+      .net.map { border-top-color: var(--map); }
+      .net.core { border-top-color: var(--core); }
+      .net .dot {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 0.35rem;
+      }
+      .net p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .col {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.1rem 1.15rem 1.2rem;
+      }
+      .col h3 {
+        margin: 0 0 0.7rem;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.95rem;
+      }
+      .col ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .col li {
+        position: relative;
+        padding: 0.28rem 0 0.28rem 1rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+      .col li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.72rem;
+        width: 6px;
+        height: 6px;
+        border-radius: 99px;
+        background: var(--sport);
+      }
+      .col.is-not li::before { background: var(--faint); }
       footer {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 1.25rem 2.5rem;
+        padding: 0 0 2.6rem;
         color: var(--muted);
         font-size: 0.85rem;
-        line-height: 1.5;
+        line-height: 1.55;
+      }
+      dialog {
+        width: min(92vw, 720px);
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        color: var(--ink);
+      }
+      dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
+      dialog img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        background: #0b1c16;
+      }
+      .dlg-body { padding: 1.15rem 1.2rem 1.3rem; }
+      .dlg-body h3 {
+        margin: 0 0 0.2rem;
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .close {
+        margin-top: 1rem;
+        background: transparent;
+        color: var(--edu);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0.45rem 0.8rem;
+        cursor: pointer;
+        font: inherit;
+      }
+      @media (min-width: 720px) {
+        .collection { grid-template-columns: 1fr 1fr; }
+        .network, .split { grid-template-columns: 1fr 1fr; }
+      }
+      @media (min-width: 960px) {
+        .network { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+      @media (max-width: 719px) {
+        .facts { grid-template-columns: 1fr 1fr; }
+        .attr { grid-template-columns: 1fr auto; }
+        .attr .bar { display: none; }
       }
     </style>
   </head>
   <body>
-    <header>
-      <div class="brand">
-        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
-          <path d="M4 26 L10 6 L16 18" fill="none" stroke="#3B9EED" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M28 26 L22 6 L16 18" fill="none" stroke="#14C8A6" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="brand-name">merged</span>
+    <div class="wrap">
+      <nav>
+        <div class="brand">
+          <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M4 26 L10 6 L16 18" fill="none" stroke="#3B9EED" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 26 L22 6 L16 18" fill="none" stroke="#14C8A6" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="brand-name">merged</span>
+        </div>
+        <div class="nav-meta">
+          <span class="chip">BAYOU</span>
+          <span class="chip">ERC-721</span>
+          <span class="chip">Robinhood Chain</span>
+          <span class="chip">Phase 0</span>
+        </div>
+      </nav>
+
+      <header class="hero">
+        <div class="tag">The Open Source Institutional Network</div>
+        <h1>Silicon Bayou</h1>
+        <p class="lede">
+          The public capability layer for
+          <a href="https://www.mergedpublic.com">merged</a>
+          (Merged, Inc.). The north star is straightforward:
+          <strong>Louisiana uses Merged technology for education and industry</strong>,
+          and becomes a <strong>leading technical developer in the nation</strong>.
+          Four original alligator PFPs from Gator Parish are how that capability
+          becomes something you can see and hold.
+        </p>
+        <div class="facts">
+          <div class="fact"><b>4</b><span>Owner-minted tokens</span></div>
+          <div class="fact"><b>BAYOU</b><span>Collection symbol</span></div>
+          <div class="fact"><b>4663</b><span>Robinhood Chain mainnet</span></div>
+          <div class="fact"><b>MVP</b><span>No sale, wallet, or yield</span></div>
+        </div>
+      </header>
+
+      <section id="collection">
+        <h2>The collection</h2>
+        <p class="section-copy">
+          Click a gator for the full working copy. Class, region, specialty, and
+          capability scores match the OpenSea metadata in this repo.
+        </p>
+        <div class="collection" id="gallery"></div>
+      </section>
+
+      <section id="network">
+        <h2>How it connects to merged</h2>
+        <p class="section-copy">
+          Silicon Bayou does not import merged-public and is not a live integration yet.
+          A gator is the holdable face of capability next to a merged address —
+          higher education is the reference implementation, not the requirement.
+        </p>
+        <div class="network">
+          <article class="net">
+            <div class="dot">merged.edu</div>
+            <p>Operating layer for higher education. Overlay on systems of record — not a rip-and-replace. Human-final advising.</p>
+          </article>
+          <article class="net sport">
+            <div class="dot">merged.sport</div>
+            <p>Operating system for collegiate athletics: performance, compliance, eligibility, recruiting. Live on the public site.</p>
+          </article>
+          <article class="net map">
+            <div class="dot">merged.map</div>
+            <p>The directory. <strong style="color:#fff">The Merger</strong> is the index for groups, colleges, and the tools they publish.</p>
+          </article>
+          <article class="net core">
+            <div class="dot">merged.core</div>
+            <p>Retained core — ontologies, packages, identity, dots, access, value. Open to contribution; accepted by Merged, Inc.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="mvp">
+        <h2>What this MVP is</h2>
+        <p class="section-copy">
+          Honest framing before GitHub or OpenSea. NFTs here are cryptographic
+          identity — not the full legal contract.
+        </p>
+        <div class="split">
+          <div class="col">
+            <h3>Ships in this cut</h3>
+            <ul>
+              <li>Four original Louisiana alligator PFPs</li>
+              <li>OpenSea-compatible metadata (class, region, scores)</li>
+              <li>Owner-mint ERC-721 on Robinhood Chain</li>
+              <li>This public landing page, plus the written protocol plan</li>
+            </ul>
+          </div>
+          <div class="col is-not">
+            <h3>Not this, not yet</h3>
+            <ul>
+              <li>Not a legal contract, diploma, SOW, or grant award</li>
+              <li>Not a substitute for SAM.gov, UEI, or systems of record</li>
+              <li>No public sale, staking, recipes, or yield</li>
+              <li>No SBIR/STTR engine — that stays in PLAN.md only</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        Merging ideas and the structures of education into one open network.
+        Every feature open source; the core intelligence retained by Merged, Inc.
+        Local preview only — no wallet connect.
+        Source: <a href="../README.md">README.md</a> ·
+        <a href="../PLAN.md">PLAN.md</a> ·
+        <a href="../contracts/SiliconBayou.sol">SiliconBayou.sol</a>
+      </footer>
+    </div>
+
+    <dialog id="inspect" aria-labelledby="inspect-title">
+      <img id="inspect-img" alt="" />
+      <div class="dlg-body">
+        <h3 id="inspect-title"></h3>
+        <div class="class" id="inspect-class"></div>
+        <div class="attrs" id="inspect-attrs"></div>
+        <button class="close" type="button" id="inspect-close">Close</button>
       </div>
-      <div class="tag">The Open Source Institutional Network</div>
-      <h1>Silicon Bayou</h1>
-      <p class="lede">
-        Four original Louisiana alligator PFPs on Robinhood Chain — the capability
-        layer for
-        <a href="https://www.mergedpublic.com">merged</a>
-        (merged.edu, merged.sport, merged.map, merged.core). Identity you can hold.
-        Not a legal contract, not a live integration, not a yield product.
-        Gator Parish is the home region inside this collection.
-      </p>
-    </header>
-    <main class="grid" id="gallery"></main>
-    <footer>
-      MVP gallery — no wallet connect. Tokens 1–4: Engineering, Testing,
-      Construction, Capital. Symbol <strong>BAYOU</strong>.
-      Merging ideas and the structures of education into one open network.
-      Every feature open source; the core intelligence retained by Merged, Inc.
-    </footer>
+    </dialog>
+
     <script>
       const tokens = [
         {
@@ -170,7 +467,9 @@
           name: "Silicon Bayou #1",
           cls: "Engineering Gator",
           specialty: "Software & Electrical Systems",
+          description: "Louisiana alligator builder from Gator Parish, wired for software and electrical systems.",
           scores: { Engineering: 92, Testing: 48, Construction: 36, Capital: 28 },
+          primary: "Engineering",
           image: "../metadata/images/1.png",
         },
         {
@@ -178,7 +477,9 @@
           name: "Silicon Bayou #2",
           cls: "Testing Gator",
           specialty: "Inspection & Quality Assurance",
+          description: "Louisiana alligator inspector from Gator Parish, built for QA, safety, and verification.",
           scores: { Engineering: 44, Testing: 94, Construction: 40, Capital: 30 },
+          primary: "Testing",
           image: "../metadata/images/2.png",
         },
         {
@@ -186,7 +487,9 @@
           name: "Silicon Bayou #3",
           cls: "Construction Gator",
           specialty: "Field Construction & Welding",
+          description: "Louisiana alligator from Gator Parish in hard hat and field kit, built for site work and welding.",
           scores: { Engineering: 38, Testing: 42, Construction: 93, Capital: 32 },
+          primary: "Construction",
           image: "../metadata/images/3.png",
         },
         {
@@ -194,28 +497,64 @@
           name: "Silicon Bayou #4",
           cls: "Capital Gator",
           specialty: "Project Finance & Investment",
+          description: "Louisiana alligator financier from Gator Parish, dressed for project finance and investment.",
           scores: { Engineering: 30, Testing: 34, Construction: 28, Capital: 95 },
+          primary: "Capital",
           image: "../metadata/images/4.png",
         },
       ];
 
+      function scoreRows(t) {
+        return Object.entries(t.scores)
+          .map(([k, v]) => {
+            const primary = k === t.primary ? " primary" : "";
+            return `<div class="attr${primary}"><span>${k}</span><span class="bar"><i style="width:${v}%"></i></span><b>${v}</b></div>`;
+          })
+          .join("");
+      }
+
       const root = document.getElementById("gallery");
+      const dialog = document.getElementById("inspect");
+
+      function openToken(t) {
+        document.getElementById("inspect-img").src = t.image;
+        document.getElementById("inspect-img").alt = t.name;
+        document.getElementById("inspect-title").textContent = t.name;
+        document.getElementById("inspect-class").textContent =
+          `${t.cls} · Gator Parish · ${t.specialty}`;
+        document.getElementById("inspect-attrs").innerHTML = scoreRows(t);
+        history.replaceState(null, "", `#${t.id}`);
+        dialog.showModal();
+      }
+
       for (const t of tokens) {
-        const el = document.createElement("article");
+        const el = document.createElement("button");
+        el.type = "button";
+        el.className = "card";
+        el.id = `token-${t.id}`;
+        el.setAttribute("aria-label", `Open ${t.name}, ${t.cls}`);
         el.innerHTML = `
           <img src="${t.image}" alt="${t.name}" />
           <div class="body">
-            <h2>${t.name}</h2>
+            <h3>${t.name}</h3>
             <div class="class">${t.cls} · Gator Parish</div>
-            <dl>
-              <dt>Specialty</dt><dd>${t.specialty}</dd>
-              ${Object.entries(t.scores)
-                .map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`)
-                .join("")}
-            </dl>
+            <div class="attrs">
+              <div class="attr"><span>Specialty</span><span></span><b>${t.specialty}</b></div>
+              ${scoreRows(t)}
+            </div>
           </div>`;
+        el.addEventListener("click", () => openToken(t));
         root.appendChild(el);
       }
+
+      document.getElementById("inspect-close").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("close", () => {
+        if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      });
+
+      const hashId = Number(location.hash.replace("#", ""));
+      const fromHash = tokens.find((t) => t.id === hashId);
+      if (fromHash) openToken(fromHash);
     </script>
   </body>
 </html>
