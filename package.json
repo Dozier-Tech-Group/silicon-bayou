@@ -14,6 +14,7 @@
     "deploy:mainnet": "hardhat run scripts/deploy.js --network robinhood",
     "deploy:bounty:testnet": "hardhat run scripts/deploy-bounty.js --network robinhoodTestnet",
     "deploy:bounty:mainnet": "hardhat run scripts/deploy-bounty.js --network robinhood",
+    "copy-stills": "node scripts/copy-genesis-stills.mjs",
     "pin": "node scripts/pin.mjs",
     "wallet": "node scripts/check-wallet.mjs",
     "set-base-uri": "hardhat run scripts/set-base-uri.js --network robinhood",

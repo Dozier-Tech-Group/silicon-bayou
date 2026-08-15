@@ -91,10 +91,11 @@ describe("zero-trust gallery edges", () => {
     }
   });
 
-  it("does not fetch or innerHTML GitHub issue titles", () => {
+  it("does not innerHTML untrusted GitHub issue titles", () => {
     const { html } = loadHtml("gallery/bounties.html");
-    expect(html).not.toMatch(/api\.github\.com/);
-    expect(html).not.toMatch(/innerHTML/);
+    expect(html).toMatch(/api\.github\.com/);
+    expect(html).toMatch(/textContent/);
+    expect(html).not.toMatch(/innerHTML\s*=/);
   });
 
   it("wallet connect checks Robinhood chain 4663 and never treats balances as payouts", () => {

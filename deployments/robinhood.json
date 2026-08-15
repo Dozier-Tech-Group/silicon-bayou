@@ -1,0 +1,20 @@
+{
+  "network": "robinhood",
+  "chainId": 4663,
+  "currency": "ETH",
+  "rpc": "https://rpc.mainnet.chain.robinhood.com",
+  "explorer": "https://robinhoodchain.blockscout.com",
+  "status": "blocked",
+  "blockers": [
+    "no PINATA_JWT (or other pin key) — npm run pin wrote deployments/ipfs.json as blocked_no_pin_key",
+    "no PRIVATE_KEY / .env — fund a Robinhood Chain 4663 wallet locally, never paste the key into chat"
+  ],
+  "address": null,
+  "deployTx": null,
+  "mintTx": null,
+  "tokenIds": [1, 2, 3, 4],
+  "art": "Hybrid stills frozen in art/gators and metadata/images. Animation: metadata/images/N.html. Excluded: generator/out.",
+  "genesis": "deployments/genesis.json",
+  "openseaChainBrowse": "https://opensea.io/collections/chain/robinhood",
+  "next": "copy .env.example .env; set PRIVATE_KEY + GENESIS_ART_READY=1 + pin key; npm run pin; npm run deploy:mainnet"
+}

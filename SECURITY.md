@@ -59,7 +59,7 @@ Cancel a bad transfer by calling `transferOwnership(address(0))` before accept.
 3. Check `tokenURI(1)` on a trusted RPC.
 4. `freezeURI()` — permanent. There is no unfreeze.
 
-Do **not** freeze, pin, or mint until hybrid art is user-okayed (`GENESIS_ART_READY` hold stays).
+Do **not** freeze, pin, or mint until `GENESIS_ART_READY=1` is set locally after hybrid stills are frozen (they are). Then pin IPFS, `setBaseURI`, `freezeURI`.
 
 ## Production owner
 

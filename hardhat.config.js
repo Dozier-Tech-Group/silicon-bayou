@@ -17,12 +17,18 @@ module.exports = {
       chainId: 31337,
     },
     robinhood: {
-      url: process.env.RPC_URL || "https://rpc.mainnet.chain.robinhood.com",
+      url:
+        process.env.RH_RPC_URL ||
+        process.env.RPC_URL ||
+        "https://rpc.mainnet.chain.robinhood.com",
       chainId: 4663,
       accounts,
     },
     robinhoodTestnet: {
-      url: process.env.RPC_URL || "https://rpc.testnet.chain.robinhood.com",
+      url:
+        process.env.RH_TESTNET_RPC_URL ||
+        process.env.RPC_URL ||
+        "https://rpc.testnet.chain.robinhood.com",
       chainId: 46630,
       accounts,
     },

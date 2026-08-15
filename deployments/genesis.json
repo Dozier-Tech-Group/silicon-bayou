@@ -1,0 +1,14 @@
+{
+  "status": "stills_frozen",
+  "style": "hybrid painted PFP",
+  "tokens": {
+    "1": "Engineering",
+    "2": "Testing",
+    "3": "Construction",
+    "4": "Capital"
+  },
+  "stills": "art/gators/*-gator.png copied to metadata/images/N.png and *-still.png",
+  "animation": "metadata/images/N.html living portraits (prefers-reduced-motion honored)",
+  "rejected": ["generator/out", "photoreal cinematic 3D"],
+  "next": "Set GENESIS_ART_READY=1 locally, npm run pin, then npm run deploy:mainnet"
+}

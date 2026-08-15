@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; frame-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
     />
     <title>Silicon Bayou — capability layer for merged</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -546,7 +546,6 @@
           scores: { Engineering: 92, Testing: 48, Construction: 36, Capital: 28 },
           primary: "Engineering",
           image: "../metadata/images/1.png",
-          video: "../art/gators/engineering-gator-loop.mp4",
           animation: "tokens/1.html",
         },
         {
@@ -558,7 +557,6 @@
           scores: { Engineering: 44, Testing: 94, Construction: 40, Capital: 30 },
           primary: "Testing",
           image: "../metadata/images/2.png",
-          video: "../art/gators/testing-gator-loop.mp4",
           animation: "tokens/2.html",
         },
         {
@@ -570,7 +568,6 @@
           scores: { Engineering: 38, Testing: 42, Construction: 93, Capital: 32 },
           primary: "Construction",
           image: "../metadata/images/3.png",
-          video: "../art/gators/construction-gator-loop.mp4",
           animation: "tokens/3.html",
         },
         {
@@ -582,7 +579,6 @@
           scores: { Engineering: 30, Testing: 34, Construction: 28, Capital: 95 },
           primary: "Capital",
           image: "../metadata/images/4.png",
-          video: "../art/gators/capital-gator-loop.mp4",
           animation: "tokens/4.html",
         },
       ];
@@ -605,29 +601,12 @@
       function livingInner(t) {
         const still = `<img src="${escapeHtml(t.image)}" alt="${escapeHtml(t.name)}" />`;
         if (reduceMotion) return still;
-        return `${still}<video class="loop" muted loop playsinline autoplay poster="${escapeHtml(t.image)}" src="${escapeHtml(t.video)}" data-fallback="${escapeHtml(t.animation)}" title="${escapeHtml(t.name)} living portrait"></video>`;
-      }
-
-      function bindLoopFallback(scope) {
-        scope.querySelectorAll("video.loop").forEach((video) => {
-          const swap = () => {
-            const iframe = document.createElement("iframe");
-            iframe.className = "loop";
-            iframe.src = video.dataset.fallback;
-            iframe.title = video.getAttribute("title") || "";
-            iframe.tabIndex = -1;
-            iframe.setAttribute("aria-hidden", "true");
-            video.replaceWith(iframe);
-          };
-          video.addEventListener("error", swap);
-          video.play().catch(swap);
-        });
+        return `${still}<iframe class="loop" src="${escapeHtml(t.animation)}" title="${escapeHtml(t.name)} living portrait" tabindex="-1" aria-hidden="true"></iframe>`;
       }
 
       function openToken(t) {
         const media = document.getElementById("inspect-media");
         media.innerHTML = livingInner(t);
-        bindLoopFallback(media);
         document.getElementById("inspect-title").textContent = t.name;
         document.getElementById("inspect-class").textContent =
           `${t.cls} · Gator Parish · ${t.specialty}`;
@@ -655,7 +634,6 @@
         el.addEventListener("click", () => openToken(t));
         root.appendChild(el);
       }
-      bindLoopFallback(root);
 
       document.getElementById("inspect-close").addEventListener("click", () => dialog.close());
       dialog.addEventListener("close", () => {

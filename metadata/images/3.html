@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Silicon Bayou #3</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #0a1210; overflow: hidden; }
+      .frame { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+      .portrait {
+        position: absolute; inset: -6%;
+        background: url("./3.png") center / cover no-repeat;
+        animation: breathe 8.4s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        0%, 100% { transform: scale(1) translate3d(0, 0, 0); }
+        50% { transform: scale(1.03) translate3d(-0.4%, 0.35%, 0); }
+      }
+      .light {
+        position: absolute; inset: -20%;
+        background: radial-gradient(ellipse 55% 45% at 30% 40%, rgba(255,168,70,0.14) 0%, transparent 70%);
+        mix-blend-mode: soft-light;
+        animation: light 8.4s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes light {
+        0%, 100% { transform: translate3d(0,0,0); opacity: 0.75; }
+        50% { transform: translate3d(4%, 1.5%, 0); opacity: 1; }
+      }
+      .mist {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg, transparent 62%, rgba(176,190,178,0.08) 100%);
+        animation: mist 8.4s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes mist {
+        0%, 100% { opacity: 0.45; }
+        50% { opacity: 0.7; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .portrait, .light, .mist { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <div class="portrait" role="img" aria-label="Construction Gator, Silicon Bayou #3"></div>
+      <div class="light"></div>
+      <div class="mist"></div>
+    </div>
+  </body>
+</html>

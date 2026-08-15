@@ -1,8 +1,10 @@
 # Silicon Bayou — Robinhood Chain launch
 
-**HOLD on art / IPFS / mint.** Two looks are rejected: funky **16-bit pixel** PFPs (`generator/out`) and too-**photoreal cinematic 3D**. Target is **HYBRID** — stylized illustrated / premium painted PFP: readable collectible silhouette from the pixel set + clean lighting/finish from the cinematic set. Not a sprite, not a photo.
+**Hybrid stills are the genesis freeze.** Two looks stay rejected: funky **16-bit pixel** PFPs (`generator/out`) and too-**photoreal cinematic 3D**. Target is **HYBRID** — stylized illustrated / premium painted PFP.
 
-Another agent is regenerating `art/gators/*.png` now. Do **not** pin, freeze, or mint until the **user okays** the hybrid set in `art/gators/` and `metadata/images/1.png`–`4.png`. Never ship `generator/out`.
+Stills: `art/gators/*-gator.png` → `metadata/images/1.png`–`4.png`. Living portraits are HTML loops (`animation_url`), not a 10k pixel drop. Never ship `generator/out`.
+
+Set `$env:GENESIS_ART_READY="1"` locally, then pin and deploy. Do not paste `PRIVATE_KEY` into chat.
 
 Official network ([docs](https://docs.robinhood.com/chain/connecting/)):
 
@@ -21,12 +23,12 @@ Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`
 
 | # | Item | Status | Notes |
 |---|---|---|---|
-| 1 | Art freeze for launch | **HOLD** | Waiting on user-okayed **hybrid** painted PFPs in `art/gators/*.png`. Pixel sprites and photoreal 3D are both rejected. |
-| 2 | Metadata freeze | **DONE** (traits) / **HOLD** (images) | Names `Silicon Bayou #N`, class, specialty, stats locked. No yield promises. `image` stays unset/`REPLACE_ME` until hybrid art + pin. |
-| 3 | IPFS pin images + metadata | **HOLD** | Guard: `GENESIS_ART_READY=1` required. No pin keys in env. `npm run pin` → `scripts/pin.mjs` (HD `metadata/images/1-4` only). |
+| 1 | Art freeze for launch | **DONE** (stills) | Hybrid painted PFPs frozen as genesis stills. Calm HTML loops are `animation_url`. |
+| 2 | Metadata freeze | **DONE** (traits) / **HOLD** (CIDs) | Names `Silicon Bayou #N`, class, specialty, stats locked. `image` / `animation_url` get CIDs at pin. |
+| 3 | IPFS pin images + metadata | **BLOCKED** | Guard passed with `GENESIS_ART_READY=1`. No pin key in env. Interim: GitHub raw metadata URL after Pages push. |
 | 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer in `hardhat.config.js`, `foundry.toml`, `.env.example`. |
-| 5 | Funded deployer wallet | **BLOCKED** | No `.env`, no `PRIVATE_KEY`. Only human step besides hybrid art. See below. |
-| 6 | Deploy ERC-721 mainnet | **BLOCKED** | Compile path ready: `npm run compile` then `npm run deploy:mainnet`. Guarded until `GENESIS_ART_READY=1` + funded key. |
+| 5 | Funded deployer wallet | **BLOCKED** | No `.env`, no `PRIVATE_KEY`. Human step. |
+| 6 | Deploy ERC-721 mainnet | **BLOCKED** | Compile + `npm test` + `npm run security` pass. Needs funded key + pin. |
 | 7 | Set baseURI | **BLOCKED** | `npm run set-base-uri` after pin. |
 | 8 | Mint genesis 1–4 | **HOLD** | Same guard. Tokens 1–4 = Engineering / Testing / Construction / Capital. |
 | 9 | Verify on Blockscout | **BLOCKED** | After deploy: `forge verify-contract <addr> contracts/SiliconBayou.sol:SiliconBayou --chain-id 4663 --verifier blockscout --verifier-url https://robinhoodchain.blockscout.com/api/` |
@@ -36,7 +38,7 @@ Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`
 
 ## Only remaining human steps
 
-1. **Hybrid art** — user okays stylized illustrated / premium painted PFPs (not sprite, not photo). Drop them in `art/gators/*.png` and copy to `metadata/images/1.png`–`4.png`. Then `$env:GENESIS_ART_READY="1"`.
+1. **Art** — hybrid stills are frozen. `$env:GENESIS_ART_READY="1"` then `node scripts/copy-genesis-stills.mjs`.
 2. **Funded wallet** — create/export a deployer locally (do not paste the key into chat):
 
 ```powershell

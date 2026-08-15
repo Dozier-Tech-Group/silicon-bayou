@@ -32,10 +32,11 @@ Two looks are **rejected**. Do not mint, pin, or ship either:
 
 **Target: HYBRID** — stylized illustrated / premium painted PFP. Readable collectible silhouette from the pixel set + clean lighting/finish from the cinematic set. Not a sprite, not a photo.
 
-- Hero files: `art/gators/*.png` and `metadata/images/1.png`–`4.png`. Another agent is regenerating these **now**.
-- **Do not mint or pin until the user okays the hybrid set.**
+- Hero stills are **frozen**: `art/gators/*-gator.png` (copied to `*-still.png` and `metadata/images/1.png`–`4.png`). Hybrid painted PFP. Not pixel, not photoreal.
+- Living portraits: `gallery/tokens/N.html` (gallery) and `metadata/images/N.html` (OpenSea `animation_url`). Calm Ken-Burns + light/mist. Honor `prefers-reduced-motion`.
 - Token map: #1 Engineering · #2 Testing · #3 Construction · #4 Capital.
 - `generator/` is a **paused experiment** only. Do not run `generate.py`, do not `--count 10000`.
+- Pin/deploy still requires `GENESIS_ART_READY=1` so a human sets the freeze flag locally.
 
 ## Launch — execute in this order
 

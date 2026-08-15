@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
     />
     <title>Bounty board — Silicon Bayou closed alpha</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,36 +38,11 @@
       <p class="lede">
         Pick one issue. <strong>First-merge-wins</strong> means the first pull
         request merged on GitHub claims it — later PRs do not get the credit.
-        In this alpha you do <em>not</em> need to open a real PR unless you want
-        to. Just say out loud what you would do on GitHub.
+        Example label: BAYOU-1. In this alpha you do <em>not</em> need to open a
+        real PR unless you want to. Just say out loud what you would do on GitHub.
       </p>
 
-      <article class="bounty" data-bounty="BAYOU-1">
-        <h2>BAYOU-1 — Confirm the four gator class labels</h2>
-        <p>
-          Open the collection. Check that the four cards read Engineering,
-          Testing, Construction, and Capital. File a GitHub issue if a label is
-          wrong.
-        </p>
-        <p class="meta">Reward: alpha credit (not cash) · first-merge-wins · open</p>
-      </article>
-      <article class="bounty" data-bounty="BAYOU-2">
-        <h2>BAYOU-2 — Walk the Get USD steps as a non-crypto person</h2>
-        <p>
-          Open Get USD. Read steps 1–3. Write one sentence: how would money
-          reach Robinhood or Coinbase later? That sentence is the deliverable.
-        </p>
-        <p class="meta">Reward: alpha credit (not cash) · first-merge-wins · open</p>
-      </article>
-      <article class="bounty" data-bounty="BAYOU-3">
-        <h2>BAYOU-3 — Screenshot the Capital Gator card with stats</h2>
-        <p>
-          On the collection page, open Silicon Bayou #4. Confirm class + specialty
-          + the four capability scores are visible. Attach a screenshot to a
-          GitHub issue if something is missing.
-        </p>
-        <p class="meta">Reward: alpha credit (not cash) · first-merge-wins · open</p>
-      </article>
+      <div id="bounty-list"></div>
 
       <div class="panel">
         <h2>What you would do on GitHub</h2>
@@ -82,5 +57,90 @@
         <a href="index.html">Back to collection</a>
       </footer>
     </div>
+    <script>
+      const REPO = "Dozier-Tech-Group/silicon-bayou";
+      const FIXTURES = [
+        {
+          number: 1,
+          title: "Confirm the four gator class labels",
+          html_url: "https://github.com/Dozier-Tech-Group/silicon-bayou/issues/1",
+          body: "Open the collection. Check Engineering, Testing, Construction, Capital.",
+          key: "BAYOU-1",
+        },
+        {
+          number: 2,
+          title: "Walk the Get USD steps as a non-crypto person",
+          html_url: "https://github.com/Dozier-Tech-Group/silicon-bayou/issues",
+          body: "Read Get USD steps 1–3. First merge wins.",
+          key: "BAYOU-2",
+        },
+        {
+          number: 3,
+          title: "Screenshot the Capital Gator card with stats",
+          html_url: "https://github.com/Dozier-Tech-Group/silicon-bayou/issues",
+          body: "Open Silicon Bayou #4. Confirm class + specialty + scores.",
+          key: "BAYOU-3",
+        },
+      ];
+
+      function escapeText(value) {
+        return String(value || "");
+      }
+
+      function render(items, source) {
+        const root = document.getElementById("bounty-list");
+        root.replaceChildren();
+        const note = document.createElement("p");
+        note.className = "meta";
+        note.textContent =
+          source === "github"
+            ? "Live issues from GitHub. First-merge-wins. Credits are not cash."
+            : "Sample board (GitHub API unavailable). First-merge-wins. Credits are not cash.";
+        root.appendChild(note);
+        for (const item of items) {
+          const article = document.createElement("article");
+          article.className = "bounty";
+          article.dataset.bounty = item.key || `BAYOU-${item.number}`;
+          const h2 = document.createElement("h2");
+          h2.textContent = `${item.key || "BAYOU-" + item.number} — ${escapeText(item.title)}`;
+          const p = document.createElement("p");
+          p.textContent = escapeText(item.body).slice(0, 280);
+          const meta = document.createElement("p");
+          meta.className = "meta";
+          meta.textContent = "Reward: alpha credit (not cash) · first-merge-wins · open";
+          const link = document.createElement("a");
+          link.href = item.html_url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Open on GitHub";
+          article.append(h2, p, meta, link);
+          root.appendChild(article);
+        }
+      }
+
+      async function load() {
+        try {
+          const url = `https://api.github.com/repos/${REPO}/issues?state=open&per_page=20&labels=${encodeURIComponent("bounty")}`;
+          const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+          if (!res.ok) throw new Error(String(res.status));
+          const rows = await res.json();
+          const items = rows
+            .filter((row) => !row.pull_request)
+            .map((row) => ({
+              number: row.number,
+              title: row.title,
+              html_url: row.html_url,
+              body: row.body || "",
+              key: `BAYOU-${row.number}`,
+            }));
+          if (!items.length) throw new Error("empty");
+          render(items, "github");
+        } catch {
+          render(FIXTURES, "fixture");
+        }
+      }
+
+      load();
+    </script>
   </body>
 </html>

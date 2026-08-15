@@ -1,0 +1,6 @@
+{
+  "status": "blocked_no_pin_key",
+  "interimBaseURI": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/",
+  "source": "metadata/images/1-4.png + metadata/*.json",
+  "excluded": "generator/out"
+}
