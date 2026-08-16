@@ -10,6 +10,8 @@ The north star, stated the way Merged, Inc. already talks: **merged** is *the op
 
 That is not a side note. It is why Silicon Bayou exists.
 
+The full pre-launch value thesis — chain choice, contract guarantees, asset permanence, and the honest limits of each, every claim sourced — is in [VALUE.md](VALUE.md).
+
 On the live product language (`merged-website`):
 
 - **merged.edu** — the operating layer for higher education (overlay on systems of record, not a rip-and-replace)
