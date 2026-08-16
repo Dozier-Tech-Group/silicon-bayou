@@ -16,10 +16,33 @@ function loadDeploy() {
   return JSON.parse(readFileSync(DEPLOY_PATH, "utf8"));
 }
 
+// Pre-deploy handoff fields; must not survive into a deploy record, or the
+// record claims "deployed" while its own next step instructs another deploy.
+const STALE_KEYS = ["blockers", "next", "mintTo"];
+
+function saveRecord(fields) {
+  const prior = loadDeploy();
+  for (const key of STALE_KEYS) delete prior[key];
+  const record = { ...prior, ...fields };
+  mkdirSync(join(__dirname, "..", "deployments"), { recursive: true });
+  writeFileSync(DEPLOY_PATH, JSON.stringify(record, null, 2) + "\n");
+  return record;
+}
+
 async function main() {
   if (process.env.GENESIS_ART_READY !== "1") {
     throw new Error(
       "HOLD: hybrid genesis art is not marked ready. Do not deploy-mint photoreal gators or generator/out pixels. Set GENESIS_ART_READY=1 only after the new art/gators/*.png land."
+    );
+  }
+
+  const prior = loadDeploy();
+  if (prior.address && process.env.REDEPLOY !== "1") {
+    throw new Error(
+      `Refusing to deploy: deployments/robinhood.json already records contract ${prior.address}` +
+        ` (status: ${prior.status || "unknown"}). A rerun would deploy a SECOND contract and mint duplicate tokens.` +
+        " To finish a partial deploy use npm run mint:genesis / npm run freeze-uri (they read the recorded address)." +
+        " Only set REDEPLOY=1 if you truly want a brand-new contract."
     );
   }
 
@@ -64,41 +87,48 @@ async function main() {
   console.log("SiliconBayou deployed:", address);
   console.log("Deploy tx:", deployReceipt.hash);
 
+  // Persist the address the moment it exists, so a mid-run failure never
+  // strands a live contract with no on-disk record (recovery scripts read it).
+  saveRecord({
+    network: hre.network.name,
+    chainId: hre.network.config.chainId,
+    status: "deployed_mint_pending",
+    address,
+    deployer: deployer.address,
+    baseURI,
+    deployTx: deployReceipt.hash,
+    explorer: `${explorer}/address/${address}`,
+    explorerDeployTx: `${explorer}/tx/${deployReceipt.hash}`,
+  });
+
   const mintTx = await nft.mintBatch(recipient, 4);
   const mintReceipt = await mintTx.wait();
   console.log("Minted tokens 1-4 in tx:", mintReceipt.hash);
   console.log("Next token id:", (await nft.nextTokenId()).toString());
   console.log("tokenURI(1):", await nft.tokenURI(1));
 
+  saveRecord({
+    status: "minted_freeze_pending",
+    mintedTo: recipient,
+    tokenIds: [1, 2, 3, 4],
+    mintTx: mintReceipt.hash,
+    explorerMintTx: `${explorer}/tx/${mintReceipt.hash}`,
+  });
+
   const freezeTx = await nft.freezeURI();
   const freezeReceipt = await freezeTx.wait();
   console.log("URI frozen in tx:", freezeReceipt.hash);
 
-  const record = {
-    ...loadDeploy(),
-    network: hre.network.name,
-    chainId: hre.network.config.chainId,
+  saveRecord({
     status: "deployed",
-    address,
-    deployer: deployer.address,
-    mintedTo: recipient,
-    tokenIds: [1, 2, 3, 4],
-    baseURI,
     art: "metadata/images/1-4.png (HD hero portraits). Excluded: generator/out.",
-    deployTx: deployReceipt.hash,
-    mintTx: mintReceipt.hash,
     freezeURITx: freezeReceipt.hash,
     uriFrozen: true,
-    explorer: `${explorer}/address/${address}`,
-    explorerDeployTx: `${explorer}/tx/${deployReceipt.hash}`,
-    explorerMintTx: `${explorer}/tx/${mintReceipt.hash}`,
     openseaCollection: `https://opensea.io/assets/robinhood/${address}`,
     openseaItem: `https://opensea.io/item/robinhood/${address}/1`,
     openseaChainBrowse: "https://opensea.io/collections/chain/robinhood",
-  };
-
-  mkdirSync(join(__dirname, "..", "deployments"), { recursive: true });
-  writeFileSync(DEPLOY_PATH, JSON.stringify(record, null, 2) + "\n");
+    next: "2-step transferOwnership to a Gnosis Safe on chain 4663 (SECURITY.md). Do NOT run deploy:mainnet again.",
+  });
   console.log("Wrote", DEPLOY_PATH);
 }
 
