@@ -168,3 +168,51 @@ mergedpublic.com `/bayou` lives in a **different** repo:
 `C:\Users\gdozi\OneDrive\Desktop\CLIENTS\MERGED\Merged-Inc\merged-website`
 
 After BAYOU has an address, that page can link the live OpenSea / Blockscout URLs. Not required to mint.
+
+---
+
+## Exact files to open (in this order)
+
+This machine: `C:\Users\gdozi\Projects\silicon-bayou\`  
+New machine: `<clone>\` (same relative paths). GitHub: `https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/<path>`
+
+### Agent reads first
+
+| File | Path |
+|---|---|
+| Leave-machine playbook | `CONTINUE.md` |
+| Full system prompt | `AGENT_IMPLEMENT.md` |
+| Standing orders | `AGENTS.md` |
+| Launch checklist | `LAUNCH.md` |
+| Threat model / Safe rotation | `SECURITY.md` |
+| Human README | `README.md` |
+| Env template (no secrets) | `.env.example` |
+| Deploy record (address still `null`) | `deployments/robinhood.json` |
+
+### Contract and deploy
+
+| File | Path |
+|---|---|
+| ERC-721 (`MAX_SUPPLY = 4`) | `contracts/SiliconBayou.sol` |
+| Deploy + mint 1–4 + freezeURI | `scripts/deploy.js` |
+| Wallet check (never prints the key) | `scripts/check-wallet.mjs` |
+| Hardhat networks 4663 / 46630 | `hardhat.config.js` |
+| Tests | `test/contracts/SiliconBayou.test.js` |
+
+### Genesis art + OpenSea JSON
+
+| File | Path |
+|---|---|
+| Engineering still | `art/gators/engineering-gator.png` |
+| Testing still | `art/gators/testing-gator.png` |
+| Construction still | `art/gators/construction-gator.png` |
+| Capital still | `art/gators/capital-gator.png` |
+| Token metadata | `metadata/1.json` `metadata/2.json` `metadata/3.json` `metadata/4.json` |
+| OpenSea images | `metadata/images/1.png` … `4.png` |
+| Living portraits | `metadata/images/1.html` … `4.html` |
+
+### Recreate locally, never commit
+
+| File | Path |
+|---|---|
+| Secrets | `.env` (copy from `.env.example`; set `PRIVATE_KEY` for `0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`) |
