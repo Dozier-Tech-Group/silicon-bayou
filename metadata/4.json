@@ -1,8 +1,8 @@
 {
   "name": "Silicon Bayou #4",
   "description": "Capital Gator of Silicon Bayou — capability layer for merged (Merged, Inc.), the open source institutional network. A Louisiana alligator financier from Gator Parish, dressed for project finance and investment. Cryptographic identity; not a legal contract.",
-  "image": "ipfs://REPLACE_ME/4.png",
-  "animation_url": "ipfs://REPLACE_ME/4.mp4",
+  "image": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/images/4.png",
+  "animation_url": "https://dozier-tech-group.github.io/silicon-bayou/metadata/images/4.html",
   "external_url": "https://www.mergedpublic.com",
   "attributes": [
     { "trait_type": "Class", "value": "Capital" },

@@ -1,0 +1,141 @@
+# Continue on another computer
+
+Clone [Dozier-Tech-Group/silicon-bayou](https://github.com/Dozier-Tech-Group/silicon-bayou) and treat **[AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md)** as the system prompt.
+
+This file is the short playbook: what is already true, what is still blocked, and the exact commands to put BAYOU on Robinhood Chain mainnet (chain ID **4663**).
+
+---
+
+## North star
+
+**Merged, Inc.** / [mergedpublic.com](https://www.mergedpublic.com) — one day **all of Louisiana uses Merged technology** for education and other industries, and Louisiana becomes a **leading technical developer in the nation**.
+
+Silicon Bayou (`BAYOU`) is the holdable capability layer. Four gators: Engineering, Testing, Construction, Capital. **Not** legal contracts. **No** passive APY.
+
+---
+
+## What is already shipped in this repo
+
+| Piece | Status |
+|---|---|
+| Hybrid painted genesis stills | Frozen in `art/gators/` and `metadata/images/1.png`–`4.png` |
+| Living portraits | HTML loops in `metadata/images/N.html` (Ken-Burns; honors `prefers-reduced-motion`) |
+| OpenSea JSON | `metadata/1.json`–`4.json` — `image` / `animation_url` are **live GitHub HTTPS**, not `ipfs://REPLACE_ME` |
+| ERC-721 | `contracts/SiliconBayou.sol` — `MAX_SUPPLY = 4`, `MAX_BATCH = 4`, Ownable2Step, pause, ERC-2981 (max 10%), `freezeURI()`, **no proxy** |
+| Deploy script | `npm run deploy:mainnet` deploys, mints 1–4, **freezes URI** |
+| Gallery | https://dozier-tech-group.github.io/silicon-bayou/gallery/ |
+| Tests | `npm test` and `npm run security` are the gate |
+
+**Rejected art (never mint/pin/ship):** `generator/out` pixel PFPs, photoreal cinematic 3D.
+
+**Not deployed yet:** there is **no contract address**. Do not invent one. `deployments/robinhood.json` stays `"address": null` until a real tx lands.
+
+---
+
+## The only remaining human step
+
+The funded EOA on Robinhood Chain 4663 is:
+
+`0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`
+
+It has ETH for gas. Tokens 1–4 should mint **to that address** (`MINT_TO`).
+
+What is **not** in git (and must never be): the **private key** that controls that wallet.
+
+On the new machine:
+
+1. Export the key from MetaMask / Coinbase Wallet / Robinhood Wallet for **that same address**. Never paste it into chat.
+2. Copy `.env.example` → `.env`.
+3. Set:
+
+```
+PRIVATE_KEY=<exported key, with or without 0x>
+RPC_URL=https://rpc.mainnet.chain.robinhood.com
+RH_RPC_URL=https://rpc.mainnet.chain.robinhood.com
+BASE_URI=https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/
+MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5
+GENESIS_ART_READY=1
+```
+
+4. Confirm without printing the key:
+
+```powershell
+npm run wallet
+```
+
+Expected: **Address** matches `0x9747…F8a5`, **Chain ID** 4663, **Funded** true.
+
+If the address does not match, you exported the wrong account. Stop.
+
+---
+
+## Go live (one sitting)
+
+```powershell
+cd <clone>
+copy .env.example .env
+# fill PRIVATE_KEY locally — never commit .env
+npm install
+npm test
+npm run security
+npm run wallet
+npm run deploy:mainnet
+```
+
+`deploy:mainnet` will:
+
+1. Deploy `SiliconBayou` with the GitHub raw `BASE_URI`
+2. Mint tokens **1–4** to `MINT_TO`
+3. Call `freezeURI()` so the contract cannot point metadata somewhere else
+4. Write the real address + tx hashes into `deployments/robinhood.json`
+
+Then:
+
+```powershell
+# paste the constructor BASE_URI you deployed with
+npx hardhat verify --network robinhood <CONTRACT_ADDRESS> "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/"
+```
+
+If verify is not wired, paste source on [Blockscout](https://robinhoodchain.blockscout.com).
+
+OpenSea (after indexing):
+
+- Collection: `https://opensea.io/assets/robinhood/<CONTRACT_ADDRESS>`
+- Token #1: `https://opensea.io/item/robinhood/<CONTRACT_ADDRESS>/1`
+
+Commit **only** `deployments/robinhood.json` plus README/LAUNCH address updates. **Never** commit `.env`.
+
+---
+
+## After it is live (same day)
+
+EOA owner is the remaining nuclear risk. 2-step rotate to a **Gnosis Safe** on chain 4663:
+
+1. Owner: `transferOwnership(safe)`
+2. Confirm `owner()` is still the EOA and `pendingOwner()` is the Safe
+3. Safe: `acceptOwnership()`
+4. Optional: `setDefaultRoyalty(safe, 500)` (5%)
+
+Do **not** run `npm run mint:testers`. Supply is 4. If a tester needs a token, **transfer** one from the owner wallet.
+
+Optional later: Pinata `PINATA_JWT` → `npm run pin` is **too late after freeze** unless you un-freeze (you cannot). GitHub raw is the frozen metadata host until a future collection. Keep a second copy of the PNGs.
+
+---
+
+## What not to do
+
+- Do not force push, change git config, or commit `.env`
+- Do not mint `generator/out` or photoreal gators
+- Do not add a public sale, yield, staking, or a proxy
+- Do not invent a contract address
+- Do not send NFT agents into `CLIENTS\MERGED` unless the task is the mergedpublic.com `/bayou` page
+
+---
+
+## Sibling site (optional)
+
+mergedpublic.com `/bayou` lives in a **different** repo:
+
+`C:\Users\gdozi\OneDrive\Desktop\CLIENTS\MERGED\Merged-Inc\merged-website`
+
+After BAYOU has an address, that page can link the live OpenSea / Blockscout URLs. Not required to mint.

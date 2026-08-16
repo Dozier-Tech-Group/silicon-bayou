@@ -27,6 +27,8 @@ describe("SiliconBayou", function () {
     expect(await nft.name()).to.equal("Silicon Bayou");
     expect(await nft.symbol()).to.equal("BAYOU");
     expect(await nft.nextTokenId()).to.equal(1n);
+    expect(await nft.MAX_SUPPLY()).to.equal(4n);
+    expect(await nft.MAX_BATCH()).to.equal(4n);
     expect(await nft.uriFrozen()).to.equal(false);
     expect(await nft.baseURI()).to.equal(BASE_URI);
     const [receiver, amount] = await nft.royaltyInfo(1, 10_000n);
@@ -125,15 +127,23 @@ describe("SiliconBayou", function () {
     expect(amount).to.equal(1000n);
   });
 
+  it("caps supply at 4", async function () {
+    const { nft, owner } = await deploy();
+    await nft.mintBatch(owner.address, 4);
+    await expectRevert(nft.mint(owner.address));
+    await expectRevert(nft.mintBatch(owner.address, 1));
+  });
+
   it("fuzz-cheap: royalty above cap and oversized batches revert", async function () {
     const { nft, owner } = await deploy();
     for (const bps of [1001, 2500, 5000, 10000, 65535]) {
       await expectRevert(nft.setDefaultRoyalty(owner.address, bps));
     }
-    for (const count of [0, 33, 64, 100]) {
+    for (const count of [0, 5, 32, 33, 64, 100]) {
       await expectRevert(nft.mintBatch(owner.address, count));
     }
-    await nft.mintBatch(owner.address, 32);
-    expect(await nft.nextTokenId()).to.equal(33n);
+    await nft.mintBatch(owner.address, 4);
+    expect(await nft.nextTokenId()).to.equal(5n);
+    await expectRevert(nft.mint(owner.address));
   });
 });

@@ -118,4 +118,19 @@ describe("deploy hold", () => {
     expect(src).toMatch(/GENESIS_ART_READY/);
     expect(src).toMatch(/HOLD/);
   });
+
+  it("points OpenSea JSON at live GitHub HTTPS, not ipfs://REPLACE_ME", () => {
+    for (const n of [1, 2, 3, 4]) {
+      const json = JSON.parse(readFileSync(resolve(root, `metadata/${n}.json`), "utf8"));
+      expect(json.image).toMatch(/^https:\/\//);
+      expect(json.animation_url).toMatch(/^https:\/\//);
+      expect(json.image).not.toMatch(/REPLACE_ME/);
+      expect(json.animation_url).not.toMatch(/REPLACE_ME/);
+    }
+  });
+
+  it("caps SiliconBayou at 4", () => {
+    const src = readFileSync(resolve(root, "contracts/SiliconBayou.sol"), "utf8");
+    expect(src).toMatch(/MAX_SUPPLY = 4/);
+  });
 });

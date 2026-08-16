@@ -15,7 +15,8 @@ Target chain: **Robinhood Chain mainnet, chain ID 4663** (testnet 46630). Gas is
 | Reentrancy | Receiver hook during `_safeMint` or ERC-20 callback during bounty withdraw | Checks-effects-interactions; `nextTokenId` updated **before** mint loop; `ReentrancyGuard` on mint / fund / withdraw; pull-over-push for credits. |
 | Fake OpenSea / fake site | Phishing collection or lookalike gallery | Official address only after a real deploy (written to `deployments/` + README). Until then **there is no collection address**. Verify contract on [Blockscout](https://robinhoodchain.blockscout.com). Never trust a link that asks you to “approve” the NFT to a stranger. |
 | Client-side payout lie | Wallet or page reports a balance / “you won” | Gallery never pays. Bounty withdraw is on-chain pull by `msg.sender`. UI must not treat client-reported balances as settlement. Wallet connect must check `chainId === 4663` (or 46630 on testnet). |
-| Unbounded work | Huge `mintBatch` | `MAX_BATCH = 32`. Owner-only. |
+| Unbounded mint | Stolen owner key prints tokens forever | **`MAX_SUPPLY = 4`**. `mint` / `mintBatch` revert past 4. |
+| Unbounded work | Huge `mintBatch` | `MAX_BATCH = 4` (same as supply). Owner-only. |
 | Instant ownership foot-gun | `transferOwnership` to a typo / contract that cannot accept | Ownable2Step: pending owner must `acceptOwnership`. Cannot `renounceOwnership` until URI is frozen. |
 | Upgrade god-mode | Transparent / UUPS proxy with admin key | **Rejected.** Contracts are immutable implementations. |
 | `tx.origin` auth | Phishing contract tricks an EOA | Not used. Authorization is `msg.sender` only. |
@@ -28,6 +29,7 @@ Out of scope for this MVP: public sale, bridges, KYC, staking, yield. Do not add
 `SiliconBayou` (ERC-721 + ERC-2981):
 
 - Owner-only `mint` / `mintBatch` / `setBaseURI` / `freezeURI` / `pause` / royalty
+- **`MAX_SUPPLY = 4`** (hard cap)
 - `Pausable` emergency stop on mint **and** transfer
 - Royalty capped at **10%** (`MAX_ROYALTY_BPS = 1000`)
 - Events: `Minted`, `BatchMinted`, `BaseURISet`, `URIFrozen`, `RoyaltyUpdated`, plus OZ pause / ownership events
@@ -52,14 +54,11 @@ No delegatecall to untrusted targets. No upgradeable proxy.
 
 Cancel a bad transfer by calling `transferOwnership(address(0))` before accept.
 
-## Freeze URI after IPFS
+## Freeze URI at deploy
 
-1. Pin images, then JSON. `image` = `ipfs://<IMAGES_CID>/N.png`. JSON root = `1.json`…`4.json`.
-2. `setBaseURI("ipfs://<JSON_CID>/")` (trailing slash).
-3. Check `tokenURI(1)` on a trusted RPC.
-4. `freezeURI()` — permanent. There is no unfreeze.
+Launch metadata is GitHub HTTPS (`metadata/*.json` `image` + `animation_url`). `scripts/deploy.js` calls `freezeURI()` after minting 1–4. There is no unfreeze. Do not retarget to IPFS after that.
 
-Do **not** freeze, pin, or mint until `GENESIS_ART_READY=1` is set locally after hybrid stills are frozen (they are). Then pin IPFS, `setBaseURI`, `freezeURI`.
+Do **not** freeze, pin, or mint until `GENESIS_ART_READY=1` is set locally (hybrid stills are frozen).
 
 ## Production owner
 

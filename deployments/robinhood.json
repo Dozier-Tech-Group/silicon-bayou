@@ -4,17 +4,19 @@
   "currency": "ETH",
   "rpc": "https://rpc.mainnet.chain.robinhood.com",
   "explorer": "https://robinhoodchain.blockscout.com",
-  "status": "blocked",
+  "status": "ready_blocked_on_private_key",
   "blockers": [
-    "no PINATA_JWT (or other pin key) — npm run pin wrote deployments/ipfs.json as blocked_no_pin_key",
-    "no PRIVATE_KEY / .env — fund a Robinhood Chain 4663 wallet locally, never paste the key into chat"
+    "PRIVATE_KEY empty in local .env — export the key for 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5 locally, never paste into chat"
   ],
   "address": null,
   "deployTx": null,
   "mintTx": null,
-  "tokenIds": [1, 2, 3, 4],
+  "mintTo": "0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5",
+  "maxSupply": 4,
+  "baseURI": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/",
   "art": "Hybrid stills frozen in art/gators and metadata/images. Animation: metadata/images/N.html. Excluded: generator/out.",
   "genesis": "deployments/genesis.json",
   "openseaChainBrowse": "https://opensea.io/collections/chain/robinhood",
-  "next": "copy .env.example .env; set PRIVATE_KEY + GENESIS_ART_READY=1 + pin key; npm run pin; npm run deploy:mainnet"
+  "handoff": "CONTINUE.md",
+  "next": "Set PRIVATE_KEY in local .env; npm test; npm run security; npm run wallet; npm run deploy:mainnet"
 }

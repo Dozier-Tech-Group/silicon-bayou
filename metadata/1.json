@@ -1,8 +1,8 @@
 {
   "name": "Silicon Bayou #1",
   "description": "Engineering Gator of Silicon Bayou — capability layer for merged (Merged, Inc.), the open source institutional network. A Louisiana alligator builder from Gator Parish, wired for software and electrical systems. Cryptographic identity; not a legal contract.",
-  "image": "ipfs://REPLACE_ME/1.png",
-  "animation_url": "ipfs://REPLACE_ME/1.mp4",
+  "image": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/images/1.png",
+  "animation_url": "https://dozier-tech-group.github.io/silicon-bayou/metadata/images/1.html",
   "external_url": "https://www.mergedpublic.com",
   "attributes": [
     { "trait_type": "Class", "value": "Engineering" },

@@ -16,7 +16,8 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 contract SiliconBayou is ERC721, ERC2981, Ownable2Step, Pausable, ReentrancyGuard {
     using Strings for uint256;
 
-    uint256 public constant MAX_BATCH = 32;
+    uint256 public constant MAX_SUPPLY = 4;
+    uint256 public constant MAX_BATCH = 4;
     uint96 public constant MAX_ROYALTY_BPS = 1000; // 10% of 10_000
     uint96 public constant DEFAULT_ROYALTY_BPS = 500; // 5%
 
@@ -36,6 +37,8 @@ contract SiliconBayou is ERC721, ERC2981, Ownable2Step, Pausable, ReentrancyGuar
     error SiliconBayouUriFrozen();
     error SiliconBayouAlreadyFrozen();
     error SiliconBayouUriNotFrozen();
+    error SiliconBayouSoldOut();
+    error SiliconBayouExceedsSupply(uint256 count);
     error SiliconBayouRoyaltyTooHigh(uint96 bps);
 
     /// @param baseURI_ Metadata root with trailing slash. tokenURI(1) => {baseURI_}1.json
@@ -49,6 +52,7 @@ contract SiliconBayou is ERC721, ERC2981, Ownable2Step, Pausable, ReentrancyGuar
     function mint(address to) external onlyOwner whenNotPaused nonReentrant returns (uint256 tokenId) {
         if (to == address(0)) revert SiliconBayouZeroAddress();
         tokenId = nextTokenId;
+        if (tokenId > MAX_SUPPLY) revert SiliconBayouSoldOut();
         unchecked {
             nextTokenId = tokenId + 1;
         }
@@ -63,6 +67,7 @@ contract SiliconBayou is ERC721, ERC2981, Ownable2Step, Pausable, ReentrancyGuar
 
         uint256 start = nextTokenId;
         uint256 end = start + count;
+        if (end - 1 > MAX_SUPPLY) revert SiliconBayouExceedsSupply(count);
         nextTokenId = end;
 
         for (uint256 tokenId = start; tokenId < end; ) {

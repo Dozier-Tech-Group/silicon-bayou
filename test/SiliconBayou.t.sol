@@ -80,4 +80,12 @@ contract SiliconBayouTest is Test {
         vm.expectRevert(abi.encodeWithSelector(SiliconBayou.SiliconBayouBatchTooLarge.selector, count));
         nft.mintBatch(owner, count);
     }
+
+    function test_cannotMintFifth() public {
+        nft.mintBatch(owner, 4);
+        vm.expectRevert(SiliconBayou.SiliconBayouSoldOut.selector);
+        nft.mint(owner);
+        vm.expectRevert(abi.encodeWithSelector(SiliconBayou.SiliconBayouExceedsSupply.selector, 1));
+        nft.mintBatch(owner, 1);
+    }
 }

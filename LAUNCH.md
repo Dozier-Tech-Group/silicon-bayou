@@ -2,9 +2,11 @@
 
 **Hybrid stills are the genesis freeze.** Two looks stay rejected: funky **16-bit pixel** PFPs (`generator/out`) and too-**photoreal cinematic 3D**. Target is **HYBRID** — stylized illustrated / premium painted PFP.
 
-Stills: `art/gators/*-gator.png` → `metadata/images/1.png`–`4.png`. Living portraits are HTML loops (`animation_url`), not a 10k pixel drop. Never ship `generator/out`.
+Stills: `art/gators/*-gator.png` → `metadata/images/1.png`–`4.png`. Living portraits are HTML loops (`animation_url`). Never ship `generator/out`.
 
-Set `$env:GENESIS_ART_READY="1"` locally, then pin and deploy. Do not paste `PRIVATE_KEY` into chat.
+**Another computer?** Start at [CONTINUE.md](CONTINUE.md). System prompt: [AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md).
+
+Do not paste `PRIVATE_KEY` into chat.
 
 Official network ([docs](https://docs.robinhood.com/chain/connecting/)):
 
@@ -23,52 +25,42 @@ Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`
 
 | # | Item | Status | Notes |
 |---|---|---|---|
-| 1 | Art freeze for launch | **DONE** (stills) | Hybrid painted PFPs frozen as genesis stills. Calm HTML loops are `animation_url`. |
-| 2 | Metadata freeze | **DONE** (traits) / **HOLD** (CIDs) | Names `Silicon Bayou #N`, class, specialty, stats locked. `image` / `animation_url` get CIDs at pin. |
-| 3 | IPFS pin images + metadata | **BLOCKED** | Guard passed with `GENESIS_ART_READY=1`. No pin key in env. Interim: GitHub raw metadata URL after Pages push. |
-| 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer in `hardhat.config.js`, `foundry.toml`, `.env.example`. |
-| 5 | Funded deployer wallet | **BLOCKED** | No `.env`, no `PRIVATE_KEY`. Human step. |
-| 6 | Deploy ERC-721 mainnet | **BLOCKED** | Compile + `npm test` + `npm run security` pass. Needs funded key + pin. |
-| 7 | Set baseURI | **BLOCKED** | `npm run set-base-uri` after pin. |
-| 8 | Mint genesis 1–4 | **HOLD** | Same guard. Tokens 1–4 = Engineering / Testing / Construction / Capital. |
-| 9 | Verify on Blockscout | **BLOCKED** | After deploy: `forge verify-contract <addr> contracts/SiliconBayou.sol:SiliconBayou --chain-id 4663 --verifier blockscout --verifier-url https://robinhoodchain.blockscout.com/api/` |
-| 10 | OpenSea + testers | **BLOCKED** | After deploy: `https://opensea.io/item/robinhood/<addr>/1` and `https://opensea.io/assets/robinhood/<addr>`. Testers in `testers/fixtures.json` are still placeholders. |
+| 1 | Art freeze for launch | **DONE** | Hybrid painted PFPs frozen as genesis stills. Calm HTML loops are `animation_url`. |
+| 2 | Metadata freeze | **DONE** (interim host) | Traits locked. `image` = GitHub raw PNG. `animation_url` = GitHub Pages HTML. IPFS optional later (cannot retarget after `freezeURI`). |
+| 3 | IPFS pin | **SKIPPED for launch** | No pin key. GitHub HTTPS is the frozen host. |
+| 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer. |
+| 5 | Funded deployer wallet | **PARTIAL** | Address `0x9747…F8a5` is funded on 4663. `PRIVATE_KEY` is **empty** in local `.env` (gitignored). Human: export the key for that address into `.env`. |
+| 6 | Deploy ERC-721 mainnet | **READY** (blocked on key) | `MAX_SUPPLY = 4`. `deploy.js` mints 1–4 and freezes URI. Gate: `npm test` + `npm run security` + `npm run wallet`. |
+| 7 | Set baseURI | **BAKED IN** | Constructor uses `BASE_URI` GitHub raw metadata folder. Do not `setBaseURI` after deploy — freeze is in the same script. |
+| 8 | Mint genesis 1–4 | **READY** (same script) | Tokens 1–4 = Engineering / Testing / Construction / Capital. `MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`. |
+| 9 | Verify on Blockscout | **BLOCKED** | After deploy. |
+| 10 | OpenSea + testers | **BLOCKED** | After deploy. Do **not** mint extras (`MAX_SUPPLY` is 4). Transfer from owner if a tester needs a token. |
 
-**Live links:** none yet (no contract address).
+**Live links:** none yet (no contract address). Do not invent one.
 
-## Only remaining human steps
-
-1. **Art** — hybrid stills are frozen. `$env:GENESIS_ART_READY="1"` then `node scripts/copy-genesis-stills.mjs`.
-2. **Funded wallet** — create/export a deployer locally (do not paste the key into chat):
+## Go live on this machine or the next
 
 ```powershell
 copy .env.example .env
-# Set PRIVATE_KEY in .env only.
-# Add Robinhood Chain in the wallet: chain ID 4663, RPC https://rpc.mainnet.chain.robinhood.com, symbol ETH
-# Bridge ETH: https://docs.robinhood.com/chain/connecting/
-npm run wallet
-```
-
-3. **Optional pin key** — one of `PINATA_JWT` / `NFT_STORAGE_KEY` / `WEB3_STORAGE_TOKEN` / `LIGHTHOUSE_API_KEY`, then `npm run pin`.
-4. **Go live**
-
-```powershell
+# Set PRIVATE_KEY locally for 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5
+# GENESIS_ART_READY=1
+# BASE_URI=https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/
+# MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5
 npm test
 npm run security
-npm run compile
+npm run wallet
 npm run deploy:mainnet
-# if BASE_URI was empty at deploy:
-npm run set-base-uri
-npm run freeze-uri
-npx hardhat verify --network robinhood <CONTRACT_ADDRESS> "<BASE_URI>"
 ```
 
 `npm test` / `npm run security` is the gate. Do not skip it. See [SECURITY.md](SECURITY.md). Do not weaken `GENESIS_ART_READY`.
 
-5. **OpenSea** — open the explorer + `https://opensea.io/item/robinhood/<addr>/1`. Replace tester placeholders in `testers/fixtures.json`, then `npm run mint:testers` if you want extras.
+After a real address exists: write it to `deployments/robinhood.json` + README, push (**not** `.env`), then open Blockscout + OpenSea.
+
+Then 2-step `transferOwnership` to a **Gnosis Safe**. EOA owner is the remaining nuclear risk.
 
 ## Guards
 
-- `scripts/pin.mjs` and `scripts/deploy.js` / `mint-genesis.js` refuse to run unless `GENESIS_ART_READY=1`.
+- `scripts/pin.mjs` and `scripts/deploy.js` refuse to run unless `GENESIS_ART_READY=1`.
 - BASE_URI containing `generator/out` is rejected.
 - Never commit `.env`. Never print `PRIVATE_KEY`.
+- `mint:testers` is disabled. Supply is 4.

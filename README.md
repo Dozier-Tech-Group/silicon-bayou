@@ -2,7 +2,7 @@
 
 **MVP** — original Louisiana alligator PFPs (capability NFTs) on Robinhood Chain. The public-facing capability layer for **merged**.
 
-Give the next coding agent **[AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md)** — full plan, what is built, what is not, and the Robinhood mainnet go-live sequence.
+Give the next coding agent **[CONTINUE.md](CONTINUE.md)** (other computer) and **[AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md)** (full plan).
 
 ## Vision
 
@@ -36,7 +36,7 @@ Gator Parish is the in-universe region for these alligators.
 
 This cut ships **four owner-minted tokens**, a static gallery, and a written protocol plan. No public sale, staking, recipes, yield, or SBIR/STTR engine — see [PLAN.md](PLAN.md).
 
-**Launch status:** see [LAUNCH.md](LAUNCH.md). Hybrid genesis art is in progress — do not pin or mint the current photoreal portraits or `generator/out` pixels. Robinhood Chain mainnet is chain ID **4663**, gas in ETH, RPC `https://rpc.mainnet.chain.robinhood.com`, explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com).
+**Launch status:** supply is capped at **4**. Metadata JSON points at GitHub HTTPS (not `ipfs://REPLACE_ME`). `npm run deploy:mainnet` deploys, mints 1–4, and freezes URI. **No live contract address yet** — `PRIVATE_KEY` is not in git (correct). See [LAUNCH.md](LAUNCH.md) and [CONTINUE.md](CONTINUE.md). Robinhood Chain mainnet is chain ID **4663**, gas in ETH, RPC `https://rpc.mainnet.chain.robinhood.com`, explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com).
 
 ## What you get
 
@@ -76,25 +76,25 @@ copy .env.example .env
 Edit `.env`:
 
 - `PRIVATE_KEY` — deployer / collection owner. Never paste keys into chat or commit `.env`.
-- `RPC_URL` — start with the **testnet** public RPC above. For anything serious, use Alchemy (`https://robinhood-testnet.g.alchemy.com/v2/{API_KEY}`).
-- `BASE_URI` — trailing slash. `tokenURI(1)` becomes `{BASE_URI}1.json`.
-- `MINT_TO` — optional recipient; defaults to the deployer.
+- `RPC_URL` / `RH_RPC_URL` — `https://rpc.mainnet.chain.robinhood.com` for mainnet.
+- `BASE_URI` — trailing slash. Launch value: `https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/`
+- `MINT_TO` — `0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`
+- `GENESIS_ART_READY=1`
 
 Fund the deployer with ETH on the target Robinhood Chain network (canonical Arbitrum bridge — see [Robinhood Chain docs](https://docs.robinhood.com/chain/)).
 
 ## Deploy and mint
 
-Deploy to **testnet first**. The script deploys `SiliconBayou` and immediately mints tokens 1–4 to the owner (or `MINT_TO`).
+Deploy to **testnet first** if you have testnet ETH. The script deploys `SiliconBayou`, mints tokens 1–4 to `MINT_TO`, and **freezes URI**.
 
 ```powershell
-# .env: RPC_URL=https://rpc.testnet.chain.robinhood.com
 npm run deploy:testnet
 ```
 
 Then mainnet (only with a funded key already in `.env`):
 
 ```powershell
-# .env: RPC_URL=https://rpc.mainnet.chain.robinhood.com
+npm run wallet
 npm run deploy:mainnet
 ```
 
@@ -106,7 +106,7 @@ npx hardhat verify --network robinhoodTestnet <CONTRACT_ADDRESS> "ipfs://REPLACE
 npx hardhat verify --network robinhood <CONTRACT_ADDRESS> "ipfs://REPLACE_ME/"
 ```
 
-Constructor arg must match the `BASE_URI` you deployed with.
+Constructor arg must match the `BASE_URI` you deployed with (GitHub raw metadata folder, trailing slash).
 
 After IPFS upload, the owner can point metadata at the real CID:
 
@@ -120,14 +120,10 @@ Official deploy guide: [docs.robinhood.com/chain/deploy-smart-contracts](https:/
 
 ## Upload metadata (IPFS) then list on OpenSea
 
-Images are local until you pin them. A typical flow:
+Images are already referenced from GitHub HTTPS in `metadata/*.json`. A typical IPFS upgrade is **not available after `freezeURI`** on this collection. Keep a second pin of the PNGs as backup. To list:
 
-1. Upload `metadata/images/` (the four PNGs named `1.png`–`4.png`) to IPFS (Pinata, nft.storage, web3.storage, etc.). Note the folder CID.
-2. Edit each `metadata/*.json` `image` field from `ipfs://REPLACE_ME/N.png` to `ipfs://<IMAGES_CID>/N.png`.
-3. Upload the four JSON files (not the images folder) so `1.json` … `4.json` sit at the root of that CID.
-4. Set `BASE_URI=ipfs://<JSON_CID>/` and call `setBaseURI` (or redeploy if you have not minted yet).
-5. Verify `tokenURI(1)` on a trusted RPC, then `npm run freeze-uri` (permanent).
-6. OpenSea indexes Robinhood Chain collections after the contract is live. Filter OpenSea by Robinhood Chain and open the contract address. Listing needs a **deployed address**; this repo does not include one until you deploy. Confirm the address on Blockscout — fake OpenSea collections exist.
+1. Confirm `tokenURI(1)` on Blockscout after deploy.
+2. OpenSea indexes Robinhood Chain collections after the contract is live. Filter OpenSea by Robinhood Chain and open the contract address. Listing needs a **deployed address**; this repo does not include one until you deploy. Confirm the address on Blockscout — fake OpenSea collections exist.
 
 You can browse locally before any of that:
 
@@ -147,8 +143,8 @@ stub (`npm run deploy:bounty:testnet`); the website does not wait on a deploy.
 `contracts/SiliconBayou.sol` — OpenZeppelin ERC-721 + ERC-2981, **not upgradeable**:
 
 - Name `Silicon Bayou`, symbol `BAYOU`
-- `mint` / `mintBatch` — owner only, paused-safe, `MAX_BATCH = 32`
-- `setBaseURI` then **`freezeURI`** — freeze is permanent
+- **`MAX_SUPPLY = 4`**, `MAX_BATCH = 4` — owner mint only; a fifth token reverts
+- `setBaseURI` then **`freezeURI`** — freeze is permanent (`deploy.js` freezes after mint)
 - `pause` / `unpause` — emergency stop on mint and transfer
 - Ownable2Step — no instant owner handoff; cannot renounce until URI is frozen
 - ERC-2981 royalties capped at 10% (`MAX_ROYALTY_BPS = 1000`); default 5%
@@ -166,7 +162,10 @@ Local `npm run gallery` (`serve` on port 4173) applies CSP / nosniff headers fro
 art/gators/           Source PFPs
 metadata/             OpenSea JSON + images/1–4.png
 contracts/            SiliconBayou.sol, BountyBoard.sol, MergedCredit.sol
-scripts/deploy.js     Deploy + mint 1–4 (GENESIS_ART_READY hold)
+CONTINUE.md           Other-computer go-live playbook
+AGENT_IMPLEMENT.md    Full agent system prompt
+LAUNCH.md             Checklist
+scripts/deploy.js     Deploy + mint 1–4 + freezeURI
 gallery/              Local preview (CSP meta + rel=noopener)
 SECURITY.md           Threat model, freeze URI, 2-step owner, Safe
 PLAN.md               Future protocol (not built)

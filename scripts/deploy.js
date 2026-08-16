@@ -70,6 +70,10 @@ async function main() {
   console.log("Next token id:", (await nft.nextTokenId()).toString());
   console.log("tokenURI(1):", await nft.tokenURI(1));
 
+  const freezeTx = await nft.freezeURI();
+  const freezeReceipt = await freezeTx.wait();
+  console.log("URI frozen in tx:", freezeReceipt.hash);
+
   const record = {
     ...loadDeploy(),
     network: hre.network.name,
@@ -83,6 +87,8 @@ async function main() {
     art: "metadata/images/1-4.png (HD hero portraits). Excluded: generator/out.",
     deployTx: deployReceipt.hash,
     mintTx: mintReceipt.hash,
+    freezeURITx: freezeReceipt.hash,
+    uriFrozen: true,
     explorer: `${explorer}/address/${address}`,
     explorerDeployTx: `${explorer}/tx/${deployReceipt.hash}`,
     explorerMintTx: `${explorer}/tx/${mintReceipt.hash}`,
