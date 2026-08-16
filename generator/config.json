@@ -1,0 +1,96 @@
+{
+  "name": "Silicon Bayou",
+  "symbol": "BAYOU",
+  "description": "Silicon Bayou — original Louisiana alligator PFPs, the capability layer for merged (Merged, Inc.). Cryptographic identity from Gator Parish; not a legal contract.",
+  "external_url": "https://www.mergedpublic.com",
+  "region": "Gator Parish",
+  "layer_size": 128,
+  "default_output": 512,
+  "hires_output": 1024,
+  "jpg_quality": 92,
+  "seed": 4663,
+  "layers": [
+    {
+      "id": "background",
+      "trait_type": "Background",
+      "folder": "background",
+      "traits": [
+        { "id": "swamp", "name": "Swamp", "weight": 18, "file": "swamp.png" },
+        { "id": "night_bayou", "name": "Night Bayou", "weight": 14, "file": "night_bayou.png" },
+        { "id": "mardi_gras", "name": "Mardi Gras", "weight": 10, "file": "mardi_gras.png" },
+        { "id": "industrial_yard", "name": "Industrial Yard", "weight": 14, "file": "industrial_yard.png" },
+        { "id": "campus", "name": "Campus", "weight": 14, "file": "campus.png" },
+        { "id": "offshore", "name": "Offshore", "weight": 10, "file": "offshore.png" },
+        { "id": "levee_dusk", "name": "Levee Dusk", "weight": 12, "file": "levee_dusk.png" },
+        { "id": "french_quarter", "name": "French Quarter", "weight": 8, "file": "french_quarter.png" }
+      ]
+    },
+    {
+      "id": "body",
+      "trait_type": "Body",
+      "folder": "body",
+      "traits": [
+        { "id": "bayou_green", "name": "Bayou Green", "weight": 26, "file": "bayou_green.png" },
+        { "id": "midnight_blue", "name": "Midnight Blue", "weight": 16, "file": "midnight_blue.png" },
+        { "id": "cypress_olive", "name": "Cypress Olive", "weight": 18, "file": "cypress_olive.png" },
+        { "id": "capital_purple", "name": "Capital Purple", "weight": 10, "file": "capital_purple.png" },
+        { "id": "storm_gray", "name": "Storm Gray", "weight": 16, "file": "storm_gray.png" },
+        { "id": "crawfish_bronze", "name": "Crawfish Bronze", "weight": 14, "file": "crawfish_bronze.png" }
+      ]
+    },
+    {
+      "id": "class_kit",
+      "trait_type": "Class",
+      "folder": "class",
+      "traits": [
+        { "id": "engineering", "name": "Engineering", "weight": 25, "file": "engineering.png" },
+        { "id": "testing", "name": "Testing", "weight": 25, "file": "testing.png" },
+        { "id": "construction", "name": "Construction", "weight": 25, "file": "construction.png" },
+        { "id": "capital", "name": "Capital", "weight": 25, "file": "capital.png" }
+      ]
+    },
+    {
+      "id": "headgear",
+      "trait_type": "Headgear",
+      "folder": "headgear",
+      "traits": [
+        { "id": "none", "name": "None", "weight": 16, "file": "none.png" },
+        { "id": "safety_goggles", "name": "Safety Goggles", "weight": 16, "file": "safety_goggles.png" },
+        { "id": "hard_hat", "name": "Hard Hat", "weight": 14, "file": "hard_hat.png" },
+        { "id": "welding_helmet", "name": "Welding Helmet", "weight": 8, "file": "welding_helmet.png" },
+        { "id": "gold_shades", "name": "Gold Shades", "weight": 10, "file": "gold_shades.png" },
+        { "id": "bandana", "name": "Bayou Bandana", "weight": 14, "file": "bandana.png" },
+        { "id": "newsboy", "name": "Newsboy Cap", "weight": 12, "file": "newsboy.png" },
+        { "id": "cypress_crown", "name": "Cypress Crown", "weight": 10, "file": "cypress_crown.png" }
+      ]
+    },
+    {
+      "id": "tool",
+      "trait_type": "Tool",
+      "folder": "tool",
+      "traits": [
+        { "id": "none", "name": "None", "weight": 14, "file": "none.png" },
+        { "id": "soldering_iron", "name": "Soldering Iron", "weight": 12, "file": "soldering_iron.png" },
+        { "id": "clipboard", "name": "Clipboard", "weight": 14, "file": "clipboard.png" },
+        { "id": "wrench", "name": "Crescent Wrench", "weight": 12, "file": "wrench.png" },
+        { "id": "ledger", "name": "Gold Ledger", "weight": 8, "file": "ledger.png" },
+        { "id": "tablet", "name": "Field Tablet", "weight": 12, "file": "tablet.png" },
+        { "id": "survey_pole", "name": "Survey Pole", "weight": 10, "file": "survey_pole.png" },
+        { "id": "cafe_au_lait", "name": "Cafe au Lait", "weight": 18, "file": "cafe_au_lait.png" }
+      ]
+    },
+    {
+      "id": "extra",
+      "trait_type": "Extra",
+      "folder": "extra",
+      "traits": [
+        { "id": "none", "name": "None", "weight": 26, "file": "none.png" },
+        { "id": "crawfish_earring", "name": "Crawfish Earring", "weight": 18, "file": "crawfish_earring.png" },
+        { "id": "mardi_gras_beads", "name": "Mardi Gras Beads", "weight": 14, "file": "mardi_gras_beads.png" },
+        { "id": "gold_tooth", "name": "Gold Tooth", "weight": 10, "file": "gold_tooth.png" },
+        { "id": "shoulder_moss", "name": "Shoulder Moss", "weight": 16, "file": "shoulder_moss.png" },
+        { "id": "shrimp_pin", "name": "Shrimp Pin", "weight": 16, "file": "shrimp_pin.png" }
+      ]
+    }
+  ]
+}

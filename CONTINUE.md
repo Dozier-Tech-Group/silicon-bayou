@@ -1,8 +1,25 @@
 # Continue on another computer
 
-Clone [Dozier-Tech-Group/silicon-bayou](https://github.com/Dozier-Tech-Group/silicon-bayou) and treat **[AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md)** as the system prompt.
+**Left the previous machine 2026-08-15.** Clone is the source of truth. `.env` was never committed (correct). There is **no** live contract address yet.
 
-This file is the short playbook: what is already true, what is still blocked, and the exact commands to put BAYOU on Robinhood Chain mainnet (chain ID **4663**).
+Repo: https://github.com/Dozier-Tech-Group/silicon-bayou · branch `master`
+
+## Paste this into Cursor on the new computer
+
+```
+You are continuing Silicon Bayou. Repo: https://github.com/Dozier-Tech-Group/silicon-bayou
+Read CONTINUE.md first, then AGENT_IMPLEMENT.md as the system prompt. Also AGENTS.md, LAUNCH.md, SECURITY.md.
+
+Mission: deploy BAYOU ERC-721 to Robinhood Chain mainnet chain ID 4663, mint tokens 1-4 to 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5, freeze URI, write the address to deployments/robinhood.json, push (never .env), OpenSea.
+
+Do not invent a contract address. Do not mint generator/out or photoreal gators. Hybrid stills in art/gators/ are frozen. MAX_SUPPLY is already 4.
+
+The funded wallet is that 0x9747… address. PRIVATE_KEY is not in git. Ask for a file path, copy into local .env, never print the key. Then: npm install; npm test; npm run security; npm run wallet; npm run deploy:mainnet.
+
+North star: Merged, Inc. / mergedpublic.com — one day all of Louisiana uses Merged technology for education and other industries and becomes a leading technical developer in the nation. NFTs are not legal contracts. No passive APY.
+```
+
+Treat **[AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md)** as the full system prompt. This file is the short playbook.
 
 ---
 
@@ -25,6 +42,7 @@ Silicon Bayou (`BAYOU`) is the holdable capability layer. Four gators: Engineeri
 | Deploy script | `npm run deploy:mainnet` deploys, mints 1–4, **freezes URI** |
 | Gallery | https://dozier-tech-group.github.io/silicon-bayou/gallery/ |
 | Tests | `npm test` and `npm run security` are the gate |
+| Paused 10k generator | `generator/` source + layers + 8 samples are in git. **Do not run it.** `generator/out` is gitignored and rejected as mint art. |
 
 **Rejected art (never mint/pin/ship):** `generator/out` pixel PFPs, photoreal cinematic 3D.
 
@@ -129,6 +147,17 @@ Optional later: Pinata `PINATA_JWT` → `npm run pin` is **too late after freeze
 - Do not add a public sale, yield, staking, or a proxy
 - Do not invent a contract address
 - Do not send NFT agents into `CLIENTS\MERGED` unless the task is the mergedpublic.com `/bayou` page
+- Do not run `generator/generate.py` or ship `generator/out`
+
+---
+
+## Intentionally not in git
+
+| Item | Why |
+|---|---|
+| `.env` | Contains `PRIVATE_KEY`. Recreate from `.env.example` on the new machine. |
+| `generator/out/` | Rejected pixel batch. Never mint or pin. |
+| `node_modules/`, `artifacts/`, `cache/` | Rebuild with `npm install` / `npm run compile`. |
 
 ---
 

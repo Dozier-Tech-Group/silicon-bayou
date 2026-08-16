@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Silicon Bayou — drop preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d1117;
+        --panel: #161b22;
+        --ink: #ffffff;
+        --muted: rgba(255, 255, 255, 0.5);
+        --faint: rgba(255, 255, 255, 0.3);
+        --line: rgba(255, 255, 255, 0.08);
+        --edu: #3b9eed;
+        --sport: #14c8a6;
+        --map: #46d07a;
+        --core: #7c74f0;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 1.25rem 1.5rem 1rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.25rem;
+        margin: 0 0 0.2rem;
+      }
+      .sub { color: var(--muted); font-size: 0.85rem; }
+      .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+      .chip {
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.78rem;
+        cursor: pointer;
+      }
+      .chip.active { background: #fff; color: #111; }
+      .layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 1.25rem;
+        padding: 1.25rem 1.5rem 2rem;
+      }
+      @media (max-width: 860px) {
+        .layout { grid-template-columns: 1fr; }
+      }
+      aside {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1rem;
+        height: fit-content;
+      }
+      aside h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); margin: 0 0 0.75rem; }
+      .stat { margin: 0 0 0.85rem; }
+      .stat b { display: block; font-size: 0.78rem; margin-bottom: 0.25rem; }
+      .row { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.75rem; color: var(--muted); }
+      .bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; margin: 0.2rem 0 0.35rem; }
+      .bar i { display: block; height: 100%; border-radius: 99px; background: var(--edu); }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+        gap: 0.7rem;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        padding: 0;
+        text-align: left;
+        color: inherit;
+      }
+      .card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; image-rendering: pixelated; }
+      .card .meta { padding: 0.45rem 0.55rem 0.55rem; }
+      .card h3 { margin: 0; font-size: 0.78rem; }
+      .card p { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.7rem; }
+      dialog {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 14px;
+        padding: 0;
+        max-width: 720px;
+        width: calc(100% - 2rem);
+      }
+      dialog::backdrop { background: rgba(0,0,0,0.65); }
+      .dlg { display: grid; grid-template-columns: 1fr 1fr; }
+      @media (max-width: 700px) { .dlg { grid-template-columns: 1fr; } }
+      .dlg img { width: 100%; aspect-ratio: 1; object-fit: cover; image-rendering: pixelated; }
+      .dlg-body { padding: 1rem 1.1rem 1.2rem; }
+      .attrs { display: grid; gap: 0.35rem; margin: 0.8rem 0 1rem; }
+      .attr { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); }
+      .attr b { color: var(--ink); font-weight: 600; }
+      button.close {
+        background: #fff; color: #111; border: 0; border-radius: 8px;
+        padding: 0.45rem 0.8rem; cursor: pointer; font-weight: 600;
+      }
+      .err { padding: 2rem; color: #f66; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Silicon Bayou drop preview</h1>
+        <div class="sub" id="summary">Loading generator/out/index.json…</div>
+      </div>
+      <div class="filters" id="filters"></div>
+    </header>
+    <div class="layout">
+      <aside id="stats"></aside>
+      <div class="grid" id="grid"></div>
+    </div>
+    <dialog id="inspect">
+      <div class="dlg">
+        <img id="inspect-img" alt="" />
+        <div class="dlg-body">
+          <h2 id="inspect-title" style="font-family:'Space Grotesk',sans-serif;margin:0 0 .3rem"></h2>
+          <div class="sub" id="inspect-class"></div>
+          <div class="attrs" id="inspect-attrs"></div>
+          <button class="close" id="inspect-close" type="button">Close</button>
+        </div>
+      </div>
+    </dialog>
+    <script>
+      const CLASSES = ["All", "Engineering", "Testing", "Construction", "Capital"];
+      let data = null;
+      let filter = "All";
+
+      function pct(n, total) {
+        return total ? Math.round((n / total) * 100) : 0;
+      }
+
+      function renderFilters() {
+        const root = document.getElementById("filters");
+        root.innerHTML = "";
+        for (const name of CLASSES) {
+          const b = document.createElement("button");
+          b.className = "chip" + (filter === name ? " active" : "");
+          b.textContent = name;
+          b.addEventListener("click", () => { filter = name; render(); });
+          root.appendChild(b);
+        }
+      }
+
+      function renderStats() {
+        const aside = document.getElementById("stats");
+        const freq = data.frequencies || {};
+        const total = data.count || 1;
+        let html = `<h2>Rarity / frequency</h2>`;
+        for (const [trait, counts] of Object.entries(freq)) {
+          html += `<div class="stat"><b>${trait}</b>`;
+          const rows = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+          for (const [name, n] of rows) {
+            html += `<div class="row"><span>${name}</span><span>${n} · ${pct(n, total)}%</span></div>
+              <div class="bar"><i style="width:${pct(n, total)}%"></i></div>`;
+          }
+          html += `</div>`;
+        }
+        aside.innerHTML = html;
+      }
+
+      function openToken(t) {
+        document.getElementById("inspect-img").src = "out/" + t.image;
+        document.getElementById("inspect-title").textContent = t.name;
+        document.getElementById("inspect-class").textContent = t.class + " · " + t.dna;
+        document.getElementById("inspect-attrs").innerHTML = (t.attributes || [])
+          .map((a) => `<div class="attr"><span>${a.trait_type}</span><b>${a.value}</b></div>`)
+          .join("");
+        document.getElementById("inspect").showModal();
+      }
+
+      function renderGrid() {
+        const root = document.getElementById("grid");
+        root.innerHTML = "";
+        const items = (data.images || []).filter((t) => filter === "All" || t.class === filter);
+        for (const t of items) {
+          const el = document.createElement("button");
+          el.className = "card";
+          el.type = "button";
+          el.innerHTML = `<img src="out/${t.image}" alt="${t.name}" /><div class="meta"><h3>${t.name}</h3><p>${t.class}</p></div>`;
+          el.addEventListener("click", () => openToken(t));
+          root.appendChild(el);
+        }
+      }
+
+      function render() {
+        document.getElementById("summary").textContent =
+          `${data.count} unique gators · ${data.size}px · seed ${data.seed} · ${data.unique_dna} DNA`;
+        renderFilters();
+        renderStats();
+        renderGrid();
+      }
+
+      fetch("out/index.json")
+        .then((r) => {
+          if (!r.ok) throw new Error("Run python generator/generate.py --count 96 first");
+          return r.json();
+        })
+        .then((json) => { data = json; render(); })
+        .catch((err) => {
+          document.getElementById("summary").textContent = err.message;
+          document.getElementById("grid").innerHTML = `<p class="err">${err.message}</p>`;
+        });
+
+      document.getElementById("inspect-close").addEventListener("click", () => {
+        document.getElementById("inspect").close();
+      });
+    </script>
+  </body>
+</html>
