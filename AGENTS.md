@@ -1,6 +1,6 @@
 # Silicon Bayou — agent standing orders
 
-Copy this file as the system prompt. Execute. Do not reinvent the project.
+Copy this file **or `AGENT_IMPLEMENT.md`** as the system prompt. The full built-vs-not-built plan and go-live sequence is in `AGENT_IMPLEMENT.md`. Execute. Do not reinvent the project.
 
 ## Workspace (non-negotiable)
 

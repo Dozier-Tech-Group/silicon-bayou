@@ -2,6 +2,8 @@
 
 **MVP** — original Louisiana alligator PFPs (capability NFTs) on Robinhood Chain. The public-facing capability layer for **merged**.
 
+Give the next coding agent **[AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md)** — full plan, what is built, what is not, and the Robinhood mainnet go-live sequence.
+
 ## Vision
 
 The north star, stated the way Merged, Inc. already talks: **merged** is *the open source institutional network* — one open network for every institution. The hope is that **one day all of Louisiana uses this stack for education and other industries**, and that Louisiana becomes a **leading technical developer in the nation**.
