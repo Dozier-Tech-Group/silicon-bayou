@@ -35,7 +35,8 @@ Gator Parish is the in-universe region for these alligators.
 | Mainnet | chain ID **4663** · RPC `https://rpc.mainnet.chain.robinhood.com` · explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com) |
 | Testnet | chain ID **46630** · RPC `https://rpc.testnet.chain.robinhood.com` · explorer [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
 | Contract | [`0xA81aEd6f3a5Faea95197786ba162e706Fd938d20`](https://robinhoodchain.blockscout.com/address/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) on Robinhood **4663** |
-| Marketplace | [OpenSea · Robinhood](https://opensea.io/assets/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) |
+| Marketplace | [opensea.io/collection/silicon-bayou](https://opensea.io/collection/silicon-bayou) · [by contract](https://opensea.io/assets/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) |
+| Deployment record | [DEPLOYMENT.md](DEPLOYMENT.md) — verified on-chain state, wallet roster, ETH flow diagram |
 | Canonical WETH | `0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73` on chain **4663** ([Robinhood token contracts](https://docs.robinhood.com/chain/contracts/)) — wrap/unwrap explainer: [ethereum.org/wrapped-eth](https://ethereum.org/wrapped-eth/). We do **not** deploy our own WETH. |
 
 This cut ships **198 owner-minted swamp gators** on Robinhood Chain. No public sale, staking, recipes, yield, or SBIR/STTR engine — see [PLAN.md](PLAN.md).

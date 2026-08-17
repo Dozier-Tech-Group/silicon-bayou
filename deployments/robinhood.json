@@ -22,6 +22,8 @@
   "art": "art/swamp-222/1-198.png swamp gators. Excluded: generator/out.",
   "genesis": "deployments/genesis.json",
   "openseaChainBrowse": "https://opensea.io/collections/chain/robinhood",
+  "openseaCollection": "https://opensea.io/collection/silicon-bayou",
+  "deploymentDoc": "DEPLOYMENT.md",
   "handoff": "CONTINUE.md",
   "explorerDeployTx": "https://robinhoodchain.blockscout.com/tx/0x766d5bcdf0788dff618625aec9ffac0e944652a7246564459732857423a6717e",
   "mintedTo": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
