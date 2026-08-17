@@ -4,10 +4,11 @@
   "currency": "ETH",
   "rpc": "https://rpc.mainnet.chain.robinhood.com",
   "explorer": "https://robinhoodchain.blockscout.com",
-  "status": "ready_blocked_on_private_key",
+  "status": "ready_blocked_on_gas_funding",
   "blockers": [
-    "PRIVATE_KEY empty in local .env — export the key for 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5 locally, never paste into chat"
+    "Throwaway deployer 0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71 needs ~0.005 ETH on chain 4663. The key for 0x9747…F8a5 could not be exported; the deployer key exists only in the working machine's local .env (never in git, never in chat). MINT_TO is unchanged — tokens 1-4 still mint to 0x9747…F8a5."
   ],
+  "deployer": "0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71",
   "address": null,
   "deployTx": null,
   "mintTx": null,
@@ -18,5 +19,5 @@
   "genesis": "deployments/genesis.json",
   "openseaChainBrowse": "https://opensea.io/collections/chain/robinhood",
   "handoff": "CONTINUE.md",
-  "next": "Set PRIVATE_KEY in local .env; npm test; npm run security; npm run wallet; npm run deploy:mainnet"
+  "next": "Fund the deployer with ~0.005 ETH on 4663; npm run wallet (expect 0xBA98…aa71, funded); npm run deploy:mainnet (script refuses reruns and records incrementally). After deploy: setDefaultRoyalty to 0x9747…F8a5, 2-step transferOwnership toward a Safe, sweep leftover gas back."
 }

@@ -2,6 +2,8 @@
 
 **Left the previous machine 2026-08-15.** Clone is the source of truth. `.env` was never committed (correct). There is **no** live contract address yet.
 
+> **Update 2026-08-16 (working machine):** the key for `0x9747…F8a5` could not be exported, so a **throwaway deployer** was generated: `0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71` — its key exists **only** in the working machine's local `.env` (never in git, never in chat). `MINT_TO` is unchanged; tokens 1–4 still mint to `0x9747…F8a5`. `scripts/deploy.js` was hardened (rerun guard, incremental deploy records, stale-field cleanup) and rehearsed end-to-end on a local Hardhat network. Test + security gates pass; all 12 metadata URLs verified live. The value thesis is published: [VALUE.md](VALUE.md), live at [mergedpublic.com/silicon-bayou](https://www.mergedpublic.com/silicon-bayou). **Only blocker: ~0.005 ETH to the deployer on chain 4663** (operator bridging from Base via relay.link), then `npm run wallet` → `npm run deploy:mainnet`.
+
 Repo: https://github.com/Dozier-Tech-Group/silicon-bayou · branch `master`
 
 ## Paste this into Cursor on the new computer

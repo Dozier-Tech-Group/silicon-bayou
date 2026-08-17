@@ -29,8 +29,8 @@ Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`
 | 2 | Metadata freeze | **DONE** (interim host) | Traits locked. `image` = GitHub raw PNG. `animation_url` = GitHub Pages HTML. IPFS optional later (cannot retarget after `freezeURI`). |
 | 3 | IPFS pin | **SKIPPED for launch** | No pin key. GitHub HTTPS is the frozen host. |
 | 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer. |
-| 5 | Funded deployer wallet | **PARTIAL** | Address `0x9747…F8a5` is funded on 4663. `PRIVATE_KEY` is **empty** in local `.env` (gitignored). Human: export the key for that address into `.env`. |
-| 6 | Deploy ERC-721 mainnet | **READY** (blocked on key) | `MAX_SUPPLY = 4`. `deploy.js` mints 1–4 and freezes URI. Gate: `npm test` + `npm run security` + `npm run wallet`. |
+| 5 | Funded deployer wallet | **PARTIAL** | Key for `0x9747…F8a5` could not be exported. Throwaway deployer `0xBA98…aa71` generated 2026-08-16; key in the working machine's local `.env` only. Needs ~0.005 ETH on 4663 (operator bridging from Base). `MINT_TO` stays `0x9747…F8a5`. |
+| 6 | Deploy ERC-721 mainnet | **READY** (blocked on gas) | `MAX_SUPPLY = 4`. `deploy.js` mints 1–4 and freezes URI; now refuses reruns over a recorded address and writes incremental records. Gate: `npm test` + `npm run security` + `npm run wallet`. |
 | 7 | Set baseURI | **BAKED IN** | Constructor uses `BASE_URI` GitHub raw metadata folder. Do not `setBaseURI` after deploy — freeze is in the same script. |
 | 8 | Mint genesis 1–4 | **READY** (same script) | Tokens 1–4 = Engineering / Testing / Construction / Capital. `MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`. |
 | 9 | Verify on Blockscout | **BLOCKED** | After deploy. |
