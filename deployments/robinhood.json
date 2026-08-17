@@ -22,7 +22,7 @@
   "art": "art/swamp-222/1-198.png swamp gators. Excluded: generator/out.",
   "genesis": "deployments/genesis.json",
   "openseaChainBrowse": "https://opensea.io/collections/chain/robinhood",
-  "openseaCollection": "https://opensea.io/collection/silicon-bayou",
+  "openseaCollection": "https://opensea.io/assets/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20",
   "deploymentDoc": "DEPLOYMENT.md",
   "handoff": "CONTINUE.md",
   "explorerDeployTx": "https://robinhoodchain.blockscout.com/tx/0x766d5bcdf0788dff618625aec9ffac0e944652a7246564459732857423a6717e",
@@ -238,7 +238,9 @@
   "explorerMintTx": "https://robinhoodchain.blockscout.com/tx/0xaa6b0a5332411d02d20ed7ba63364162ab9402d7c2dfdb5e92ca522e846dfb9a",
   "freezeURITx": "0xe9357891ff78349a9bfc708972fdfd1140747faa25609e93639ec5da9fb6a0a4",
   "uriFrozen": true,
-  "openseaCollection": "https://opensea.io/assets/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20",
   "openseaItem": "https://opensea.io/item/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20/1",
-  "next": "2-step transferOwnership to a Gnosis Safe on chain 4663 (SECURITY.md). Do NOT run deploy:mainnet again."
+  "next": "2-step transferOwnership to a Gnosis Safe on chain 4663 (SECURITY.md). Do NOT run deploy:mainnet again.",
+  "royaltyReceiver": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
+  "royaltyBps": 500,
+  "setRoyaltyTx": "0x30de93de064a376dbe0a9e494d3d6a96dd846e95e7fec886882e1960f1c6b3c0"
 }

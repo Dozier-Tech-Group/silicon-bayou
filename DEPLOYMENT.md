@@ -15,7 +15,7 @@ against the public RPC (`https://rpc.mainnet.chain.robinhood.com`) on
 | Deploy tx | [`0x766d…717e`](https://robinhoodchain.blockscout.com/tx/0x766d5bcdf0788dff618625aec9ffac0e944652a7246564459732857423a6717e) — status 1, block 39,071,035 |
 | First mint tx | `0xaa6b…dfb9a` — status 1, block 39,071,059 (minting ran as batches; `MAX_BATCH` = 33, deployer nonce ended at 8: deploy + 6 batches + freeze) |
 | Owner | `0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71` (throwaway deployer EOA — rotation to a Safe still pending, `pendingOwner` = 0x0) |
-| Royalty (ERC-2981) | **5% (500 bps) to `0xBA98…aa71`** — see action items: this is the throwaway deployer, not a treasury |
+| Royalty (ERC-2981) | 5% (500 bps) to operator `0x2948…D11d` — **fixed 2026-08-17**, tx [`0x30de…b3c0`](https://robinhoodchain.blockscout.com/tx/0x30de93de064a376dbe0a9e494d3d6a96dd846e95e7fec886882e1960f1c6b3c0) |
 | Paused | false |
 | OpenSea | **[opensea.io/collection/silicon-bayou](https://opensea.io/collection/silicon-bayou)** (listed 2026-08-17) |
 
@@ -60,24 +60,25 @@ flowchart LR
 
     OPB -->|"DONE: relay.link bridge 0.005 ETH"| DEP
     DEP -->|"DONE: deploy + 6 mint batches + freezeURI"| GAS
+    DEP -->|"DONE 2026-08-17: setDefaultRoyalty to operator"| GAS
     DEP -.->|"TODO: sweep leftover ~0.0023 ETH"| OPR
     BUYER -.->|"future: sale price"| OPR
-    BUYER -.->|"future: 5% royalty — CURRENTLY misdirected to throwaway"| DEP
-    DEP -.->|"TODO: transferOwnership (2-step) + setDefaultRoyalty(safe, 500)"| SAFE
-    BUYER -.->|"after fix: 5% royalty"| SAFE
+    BUYER -.->|"future: 5% royalty (receiver fixed to operator)"| OPR
+    DEP -.->|"TODO: transferOwnership 2-step"| SAFE
 ```
 
 Solid arrows happened; dashed arrows are pending or future flows.
 
 ## Open action items (in order)
 
-1. **Redirect royalties.** `royaltyInfo` currently pays the throwaway deployer
-   EOA. While the deployer is still owner, either point royalties at the
-   operator now (`setDefaultRoyalty(0x2948…D11d, 500)`) or wait and set the
-   Safe in the same sitting as the rotation.
-2. **Create the Gnosis Safe on 4663**, then 2-step rotate:
-   owner calls `transferOwnership(safe)` → verify `pendingOwner()` → Safe calls
-   `acceptOwnership()`. (`SECURITY.md` has the full checklist.)
+1. ~~Redirect royalties~~ **DONE 2026-08-17** — `setDefaultRoyalty(operator, 500)`,
+   tx `0x30de…b3c0`, verified via `royaltyInfo`.
+2. **Rotate ownership off the throwaway** (2-step, `scripts/transfer-ownership.js`):
+   deployer runs `transferOwnership(newOwner)`, then the new owner calls
+   `acceptOwnership()` from its own wallet (Blockscout → Contract → Write).
+   Practical note: the hosted Safe{Wallet} UI does not list Robinhood Chain
+   (4663) as of this writing, so rotating to the operator EOA now and
+   revisiting a Safe when tooling supports the chain is the realistic path.
 3. **Sweep the deployer.** After rotation, send the remaining ~0.0023 ETH from
    `0xBA98…aa71` back to the operator and retire the key.
 4. **Leave the legacy wallet alone.** `0x9747…F8a5` still holds ~0.0042 ETH
