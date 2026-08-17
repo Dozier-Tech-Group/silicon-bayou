@@ -35,6 +35,7 @@ Gator Parish is the in-universe region for these alligators.
 | Mainnet | chain ID **4663** · RPC `https://rpc.mainnet.chain.robinhood.com` · explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com) |
 | Testnet | chain ID **46630** · RPC `https://rpc.testnet.chain.robinhood.com` · explorer [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
 | Marketplace | [OpenSea supports Robinhood Chain](https://opensea.io/blog/articles/robinhood-chain-is-live-on-opensea) |
+| Canonical WETH | `0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73` on chain **4663** ([Robinhood token contracts](https://docs.robinhood.com/chain/contracts/)) — wrap/unwrap explainer: [ethereum.org/wrapped-eth](https://ethereum.org/wrapped-eth/). We do **not** deploy our own WETH. |
 
 This cut ships **four owner-minted tokens**, a static gallery, and a written protocol plan. No public sale, staking, recipes, yield, or SBIR/STTR engine — see [PLAN.md](PLAN.md).
 
@@ -145,7 +146,7 @@ stub (`npm run deploy:bounty:testnet`); the website does not wait on a deploy.
 `contracts/SiliconBayou.sol` — OpenZeppelin ERC-721 + ERC-2981, **not upgradeable**:
 
 - Name `Silicon Bayou`, symbol `BAYOU`
-- **`MAX_SUPPLY = 4`**, `MAX_BATCH = 4` — owner mint only; a fifth token reverts
+- **`MAX_SUPPLY = 198`**, `MAX_BATCH = 33` — owner mint only; token 199 reverts
 - `setBaseURI` then **`freezeURI`** — freeze is permanent (`deploy.js` freezes after mint)
 - `pause` / `unpause` — emergency stop on mint and transfer
 - Ownable2Step — no instant owner handoff; cannot renounce until URI is frozen

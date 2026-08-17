@@ -40,7 +40,7 @@ The honest way to value `SiliconBayou.sol` is by what it **cannot** do. Each gua
 | The threat | What kills it |
 |---|---|
 | Admin "upgrades" the contract after mint and changes the rules | No proxy, no upgrade path — a plain immutable implementation (`contracts/SiliconBayou.sol:16`). SECURITY.md marks upgrade god-mode "Rejected." |
-| A stolen owner key inflates supply forever | `MAX_SUPPLY = 4` is a compile-time constant; `mint` and `mintBatch` revert past it (`SiliconBayou.sol:19,55,70`), driven to the revert in tests. |
+| A stolen owner key inflates supply forever | `MAX_SUPPLY = 198` is a compile-time constant; `mint` and `mintBatch` revert past it (`SiliconBayou.sol`), driven to the revert in tests. |
 | Art or attributes silently swapped after sale | `freezeURI()` is a one-way flag with no unfreeze (`SiliconBayou.sol:90-94`); after it, `setBaseURI` reverts forever. The deploy script freezes in the same run that mints. |
 | Ownership fat-fingered to a dead address | `Ownable2Step`: the new owner must call `acceptOwnership`; a bad transfer is cancelable. `renounceOwnership` is refused until the URI is frozen. |
 | Royalty ratcheted on holders | Hard cap `MAX_ROYALTY_BPS = 1000` (10%); `setDefaultRoyalty` reverts above it. Default 5%. |
@@ -60,11 +60,11 @@ The other half, honestly: the frozen pointer targets **GitHub, not IPFS** — im
 
 ## 5. Straight answers a diligent reader will want
 
-**Will the tokens be sold? What do the funds do?** All four tokens mint to the founder's wallet (`0x9747…F8a5`). Nothing is offered for sale at launch, no token is offered with any expectation of profit, and this document makes no claim about price or future value — ever. The launch spends a few dollars of ETH on gas; the mission's real costs are software development, which gas does not touch.
+**Will the tokens be sold? What do the funds do?** All 198 tokens mint to `0x29486…D11d`. Nothing is offered for sale at launch, no token is offered with any expectation of profit, and this document makes no claim about price or future value — ever. The launch spends a few dollars of ETH on gas; the mission's real costs are software development, which gas does not touch.
 
 **What rights come with a token?** The repo currently ships no explicit license for the artwork. Until one is added, owning the token conveys the token itself — not copyright or commercial rights to the image. That is a named gap on the to-do list, not a papered-over one.
 
-**Why exactly four?** One per capability class. `MAX_SUPPLY = 4` binds this contract forever; nothing technically stops a future, separate collection — what stops a stealth second genesis is that it would be public, on-chain, and would contradict everything written here under our own names.
+**Why 198?** That is every portrait on the delivered contact sheet (18×11). `MAX_SUPPLY = 198` binds this contract forever.
 
 **Will the pause power exist forever?** Plan of record: rotate ownership two-step to a multisig Safe, with pause as break-glass only. Renouncing ownership entirely (which would permanently remove pause and royalty control) becomes possible only after the freeze and is not currently planned — stated so nobody has to guess.
 

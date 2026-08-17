@@ -1,0 +1,21 @@
+222 mint-ready tokens: 1.png - 222.png (512x512 RGB, nearest-neighbor).
+
+Built by scripts/build-swamp-222.py from art/references/swamp-222-sheet.png:
+- 1-198: the 198 sheet portraits, cleaned up per token:
+  * corner number badges removed (they were wrong anyway - 75.png said "058")
+  * noisy/gradient backgrounds replaced with clean flat colors that keep
+    each token's original hue
+  * grid-line bleed, seam lines, and badge blur halos scrubbed
+  * colors quantized for a crisp pixel-art look
+- 199-222: special editions - 24 sources spread across the set, mirrored
+  (facing left) + hue-shifted, on complementary-shifted backgrounds.
+
+Rebuild any time with: python scripts/build-swamp-222.py
+(hard cells are pinned via the OVERRIDES table in that script).
+
+Note: Downloads/grid_gutters.png is a cleaner "GATOR PARISH 1-222" pixel-art
+re-render of this collection but only contains 143 portraits (12x12 grid with
+a title card) - kept as a style reference, not used for tokens.
+
+Do not overwrite metadata/1.json-4.json (painted genesis) until this drop is
+the one we mint.

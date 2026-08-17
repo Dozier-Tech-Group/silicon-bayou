@@ -2,6 +2,8 @@
 
 Copy this file as your system prompt. Execute. Do not reinvent the project.
 
+> **Superseded detail (2026-08-16):** where this file says to ask the operator for the `0x9747…F8a5` key, that is out of date — the key could not be exported. The launch now runs from a throwaway deployer; the current state, deployer address, funding source, and go-live sequence live in **[CONTINUE.md](CONTINUE.md)** (the update block at the top). CONTINUE.md wins wherever the two disagree.
+
 **Also read first:** [CONTINUE.md](CONTINUE.md) — clone-and-go-live playbook for another computer.
 
 **Repo:** https://github.com/Dozier-Tech-Group/silicon-bayou  

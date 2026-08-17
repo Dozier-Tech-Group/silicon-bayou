@@ -29,12 +29,12 @@ Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`
 | 2 | Metadata freeze | **DONE** (interim host) | Traits locked. `image` = GitHub raw PNG. `animation_url` = GitHub Pages HTML. IPFS optional later (cannot retarget after `freezeURI`). |
 | 3 | IPFS pin | **SKIPPED for launch** | No pin key. GitHub HTTPS is the frozen host. |
 | 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer. |
-| 5 | Funded deployer wallet | **PARTIAL** | Key for `0x9747…F8a5` could not be exported. Throwaway deployer `0xBA98…aa71` generated 2026-08-16; key in the working machine's local `.env` only. Needs ~0.005 ETH on 4663 (operator bridging from Base). `MINT_TO` stays `0x9747…F8a5`. |
-| 6 | Deploy ERC-721 mainnet | **READY** (blocked on gas) | `MAX_SUPPLY = 4`. `deploy.js` mints 1–4 and freezes URI; now refuses reruns over a recorded address and writes incremental records. Gate: `npm test` + `npm run security` + `npm run wallet`. |
-| 7 | Set baseURI | **BAKED IN** | Constructor uses `BASE_URI` GitHub raw metadata folder. Do not `setBaseURI` after deploy — freeze is in the same script. |
-| 8 | Mint genesis 1–4 | **READY** (same script) | Tokens 1–4 = Engineering / Testing / Construction / Capital. `MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`. |
+| 5 | Funded deployer wallet | **PARTIAL** | Throwaway deployer `0xBA98…aa71` needs native ETH on 4663. `MINT_TO` is `0x29486…D11d`. Do not send to `0x9747…`. |
+| 6 | Deploy ERC-721 mainnet | **READY** (blocked on gas) | `MAX_SUPPLY = 198`. `deploy.js` mints 1–198 and freezes URI. Gate: `npm test` + `npm run security` + `npm run wallet`. |
+| 7 | Set baseURI | **BAKED IN** | Constructor uses GitHub raw `metadata/swamp/`. Do not `setBaseURI` after deploy — freeze is in the same script. |
+| 8 | Mint swamp 1–198 | **READY** (same script) | Pixel swamp gators from `art/swamp-222/`. `MINT_TO=0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d`. |
 | 9 | Verify on Blockscout | **BLOCKED** | After deploy. |
-| 10 | OpenSea + testers | **BLOCKED** | After deploy. Do **not** mint extras (`MAX_SUPPLY` is 4). Transfer from owner if a tester needs a token. |
+| 10 | OpenSea + testers | **BLOCKED** | After deploy. Do **not** mint extras (`MAX_SUPPLY` is 198). |
 
 **Live links:** none yet (no contract address). Do not invent one.
 

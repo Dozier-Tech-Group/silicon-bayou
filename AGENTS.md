@@ -40,7 +40,7 @@ Two looks are **rejected**. Do not mint, pin, or ship either:
 
 ## Launch — execute in this order
 
-No live contract yet. `deployments/robinhood.json` has `"address": null`. **Do not invent an address.** `MAX_SUPPLY = 4` is in the contract. `scripts/deploy.js` deploys, mints 1–4, and freezes URI. The blocker is `PRIVATE_KEY` in local `.env`.
+No live contract yet. `deployments/robinhood.json` has `"address": null`. **Do not invent an address.** `MAX_SUPPLY = 198` is in the contract. `scripts/deploy.js` deploys, mints 1–198, and freezes URI. The blocker is gas on the throwaway deployer.
 
 `scripts/deploy.js` **deploys, mints 1–4, and freezes URI**. Set `BASE_URI` to the GitHub raw metadata folder before mainnet.
 
@@ -71,7 +71,7 @@ npm run deploy:testnet
 npm run deploy:mainnet
 ```
 
-`.env`: `PRIVATE_KEY`, `RPC_URL`, `BASE_URI` (trailing slash), `MINT_TO`, `GENESIS_ART_READY=1`. Hardhat networks: `robinhood` (4663), `robinhoodTestnet` (46630). Contract: `contracts/SiliconBayou.sol` — name `Silicon Bayou`, symbol `BAYOU`, **`MAX_SUPPLY = 4`**, owner-only `mint` / `mintBatch` / `setBaseURI` / `freezeURI` / `pause`. Ownable2Step, Pausable, ERC-2981 (max 10% royalty), URI freeze. Solidity **0.8.24** frozen / Shanghai. Not upgradeable. Official deploy docs: https://docs.robinhood.com/chain/deploy-smart-contracts/
+`.env`: `PRIVATE_KEY`, `RPC_URL`, `BASE_URI` (trailing slash), `MINT_TO`, `GENESIS_ART_READY=1`. Hardhat networks: `robinhood` (4663), `robinhoodTestnet` (46630). Contract: `contracts/SiliconBayou.sol` — name `Silicon Bayou`, symbol `BAYOU`, **`MAX_SUPPLY = 198`**, owner-only `mint` / `mintBatch` / `setBaseURI` / `freezeURI` / `pause`. Ownable2Step, Pausable, ERC-2981 (max 10% royalty), URI freeze. Solidity **0.8.24** frozen / Shanghai. Not upgradeable. Official deploy docs: https://docs.robinhood.com/chain/deploy-smart-contracts/
 
 **Security gate:** `npm test` and `npm run security` before any `deploy:mainnet`. Optional: `forge test` if Foundry is on PATH. Threat model and owner rotation: `SECURITY.md`. Recommend a Gnosis Safe as production owner. Never paste `PRIVATE_KEY`. Do not weaken the `GENESIS_ART_READY` hold.
 

@@ -10,13 +10,20 @@ Repo: https://github.com/Dozier-Tech-Group/silicon-bayou · branch `master`
 
 ```
 You are continuing Silicon Bayou. Repo: https://github.com/Dozier-Tech-Group/silicon-bayou
-Read CONTINUE.md first, then AGENT_IMPLEMENT.md as the system prompt. Also AGENTS.md, LAUNCH.md, SECURITY.md.
+Read CONTINUE.md first (including the 2026-08-16 update), then AGENT_IMPLEMENT.md. Also AGENTS.md, LAUNCH.md, SECURITY.md, VALUE.md.
 
 Mission: deploy BAYOU ERC-721 to Robinhood Chain mainnet chain ID 4663, mint tokens 1-4 to 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5, freeze URI, write the address to deployments/robinhood.json, push (never .env), OpenSea.
 
-Do not invent a contract address. Do not mint generator/out or photoreal gators. Hybrid stills in art/gators/ are frozen. MAX_SUPPLY is already 4.
+State: NOT deployed (deployments/robinhood.json address: null). Gates pass. All 12 metadata URLs verified live. deploy.js hardened (rerun guard, incremental records) and rehearsed on local hardhat. Thesis published: VALUE.md, live at mergedpublic.com/silicon-bayou.
 
-The funded wallet is that 0x9747… address. PRIVATE_KEY is not in git. Ask for a file path, copy into local .env, never print the key. Then: npm install; npm test; npm run security; npm run wallet; npm run deploy:mainnet.
+Deployer: throwaway 0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71 — key exists ONLY in the working machine's local .env (C:\Users\gdozi\Projects\silicon-bayou). On any other machine, generate a fresh deployer locally, put its key in .env, and fund that instead. Never print, paste, or commit a key. MINT_TO stays 0x9747…F8a5 regardless of deployer.
+
+Blocker: ~0.005 ETH to the deployer on chain 4663. Operator gas source: ~0.024 native ETH on Base at 0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d — bridge via relay.link (Base → Robinhood Chain, recipient = the deployer).
+
+When funded: npm install; npm test; npm run security; npm run wallet (expect the deployer address, Funded true); npm run deploy:mainnet.
+After deploy: verify on Blockscout; push deployments/robinhood.json; OpenSea; setDefaultRoyalty(0x9747…F8a5, 500); 2-step transferOwnership toward a Gnosis Safe; sweep leftover gas back to the operator; update the PRE-DEPLOYMENT status blocks in VALUE.md and merged-website public/silicon-bayou/index.html to the live address.
+
+Do not invent a contract address. Do not mint generator/out or photoreal gators. Hybrid stills in art/gators/ are frozen. MAX_SUPPLY is already 4. A rerun of deploy:mainnet over a recorded address is refused by design — recover with mint:genesis / freeze-uri, never REDEPLOY=1 unless you truly mean a second contract.
 
 North star: Merged, Inc. / mergedpublic.com — one day all of Louisiana uses Merged technology for education and other industries and becomes a leading technical developer in the nation. NFTs are not legal contracts. No passive APY.
 ```
@@ -54,22 +61,21 @@ Silicon Bayou (`BAYOU`) is the holdable capability layer. Four gators: Engineeri
 
 ## The only remaining human step
 
-The funded EOA on Robinhood Chain 4663 is:
+**Fund the deployer with ~0.005 ETH on Robinhood Chain (4663).**
 
-`0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5`
+The key for `0x9747…F8a5` could not be exported, so the launch runs from a **throwaway deployer**:
 
-It has ETH for gas. Tokens 1–4 should mint **to that address** (`MINT_TO`).
+`0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71`
 
-What is **not** in git (and must never be): the **private key** that controls that wallet.
+Its key exists **only** in the working machine's local `.env` (never in git, never in chat). Tokens 1–4 still mint to `MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5` — the deployer is just the gas wallet and initial owner, rotated away after launch.
 
-On the new machine:
+Operator gas source (confirmed 2026-08-16): ~0.024 native ETH on **Base** at `0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d`. Bridge with relay.link: From **Base (ETH)** → To **Robinhood Chain (ETH)**, amount **0.005**, and set the **recipient** to the deployer address above.
 
-1. Export the key from MetaMask / Coinbase Wallet / Robinhood Wallet for **that same address**. Never paste it into chat.
-2. Copy `.env.example` → `.env`.
-3. Set:
+On a **different** machine (no access to this `.env`): generate a fresh deployer locally (`node -e` with ethers `Wallet.createRandom()`), put its key in `.env`, fund *that* address instead. Never reuse a key you cannot verify, never print one.
+
+`.env` non-secret fields (already correct in `.env.example`):
 
 ```
-PRIVATE_KEY=<exported key, with or without 0x>
 RPC_URL=https://rpc.mainnet.chain.robinhood.com
 RH_RPC_URL=https://rpc.mainnet.chain.robinhood.com
 BASE_URI=https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/
@@ -77,15 +83,15 @@ MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5
 GENESIS_ART_READY=1
 ```
 
-4. Confirm without printing the key:
+Confirm without printing the key:
 
 ```powershell
 npm run wallet
 ```
 
-Expected: **Address** matches `0x9747…F8a5`, **Chain ID** 4663, **Funded** true.
+Expected: **Address** matches the deployer you funded, **Chain ID** 4663, **Funded** true.
 
-If the address does not match, you exported the wrong account. Stop.
+If the address does not match what you funded, the `.env` key is wrong. Stop.
 
 ---
 

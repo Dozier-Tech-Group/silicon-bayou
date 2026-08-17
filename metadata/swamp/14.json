@@ -1,0 +1,22 @@
+{
+  "name": "Silicon Bayou #14",
+  "description": "Swamp gator of Silicon Bayou — capability layer for merged (Merged, Inc.), the open source institutional network. A Louisiana alligator from Gator Parish. Cryptographic identity; not a legal contract.",
+  "image": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/art/swamp-222/14.png",
+  "external_url": "https://www.mergedpublic.com",
+  "attributes": [
+    {
+      "trait_type": "Region",
+      "value": "Gator Parish"
+    },
+    {
+      "trait_type": "Drop",
+      "value": "Swamp 198"
+    },
+    {
+      "trait_type": "Token",
+      "value": 14,
+      "display_type": "number",
+      "max_value": 198
+    }
+  ]
+}

@@ -9,7 +9,7 @@ const EXPLORER = {
 };
 
 const GITHUB_METADATA =
-  "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/";
+  "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/swamp/";
 
 function loadDeploy() {
   if (!existsSync(DEPLOY_PATH)) return {};
@@ -32,7 +32,7 @@ function saveRecord(fields) {
 async function main() {
   if (process.env.GENESIS_ART_READY !== "1") {
     throw new Error(
-      "HOLD: hybrid genesis art is not marked ready. Do not deploy-mint photoreal gators or generator/out pixels. Set GENESIS_ART_READY=1 only after the new art/gators/*.png land."
+      "HOLD: swamp-gator art is not marked ready. Set GENESIS_ART_READY=1 after art/swamp-222/1-198.png land."
     );
   }
 
@@ -53,7 +53,7 @@ async function main() {
 
   const baseURI = process.env.BASE_URI || GITHUB_METADATA;
   if (/generator[\\/]+out/i.test(baseURI)) {
-    throw new Error("Refusing BASE_URI that points at generator/out — HD portraits only (metadata/images/1-4)");
+      throw new Error("Refusing BASE_URI that points at generator/out — swamp gators only (art/swamp-222)");
   }
   if (!baseURI.endsWith("/")) {
     throw new Error("BASE_URI must end with /");
@@ -69,7 +69,7 @@ async function main() {
   console.log("Balance :", hre.ethers.formatEther(balance), "ETH");
   console.log("Mint to :", recipient);
   console.log("Base URI:", baseURI);
-  console.log("Art     : metadata/images/1-4.png (HD heroes). NOT generator/out.");
+  console.log("Art     : art/swamp-222/1-198.png. NOT generator/out.");
 
   if (balance === 0n) {
     throw new Error(
@@ -101,18 +101,28 @@ async function main() {
     explorerDeployTx: `${explorer}/tx/${deployReceipt.hash}`,
   });
 
-  const mintTx = await nft.mintBatch(recipient, 4);
-  const mintReceipt = await mintTx.wait();
-  console.log("Minted tokens 1-4 in tx:", mintReceipt.hash);
+  const supply = Number(await nft.MAX_SUPPLY());
+  const batchSize = Number(await nft.MAX_BATCH());
+  const mintTxs = [];
+  while (true) {
+    const next = Number(await nft.nextTokenId());
+    if (next > supply) break;
+    const count = Math.min(batchSize, supply - next + 1);
+    const mintTx = await nft.mintBatch(recipient, count);
+    const mintReceipt = await mintTx.wait();
+    mintTxs.push(mintReceipt.hash);
+    console.log(`Minted ${count} tokens in tx:`, mintReceipt.hash);
+  }
   console.log("Next token id:", (await nft.nextTokenId()).toString());
   console.log("tokenURI(1):", await nft.tokenURI(1));
 
   saveRecord({
     status: "minted_freeze_pending",
     mintedTo: recipient,
-    tokenIds: [1, 2, 3, 4],
-    mintTx: mintReceipt.hash,
-    explorerMintTx: `${explorer}/tx/${mintReceipt.hash}`,
+    tokenIds: Array.from({ length: supply }, (_, i) => i + 1),
+    mintTx: mintTxs[0],
+    mintTxs,
+    explorerMintTx: `${explorer}/tx/${mintTxs[0]}`,
   });
 
   const freezeTx = await nft.freezeURI();
@@ -121,7 +131,7 @@ async function main() {
 
   saveRecord({
     status: "deployed",
-    art: "metadata/images/1-4.png (HD hero portraits). Excluded: generator/out.",
+    art: "art/swamp-222/1-198.png swamp gators. Excluded: generator/out.",
     freezeURITx: freezeReceipt.hash,
     uriFrozen: true,
     openseaCollection: `https://opensea.io/assets/robinhood/${address}`,

@@ -16,8 +16,8 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 contract SiliconBayou is ERC721, ERC2981, Ownable2Step, Pausable, ReentrancyGuard {
     using Strings for uint256;
 
-    uint256 public constant MAX_SUPPLY = 4;
-    uint256 public constant MAX_BATCH = 4;
+    uint256 public constant MAX_SUPPLY = 198;
+    uint256 public constant MAX_BATCH = 33;
     uint96 public constant MAX_ROYALTY_BPS = 1000; // 10% of 10_000
     uint96 public constant DEFAULT_ROYALTY_BPS = 500; // 5%
 

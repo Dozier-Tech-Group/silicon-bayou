@@ -6,18 +6,27 @@
   "explorer": "https://robinhoodchain.blockscout.com",
   "status": "ready_blocked_on_gas_funding",
   "blockers": [
-    "Throwaway deployer 0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71 needs ~0.005 ETH on chain 4663. The key for 0x9747…F8a5 could not be exported; the deployer key exists only in the working machine's local .env (never in git, never in chat). MINT_TO is unchanged — tokens 1-4 still mint to 0x9747…F8a5."
+    "Do not send more ETH to 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5. That wallet may SEND OUT the starter ETH.",
+    "Throwaway deployer 0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71 still needs some native ETH on 4663 for gas. Keep most ETH on 0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d (MINT_TO)."
   ],
   "deployer": "0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71",
   "address": null,
   "deployTx": null,
   "mintTx": null,
-  "mintTo": "0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5",
-  "maxSupply": 4,
-  "baseURI": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/",
-  "art": "Hybrid stills frozen in art/gators and metadata/images. Animation: metadata/images/N.html. Excluded: generator/out.",
+  "mintTo": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
+  "weth": {
+    "symbol": "WETH",
+    "address": "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+    "chainId": 4663,
+    "source": "https://docs.robinhood.com/chain/contracts/",
+    "explainer": "https://ethereum.org/wrapped-eth/",
+    "note": "Canonical wrapped native ETH on Robinhood Chain. Do not deploy a second WETH. Gas stays native ETH."
+  },
+  "maxSupply": 198,
+  "baseURI": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/swamp/",
+  "art": "art/swamp-222/1-198.png swamp gators. Excluded: generator/out.",
   "genesis": "deployments/genesis.json",
   "openseaChainBrowse": "https://opensea.io/collections/chain/robinhood",
   "handoff": "CONTINUE.md",
-  "next": "Fund the deployer with ~0.005 ETH on 4663; npm run wallet (expect 0xBA98…aa71, funded); npm run deploy:mainnet (script refuses reruns and records incrementally). After deploy: setDefaultRoyalty to 0x9747…F8a5, 2-step transferOwnership toward a Safe, sweep leftover gas back."
+  "next": "From 0x9747… send ~0.002 native ETH on 4663 to deployer 0xBA98…aa71, then sweep the rest to 0x29486…. Do not wrap that gas into WETH. Then deploy:mainnet with MINT_TO=0x29486…. Canonical WETH is 0x0Bd7…AD73 (Robinhood docs), not a token we mint."
 }

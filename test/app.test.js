@@ -129,8 +129,8 @@ describe("deploy hold", () => {
     }
   });
 
-  it("caps SiliconBayou at 4", () => {
+  it("caps SiliconBayou at 198", () => {
     const src = readFileSync(resolve(root, "contracts/SiliconBayou.sol"), "utf8");
-    expect(src).toMatch(/MAX_SUPPLY = 4/);
+    expect(src).toMatch(/MAX_SUPPLY = 198/);
   });
 });
