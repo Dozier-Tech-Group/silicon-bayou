@@ -55,7 +55,7 @@ Silicon Bayou (`BAYOU`) is the holdable capability layer. Four gators: Engineeri
 
 **Rejected art (never mint/pin/ship):** `generator/out` pixel PFPs, photoreal cinematic 3D.
 
-**Not deployed yet:** there is **no contract address**. Do not invent one. `deployments/robinhood.json` stays `"address": null` until a real tx lands.
+**Live:** `0xA81aEd6f3a5Faea95197786ba162e706Fd938d20` on Robinhood 4663. URI frozen. Tokens 1–198 at `0x29486…`. **Do not run `deploy:mainnet` again.**
 
 ---
 

@@ -40,7 +40,7 @@ Two looks are **rejected**. Do not mint, pin, or ship either:
 
 ## Launch — execute in this order
 
-No live contract yet. `deployments/robinhood.json` has `"address": null`. **Do not invent an address.** `MAX_SUPPLY = 198` is in the contract. `scripts/deploy.js` deploys, mints 1–198, and freezes URI. The blocker is gas on the throwaway deployer.
+**Live on Robinhood 4663:** `0xA81aEd6f3a5Faea95197786ba162e706Fd938d20`. URI frozen. Tokens 1–198 minted to `0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d`. **Do not run `deploy:mainnet` again.** Record: `deployments/robinhood.json`.
 
 `scripts/deploy.js` **deploys, mints 1–4, and freezes URI**. Set `BASE_URI` to the GitHub raw metadata folder before mainnet.
 

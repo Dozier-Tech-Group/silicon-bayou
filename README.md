@@ -34,12 +34,13 @@ Gator Parish is the in-universe region for these alligators.
 | Chain | Robinhood Chain (EVM L2, gas in ETH) |
 | Mainnet | chain ID **4663** · RPC `https://rpc.mainnet.chain.robinhood.com` · explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com) |
 | Testnet | chain ID **46630** · RPC `https://rpc.testnet.chain.robinhood.com` · explorer [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
-| Marketplace | [OpenSea supports Robinhood Chain](https://opensea.io/blog/articles/robinhood-chain-is-live-on-opensea) |
+| Contract | [`0xA81aEd6f3a5Faea95197786ba162e706Fd938d20`](https://robinhoodchain.blockscout.com/address/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) on Robinhood **4663** |
+| Marketplace | [OpenSea · Robinhood](https://opensea.io/assets/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) |
 | Canonical WETH | `0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73` on chain **4663** ([Robinhood token contracts](https://docs.robinhood.com/chain/contracts/)) — wrap/unwrap explainer: [ethereum.org/wrapped-eth](https://ethereum.org/wrapped-eth/). We do **not** deploy our own WETH. |
 
-This cut ships **four owner-minted tokens**, a static gallery, and a written protocol plan. No public sale, staking, recipes, yield, or SBIR/STTR engine — see [PLAN.md](PLAN.md).
+This cut ships **198 owner-minted swamp gators** on Robinhood Chain. No public sale, staking, recipes, yield, or SBIR/STTR engine — see [PLAN.md](PLAN.md).
 
-**Launch status:** supply is capped at **4**. Metadata JSON points at GitHub HTTPS (not `ipfs://REPLACE_ME`). `npm run deploy:mainnet` deploys, mints 1–4, and freezes URI. **No live contract address yet** — `PRIVATE_KEY` is not in git (correct). See [LAUNCH.md](LAUNCH.md) and [CONTINUE.md](CONTINUE.md). Robinhood Chain mainnet is chain ID **4663**, gas in ETH, RPC `https://rpc.mainnet.chain.robinhood.com`, explorer [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com).
+**Launch status:** **live.** `MAX_SUPPLY = 198`, URI frozen. Tokens 1–198 minted to `0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d`. **Do not run `deploy:mainnet` again.** Record: `deployments/robinhood.json`.
 
 ## What you get
 
