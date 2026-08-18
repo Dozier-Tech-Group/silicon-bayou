@@ -1,18 +1,20 @@
-# Closed alpha — tester protocol (2–3 people)
+# Gallery walkthrough — tester protocol (2–3 people)
 
-This is an **invite-only** test. It is not a public launch. Do not share the link beyond the three testers below.
+The collection is **live**. This file is the original invite-only walkthrough for gallery pages. Do not treat it as a second mint.
 
-**Live URL:** https://dozier-tech-group.github.io/silicon-bayou/gallery/
+**Gallery:** https://dozier-tech-group.github.io/silicon-bayou/gallery/
 
-**Do not send real money. Do not use a wallet with significant funds.** Nothing on this site pays out, bridges funds, or talks to a production bank.
+**Do not send funds to a stranger. Do not use a wallet with significant funds for a first test.** Nothing on the static gallery pays out or talks to a bank.
 
 File bugs as GitHub issues: https://github.com/Dozier-Tech-Group/silicon-bayou/issues
 
 Timebox: **15 minutes** per tester.
 
+Holders are first audience for the open repo: [HOLDERS.md](HOLDERS.md).
+
 ---
 
-## Tester A — Dad cash-out
+## Tester A — cash-out walkthrough
 
 1. Open https://dozier-tech-group.github.io/silicon-bayou/gallery/cashout.html
 2. Tap **Connect wallet** or **Skip — no wallet**. Skipping is a pass.
@@ -27,7 +29,7 @@ Timebox: **15 minutes** per tester.
 | Could explain Step 1 (on-chain / not USD yet) | | |
 | Could explain Step 2 (Robinhood or Coinbase) | | |
 | Could explain Step 3 (sell to USD → bank) | | |
-| Understood this alpha does **not** pay real money | | |
+| Understood this page does **not** pay real money | | |
 
 ---
 
@@ -53,16 +55,14 @@ Timebox: **15 minutes** per tester.
 
 1. Open https://dozier-tech-group.github.io/silicon-bayou/gallery/
 2. Confirm the title **Silicon Bayou**.
-3. Confirm four gator cards: Engineering, Testing, Construction, Capital.
-4. Click a card. Confirm it looks like an NFT card (class + specialty + stats).
-5. Confirm you do **not** see any “guaranteed yield” claim.
+3. Confirm the live copy: 198 swamp gators, OpenSea buy path.
+4. Confirm you do **not** see any “guaranteed yield” claim.
 
 | Check | Pass | Fail |
 |---|---|---|
 | Title Silicon Bayou visible | | |
-| Four gator cards visible | | |
-| Class + specialty visible | | |
-| Stats / scores visible | | |
+| Live / 198 copy visible | | |
+| OpenSea or contract link visible | | |
 | No guaranteed-yield claim | | |
 
 ---
@@ -73,8 +73,7 @@ https://github.com/Dozier-Tech-Group/silicon-bayou/issues
 
 Include: tester letter (A/B/C), device, what you tapped, what you expected, what happened.
 
-## What is not live
+## What this page is not
 
-- mergedpublic.com production
-- Real payouts, real bridges, real bank withdrawals
-- A public mint or OpenSea listing (unless a contract address is published later)
+- A second mint or a public sale on this contract (sold out at 198)
+- Real payouts, real bridges, or bank withdrawals from the static gallery

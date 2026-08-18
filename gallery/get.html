@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <title>See your gator — Silicon Bayou</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="alpha.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <nav>
+        <a class="brand-name" href="index.html">Silicon Bayou</a>
+        <div class="nav-links">
+          <a href="index.html">Collection</a>
+          <a href="get.html">See your gator</a>
+          <a href="https://opensea.io/collection/silicon-bayou" target="_blank" rel="noopener noreferrer">OpenSea</a>
+        </div>
+        <span class="chip">Robinhood Chain</span>
+      </nav>
+
+      <h1>See your gator</h1>
+      <p class="lede">
+        Easiest path: open
+        <a href="https://www.mergedpublic.com/bayou#yours" target="_blank" rel="noopener noreferrer">mergedpublic.com/bayou</a>
+        and tap Connect. That site adds Robinhood Chain and shows gators on this address.
+        Capability identity for
+        <a href="https://www.mergedpublic.com" target="_blank" rel="noopener noreferrer">merged</a>;
+        not a legal contract, not yield.
+      </p>
+
+      <div class="panel">
+        <h2>1. Add Robinhood Chain</h2>
+        <p>
+          One tap in MetaMask, Coinbase Wallet, Rainbow, or Rabby. Same <code>0x</code>
+          address you already have.
+        </p>
+        <div class="actions">
+          <button class="primary" type="button" id="add-chain">Add Robinhood Chain</button>
+        </div>
+        <p id="wallet-status">Wallet not prompted yet.</p>
+      </div>
+
+      <article class="step">
+        <h2>2. Open OpenSea on Robinhood</h2>
+        <p>
+          <a href="https://opensea.io/collection/silicon-bayou" target="_blank" rel="noopener noreferrer">opensea.io/collection/silicon-bayou</a>
+          · connect the same wallet · confirm the network says Robinhood Chain.
+          Your gator shows on your profile after OpenSea indexes (often a few minutes).
+        </p>
+      </article>
+
+      <article class="step">
+        <h2>3. Or look up the address</h2>
+        <p>
+          Paste the wallet into
+          <a href="https://robinhoodchain.blockscout.com" target="_blank" rel="noopener noreferrer">robinhoodchain.blockscout.com</a>.
+          That is the source of truth if OpenSea is slow.
+        </p>
+      </article>
+
+      <article class="step">
+        <h2>Do not</h2>
+        <ul>
+          <li>Send to an <strong>exchange deposit</strong> (Coinbase, Robinhood brokerage, etc.). Those usually only watch Ethereum.</li>
+          <li>Expect the gator on Ethereum mainnet. The contract is only on chain <strong>4663</strong>.</li>
+        </ul>
+      </article>
+
+      <p>
+        Buy listed tokens:
+        <a href="https://opensea.io/collection/silicon-bayou" target="_blank" rel="noopener noreferrer">OpenSea</a>
+        · thesis:
+        <a href="https://www.mergedpublic.com/silicon-bayou" target="_blank" rel="noopener noreferrer">mergedpublic.com/silicon-bayou</a>
+      </p>
+      <footer>
+        Network: Robinhood Chain · chain ID 4663 · RPC
+        https://rpc.mainnet.chain.robinhood.com · gas ETH
+      </footer>
+    </div>
+    <script>
+      const ROBINHOOD = {
+        chainId: "0x1237",
+        chainName: "Robinhood Chain",
+        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+        rpcUrls: ["https://rpc.mainnet.chain.robinhood.com"],
+        blockExplorerUrls: ["https://robinhoodchain.blockscout.com"],
+      };
+      const status = document.getElementById("wallet-status");
+
+      document.getElementById("add-chain").addEventListener("click", async () => {
+        const eth = window.ethereum;
+        if (!eth || typeof eth.request !== "function") {
+          status.textContent =
+            "No wallet in this browser. Install MetaMask, Coinbase Wallet, Rainbow, or Rabby, then tap again.";
+          return;
+        }
+        try {
+          try {
+            await eth.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: ROBINHOOD.chainId }],
+            });
+          } catch (err) {
+            if (err && (err.code === 4902 || String(err.message || "").includes("4902"))) {
+              await eth.request({
+                method: "wallet_addEthereumChain",
+                params: [ROBINHOOD],
+              });
+            } else {
+              throw err;
+            }
+          }
+          status.textContent =
+            "Robinhood Chain is selected. Open OpenSea, connect this wallet, filter Robinhood Chain.";
+        } catch (err) {
+          status.textContent = "Wallet request failed or was rejected. You can still add the network manually from the footer.";
+        }
+      });
+    </script>
+  </body>
+</html>

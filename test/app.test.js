@@ -80,7 +80,7 @@ describe("bounty board page", () => {
 
 describe("zero-trust gallery edges", () => {
   it("external links use rel=noopener and pages ship a CSP meta", () => {
-    for (const relPath of ["gallery/index.html", "gallery/bounties.html", "gallery/cashout.html"]) {
+    for (const relPath of ["gallery/index.html", "gallery/bounties.html", "gallery/cashout.html", "gallery/get.html"]) {
       const { html, document } = loadHtml(relPath);
       expect(html).toMatch(/Content-Security-Policy/);
       const externals = [...document.querySelectorAll('a[href^="http"]')];
@@ -103,6 +103,15 @@ describe("zero-trust gallery edges", () => {
     expect(html).toMatch(/0x1237/);
     expect(html).toMatch(/4663/);
     expect(html).toMatch(/not used for payouts|never pays out/i);
+    expect(html).not.toMatch(/eth_getBalance/);
+  });
+
+  it("see-your-gator page adds Robinhood Chain and links OpenSea", () => {
+    const { html } = loadHtml("gallery/get.html");
+    expect(html).toMatch(/wallet_addEthereumChain/);
+    expect(html).toMatch(/0x1237/);
+    expect(html).toMatch(/opensea\.io\/collection\/silicon-bayou/);
+    expect(html).toMatch(/exchange deposit/i);
     expect(html).not.toMatch(/eth_getBalance/);
   });
 

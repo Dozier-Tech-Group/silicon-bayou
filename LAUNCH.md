@@ -1,12 +1,10 @@
-# Silicon Bayou — Robinhood Chain launch
+# Silicon Bayou — launch checklist
 
-**Hybrid stills are the genesis freeze.** Two looks stay rejected: funky **16-bit pixel** PFPs (`generator/out`) and too-**photoreal cinematic 3D**. Target is **HYBRID** — stylized illustrated / premium painted PFP.
+**Live.** Contract [`0xA81aEd6f3a5Faea95197786ba162e706Fd938d20`](https://robinhoodchain.blockscout.com/address/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) on Robinhood Chain **4663**. 198/198, URI frozen. **Do not run `deploy:mainnet`.**
 
-Stills: `art/gators/*-gator.png` → `metadata/images/1.png`–`4.png`. Living portraits are HTML loops (`animation_url`). Never ship `generator/out`.
+Holder-first open source: [HOLDERS.md](HOLDERS.md). Other-computer playbook: [CONTINUE.md](CONTINUE.md). Standing orders: [AGENTS.md](AGENTS.md).
 
-**Another computer?** Start at [CONTINUE.md](CONTINUE.md). System prompt: [AGENT_IMPLEMENT.md](AGENT_IMPLEMENT.md).
-
-Do not paste `PRIVATE_KEY` into chat.
+Do not paste `PRIVATE_KEY` into chat. Never commit `.env`.
 
 Official network ([docs](https://docs.robinhood.com/chain/connecting/)):
 
@@ -17,50 +15,32 @@ Official network ([docs](https://docs.robinhood.com/chain/connecting/)):
 | Gas | ETH | ETH |
 | Public RPC | `https://rpc.mainnet.chain.robinhood.com` | `https://rpc.testnet.chain.robinhood.com` |
 | Explorer | [robinhoodchain.blockscout.com](https://robinhoodchain.blockscout.com) | [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
-| OpenSea | [collections/chain/robinhood](https://opensea.io/collections/chain/robinhood) | — |
-
-Alchemy (production RPC): `https://robinhood-mainnet.g.alchemy.com/v2/{API_KEY}`.
+| OpenSea | [opensea.io/collection/silicon-bayou](https://opensea.io/collection/silicon-bayou) | — |
 
 ## Top 10
 
 | # | Item | Status | Notes |
 |---|---|---|---|
-| 1 | Art freeze for launch | **DONE** | Hybrid painted PFPs frozen as genesis stills. Calm HTML loops are `animation_url`. |
-| 2 | Metadata freeze | **DONE** (interim host) | Traits locked. `image` = GitHub raw PNG. `animation_url` = GitHub Pages HTML. IPFS optional later (cannot retarget after `freezeURI`). |
-| 3 | IPFS pin | **SKIPPED for launch** | No pin key. GitHub HTTPS is the frozen host. |
-| 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas, official RPC/explorer. |
-| 5 | Funded deployer wallet | **PARTIAL** | Throwaway deployer `0xBA98…aa71` needs native ETH on 4663. `MINT_TO` is `0x29486…D11d`. Do not send to `0x9747…`. |
-| 6 | Deploy ERC-721 mainnet | **READY** (blocked on gas) | `MAX_SUPPLY = 198`. `deploy.js` mints 1–198 and freezes URI. Gate: `npm test` + `npm run security` + `npm run wallet`. |
-| 7 | Set baseURI | **BAKED IN** | Constructor uses GitHub raw `metadata/swamp/`. Do not `setBaseURI` after deploy — freeze is in the same script. |
-| 8 | Mint swamp 1–198 | **READY** (same script) | Pixel swamp gators from `art/swamp-222/`. `MINT_TO=0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d`. |
-| 9 | Verify on Blockscout | **BLOCKED** | After deploy. |
-| 10 | OpenSea + testers | **BLOCKED** | After deploy. Do **not** mint extras (`MAX_SUPPLY` is 198). |
+| 1 | Art freeze for launch | **DONE** | Swamp stills 1–198. Do not rewrite `metadata/swamp` on `master`. |
+| 2 | Metadata freeze | **DONE** | On-chain `uriFrozen()`. Host is GitHub raw. |
+| 3 | IPFS pin | **SKIPPED** | Too late after freeze. GitHub HTTPS is the host. |
+| 4 | Robinhood Chain mainnet config | **DONE** | Chain 4663, ETH gas. |
+| 5 | Funded deployer | **DONE** | Launch used a dedicated deploy EOA. Rotate ownership next. |
+| 6 | Deploy ERC-721 mainnet | **DONE** | `MAX_SUPPLY = 198`. Do not rerun. |
+| 7 | Set baseURI | **DONE / frozen** | `metadata/swamp/`. Cannot `setBaseURI` now. |
+| 8 | Mint swamp 1–198 | **DONE** | Sold out. |
+| 9 | Verify on Blockscout | **DONE** | See [DEPLOYMENT.md](DEPLOYMENT.md). |
+| 10 | OpenSea + open source | **LIVE** | Brief holders first, then the public thread. |
 
-**Live links:** none yet (no contract address). Do not invent one.
+## After launch (still open)
 
-## Go live on this machine or the next
-
-```powershell
-copy .env.example .env
-# Set PRIVATE_KEY locally for 0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5
-# GENESIS_ART_READY=1
-# BASE_URI=https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/
-# MINT_TO=0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5
-npm test
-npm run security
-npm run wallet
-npm run deploy:mainnet
-```
-
-`npm test` / `npm run security` is the gate. Do not skip it. See [SECURITY.md](SECURITY.md). Do not weaken `GENESIS_ART_READY`.
-
-After a real address exists: write it to `deployments/robinhood.json` + README, push (**not** `.env`), then open Blockscout + OpenSea.
-
-Then 2-step `transferOwnership` to a **Gnosis Safe**. EOA owner is the remaining nuclear risk.
+- 2-step `transferOwnership` off the deploy EOA ([SECURITY.md](SECURITY.md))
+- Sweep leftover deployer gas; never fund `0x9747…`
+- Holder-first notice, then public post ([marketing/](marketing/))
 
 ## Guards
 
-- `scripts/pin.mjs` and `scripts/deploy.js` refuse to run unless `GENESIS_ART_READY=1`.
-- BASE_URI containing `generator/out` is rejected.
-- Never commit `.env`. Never print `PRIVATE_KEY`.
-- `mint:testers` is disabled. Supply is 4.
+- `scripts/pin.mjs` and `scripts/deploy.js` refuse to run unless `GENESIS_ART_READY=1`
+- BASE_URI containing `generator/out` is rejected
+- Never commit `.env`. Never print `PRIVATE_KEY`
+- `mint:testers` is disabled. Supply is 198 and sold out

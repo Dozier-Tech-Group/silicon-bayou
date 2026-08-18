@@ -13,10 +13,10 @@ Target chain: **Robinhood Chain mainnet, chain ID 4663** (testnet 46630). Gas is
 | NFT metadata swap | Owner (or stolen owner key) points `baseURI` at different art / phishing JSON | `setBaseURI` then **`freezeURI`** — irreversible. Do this after IPFS pin. OpenSea attributes stay in pinned JSON. |
 | Stolen owner key | Attacker mints, pauses, changes royalty, settles bounties | **Ownable2Step** (no instant transfer). Production owner should be a **Gnosis Safe** (or equivalent multisig), not a hot EOA. Rotate via 2-step (below). Owner key remains the nuclear residual risk until then. |
 | Reentrancy | Receiver hook during `_safeMint` or ERC-20 callback during bounty withdraw | Checks-effects-interactions; `nextTokenId` updated **before** mint loop; `ReentrancyGuard` on mint / fund / withdraw; pull-over-push for credits. |
-| Fake OpenSea / fake site | Phishing collection or lookalike gallery | Official address only after a real deploy (written to `deployments/` + README). Until then **there is no collection address**. Verify contract on [Blockscout](https://robinhoodchain.blockscout.com). Never trust a link that asks you to “approve” the NFT to a stranger. |
+| Fake OpenSea / fake site | Phishing collection or lookalike gallery | Official address is [`0xA81aEd6f3a5Faea95197786ba162e706Fd938d20`](https://robinhoodchain.blockscout.com/address/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20) on chain **4663** — also in `deployments/robinhood.json` and README. Verify on [Blockscout](https://robinhoodchain.blockscout.com). Never trust a link that asks you to “approve” the NFT to a stranger. |
 | Client-side payout lie | Wallet or page reports a balance / “you won” | Gallery never pays. Bounty withdraw is on-chain pull by `msg.sender`. UI must not treat client-reported balances as settlement. Wallet connect must check `chainId === 4663` (or 46630 on testnet). |
 | Unbounded mint | Stolen owner key prints tokens forever | **`MAX_SUPPLY = 198`**. `mint` / `mintBatch` revert past 198. |
-| Unbounded work | Huge `mintBatch` | `MAX_BATCH = 4` (same as supply). Owner-only. |
+| Unbounded work | Huge `mintBatch` | `MAX_BATCH = 33`. Owner-only. Supply already minted out at 198. |
 | Instant ownership foot-gun | `transferOwnership` to a typo / contract that cannot accept | Ownable2Step: pending owner must `acceptOwnership`. Cannot `renounceOwnership` until URI is frozen. |
 | Upgrade god-mode | Transparent / UUPS proxy with admin key | **Rejected.** Contracts are immutable implementations. |
 | `tx.origin` auth | Phishing contract tricks an EOA | Not used. Authorization is `msg.sender` only. |
@@ -56,15 +56,15 @@ Cancel a bad transfer by calling `transferOwnership(address(0))` before accept.
 
 ## Freeze URI at deploy
 
-Launch metadata is GitHub HTTPS (`metadata/*.json` `image` + `animation_url`). `scripts/deploy.js` calls `freezeURI()` after minting 1–4. There is no unfreeze. Do not retarget to IPFS after that.
+Launch metadata is GitHub HTTPS (`metadata/swamp/{id}.json`). `freezeURI()` already ran after minting 1–198. There is no unfreeze. Do not rewrite those JSON/PNG files on `master` — OpenSea follows GitHub raw even though the contract URI is frozen.
 
-Do **not** freeze, pin, or mint until `GENESIS_ART_READY=1` is set locally (hybrid stills are frozen).
+Do **not** pin or mint a second collection from `generator/out`.
 
 ## Production owner
 
 Use a **Gnosis Safe** (or comparable multisig) as `owner` after deploy. A single EOA is an unaudited god-key: mint, pause, settle, royalty, and (until freeze) metadata.
 
-Recommend: deploy from a funded EOA → 2-step transfer to Safe → freeze URI → keep pause on the Safe only as break-glass.
+Recommend: 2-step transfer from the deploy EOA to a Safe (or the operator EOA if Safe UI still lacks chain 4663) → keep pause on the Safe only as break-glass. URI is already frozen.
 
 ## App / gallery (zero-trust edges)
 

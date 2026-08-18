@@ -9,7 +9,7 @@ Trait-layer compositor for up to **10,000 unique** square gator JPGs. No image m
 ## Quick start (PowerShell)
 
 ```powershell
-cd C:\Users\gdozi\Projects\silicon-bayou
+cd silicon-bayou
 python -m pip install -r generator/requirements.txt
 python generator/generate.py --count 96
 python -m http.server 4174 --directory generator

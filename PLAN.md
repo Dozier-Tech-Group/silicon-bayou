@@ -1,8 +1,8 @@
 # Silicon Bayou — protocol plan
 
-This file is **future work**. The MVP in this repo is four PFPs, metadata, an owner-mint ERC-721, and a gallery. Nothing below is implemented — except the thesis, which is why the protocol exists at all.
+This file is **future work**. The live collection in this repo is 198 swamp gators, frozen metadata, an owner-mint ERC-721 (sold out), and a gallery. Nothing below is implemented — except the thesis, which is why the protocol exists at all.
 
-Copy here follows the actual Merged, Inc. materials under `CLIENTS\MERGED` (read-only). It does not invent product names.
+Copy here follows Merged, Inc. public materials. It does not invent product names.
 
 ## North Star / Louisiana thesis
 
@@ -29,7 +29,7 @@ Site industries today: Higher Education and Collegiate Athletics (**Live**); Gov
 
 ### Louisiana evidence they already compiled
 
-This thesis is not abstract. Inside `CLIENTS\MERGED`:
+This thesis is not abstract. From Merged’s compiled census and school-index work:
 
 - **Louisiana Public Higher-Ed Software Spend Census** (`merged-website/public/census`, `dtg-platform/tools/onboard-bridge/publish/hf-la-census`): 550 evidence-linked contract records across **45 Louisiana public higher-education institutions**. Counted vendors in that census are headquartered **outside Louisiana**. Rule: no quote, no number.
 - **Louisiana public high school index** (`Research/school-index`): **380 schools, 124 districts, 246,582 students** — K-12 is in scope, not only universities. Dual enrollment is already mapped as a college-credit signal.

@@ -1,5 +1,9 @@
 # X launch thread — Silicon Bayou (draft, post from the project/founder account)
 
+**Before this thread:** send [holders-first.md](holders-first.md) to BAYOU
+owners. The git repo is already public (frozen metadata is GitHub-hosted).
+Holders still get the human announcement first.
+
 Rules baked into this draft: no price predictions, no "investment" language, no
 yield talk, no Robinhood-partnership implication. Every claim is checkable in
 the repo or on-chain. Attach the suggested image to each post.
@@ -13,7 +17,7 @@ the repo or on-chain. Attach the suggested image to each post.
 > Silicon Bayou: the holdable face of an open-source push to build
 > Louisiana's institutional software in Louisiana.
 >
-> Every gator $5. Metadata frozen forever. No yield, no promises — just the swamp.
+> Metadata frozen forever. No yield, no promises — just the swamp.
 >
 > opensea.io/collection/silicon-bayou
 
@@ -34,27 +38,28 @@ the repo or on-chain. Attach the suggested image to each post.
 >
 > - ERC-721 on Robinhood Chain (4663), standard OpenZeppelin, no proxy
 > - MAX_SUPPLY = 198, compiled in, sold out at birth
-> - uriFrozen() = true — the art can never be swapped
-> - Whole repo public: github.com/Dozier-Tech-Group/silicon-bayou
+> - uriFrozen() = true — the contract cannot retarget the art
+> - Source is public: github.com/Dozier-Tech-Group/silicon-bayou
+>   (BAYOU holders were told first)
 >
 > Trust nothing at any other address than 0xA81a…8d20.
 
 **Post 4** — image: `art/swamp-222/24.png` (cowboy) or your own gator
 
-> $5. One gator. That's the whole pitch.
+> One gator. That's the whole pitch.
 >
 > If you're from Louisiana, work in ed-tech, or just like a
-> well-dressed alligator — come pick yours before your favorite's gone.
+> well-dressed alligator — the collection is on OpenSea.
 >
-> How to buy (60 seconds, wallet + a few bucks):
-> mergedpublic.com/silicon-bayou
+> How to see one in a wallet (add Robinhood Chain first):
+> mergedpublic.com/bayou
 >
 > 🐊
 
 ---
 
 **Cadence after launch day:** post one gator a day ("Gator of the day —
-#N, still $5") — 198 tokens is 6+ months of daily content. Reply to every
+#N") — 198 tokens is 6+ months of daily content. Reply to every
 buyer with their gator's image. When someone sets one as a PFP, repost it.
 
 **Do NOT:** buy your own listings, promise price appreciation, imply
