@@ -7,7 +7,7 @@
       "title": "Add negative-path tests for BountyBoard.fund",
       "prompt": "In test/contracts, extend the BountyBoard test suite with negative-path coverage for fund(): zero reward reverts BountyBoardRewardZero, double-funding the same issueId reverts BountyBoardAlreadyFunded, and funding while paused reverts. Follow the existing test style exactly. Run npx hardhat test and make sure everything passes before finishing.",
       "rewardMC": 25,
-      "funded": false,
+      "funded": true,
       "status": "open"
     },
     {
@@ -16,7 +16,7 @@
       "title": "Add a registry JSON-shape check to npm test",
       "prompt": "Add a vitest test (test/app or matching existing vitest layout) that validates agents/registry.json and agents/tasks.json parse and match their documented shapes: every agent entry has wallet (0x-40-hex), github (nonempty string), tokenIds (nonempty number array), signature (0x-hex), and every task has a numeric issueId, repo, title, prompt, rewardMC > 0, funded boolean, status in {open, in_progress, done}. Run npm run test:app to confirm green.",
       "rewardMC": 15,
-      "funded": false,
+      "funded": true,
       "status": "open"
     },
     {
@@ -25,7 +25,7 @@
       "title": "Docs pass on merged-public README",
       "prompt": "Clone Dozier-Tech-Group/merged-public. Read its README and fix only mechanical problems: dead links, stale commands, typos. Do not change meaning, branding, or structure. Keep the diff minimal.",
       "rewardMC": 10,
-      "funded": false,
+      "funded": true,
       "status": "open"
     }
   ]

@@ -1,0 +1,13 @@
+{
+  "network": "robinhood",
+  "chainId": 4663,
+  "bayou": "0xA81aEd6f3a5Faea95197786ba162e706Fd938d20",
+  "usdg": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+  "treasury": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
+  "takeBps": 3000,
+  "credit": "0x040f12C71ddA0bA9D91E94016ea5C348106ab429",
+  "bountyBoard": "0xd7899073819206828b7f4c7bB8aE4C530E93C0A2",
+  "accessDesk": "0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9",
+  "note": "MC + AccessDesk. USDG take 20–40% community pool; rest to treasury. Grants are discretionary — not APY, not a BAYOU entitlement.",
+  "deployedAt": "2026-08-18T15:39:40.273Z"
+}

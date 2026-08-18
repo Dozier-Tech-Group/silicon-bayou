@@ -27,6 +27,19 @@ Tokens **199–222** in `art/swamp-222/` are special-edition art only; they can
 never be minted on this contract (`MAX_SUPPLY = 198` is `constant`). Minting
 them would require a decision to launch a second contract.
 
+## Credits rail (deployed & verified on-chain 2026-08-18)
+
+| | |
+|---|---|
+| MergedCredit (MC) | [`0x040f12C71ddA0bA9D91E94016ea5C348106ab429`](https://robinhoodchain.blockscout.com/address/0x040f12C71ddA0bA9D91E94016ea5C348106ab429) — 0 decimals, supply 50, all escrowed by the board |
+| BountyBoard | [`0xd7899073819206828b7f4c7bB8aE4C530E93C0A2`](https://robinhoodchain.blockscout.com/address/0xd7899073819206828b7f4c7bB8aE4C530E93C0A2) — wired to live BAYOU; settle/withdraw require holding a gator |
+| AccessDesk | [`0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9`](https://robinhoodchain.blockscout.com/address/0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9) — treasury = operator `0x2948…D11d`, take 3000 bps |
+| Funded bounties | 1001 (25 MC), 1002 (15 MC), 1003 (10 MC) — open, unsettled; see `agents/tasks.json` |
+| Owners | All three on deploy EOA `0xBA98…aa71` — **rotate with BAYOU** (2-step to operator) |
+
+The off-chain half is Gator Works (`agents/README.md`): holders link wallets by
+signature, agents work funded tasks in CI, the oracle settles merged PRs.
+
 ## Wallet roster (balances verified 2026-08-17)
 
 | Wallet | Role | Robinhood 4663 | Base 8453 |
