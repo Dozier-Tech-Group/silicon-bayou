@@ -15,8 +15,13 @@ You are continuing Silicon Bayou. Repo: https://github.com/Dozier-Tech-Group/sil
 Read CONTINUE.md, then AGENTS.md, SECURITY.md, VALUE.md, HOLDERS.md.
 
 The collection is LIVE at 0xA81aEd6f3a5Faea95197786ba162e706Fd938d20 on Robinhood 4663.
-Do not run deploy:mainnet. Do not invent a second contract. Do not rewrite metadata/swamp.
-Do not mint generator/out or photoreal gators. Do not commit .env. Do not force push.
+Do not run deploy:mainnet. Do not invent a second contract. Do not rewrite metadata/swamp
+or art/swamp-222/1.png–198.png on master. Do not mint generator/out or photoreal gators.
+Do not commit .env. Do not force push.
+
+The gallery now grids the live 198 swamp tokens from art/swamp-222. The next session
+is a full NFT redesign — wait for the operator to start that; do not mint, redeploy,
+or rewrite frozen files until they explicitly say so.
 
 North star: Merged, Inc. / mergedpublic.com — one day all of Louisiana uses Merged
 technology for education and other industries. NFTs are not legal contracts. No APY.
@@ -34,16 +39,26 @@ Silicon Bayou (`BAYOU`) is the holdable swamp-gator layer. **Not** legal contrac
 |---|---|
 | Contract | `0xA81a…8d20`, 198/198, `uriFrozen() = true` |
 | Art | `art/swamp-222/1.png`–`198.png` + `metadata/swamp/{id}.json` |
+| Gallery | `gallery/index.html` grids tokens **1–198** from `art/swamp-222/{id}.png`. Inspect dialog links OpenSea + Blockscout. GitHub Pages serves this from `master`. |
 | OpenSea | [opensea.io/collection/silicon-bayou](https://opensea.io/collection/silicon-bayou) |
+| Credits rail | [deployments/credits.json](deployments/credits.json) — MC, BountyBoard, AccessDesk on 4663 |
 | Tests | `npm test` and `npm run security` |
 | Paused generator | `generator/` — **do not run it** |
 
-## Remaining work (do not redeploy)
+## Next session (do not start until asked)
 
-1. **Holder-first open source** — [HOLDERS.md](HOLDERS.md). Brief owners before the public X thread.
-2. **2-step ownership** off the deploy EOA toward a Safe (or the operator EOA if Safe UI still lacks 4663). See [SECURITY.md](SECURITY.md).
-3. **Sweep leftover deployer gas** after rotation. Never fund the legacy `0x9747…` wallet.
-4. Keep `mergedpublic.com/bayou` in sync (that site is a **sibling repo**, not this one). Only touch it when the task is putting a page on mergedpublic.com.
+**Full NFT redesign.** Operator will start a new session for a new set. Until they explicitly begin that work:
+
+- Do **not** mint, pin, or rewrite frozen `metadata/swamp/` or live `art/swamp-222/1.png`–`198.png` on `master`
+- Do **not** run `deploy:mainnet` or change `MAX_SUPPLY` / URI freeze
+- Do **not** ship `generator/out` or photoreal cinematic 3D
+
+## Remaining work (do not redeploy BAYOU)
+
+1. **mergedpublic.com site deploy is still not published.** Sibling repo only; do not start a new site deploy unless a green PR is already waiting.
+2. **2-step ownership** off the deploy EOA toward a Safe (optional; or the operator EOA if Safe UI still lacks 4663). See [SECURITY.md](SECURITY.md). Sweep leftover deployer gas after rotation. Never fund the legacy `0x9747…` wallet.
+3. **Gator Works** needs the repo secret `ANTHROPIC_API_KEY` before `.github/workflows/gator-agents.yml` will run real agent tasks. Workflow exists; it is a clean no-op without the key.
+4. **Holder-first open source** — [HOLDERS.md](HOLDERS.md). Brief owners before the public X thread.
 
 ## Clone setup
 
@@ -58,13 +73,15 @@ npm run security
 
 `.env` is gitignored. `PRIVATE_KEY` is only for owner scripts. Never print it. Never commit it.
 
+Local gallery: `npm run gallery` (port may not be 4173 if that one is taken).
+
 ## What not to do
 
 - Do not force push, change git config, or commit `.env`
 - Do not mint `generator/out` or photoreal gators
 - Do not add a public sale, yield, staking, or a proxy
 - Do not run `deploy:mainnet` / `REDEPLOY=1`
-- Do not rewrite frozen swamp metadata on `master`
+- Do not rewrite frozen swamp metadata or live art `1.png`–`198.png` on `master`
 
 ## Intentionally not in git
 
@@ -73,3 +90,4 @@ npm run security
 | `.env` | Contains `PRIVATE_KEY`. Recreate from `.env.example`. |
 | `generator/out/` | Rejected pixel batch. Never mint or pin. |
 | `node_modules/`, `artifacts/`, `cache/` | Rebuild with `npm install` / `npm run compile`. |
+| `art/swamp-222/preview.html`, `marketing/merged-public-poster.html` | Other-session scratch. Do not land unless asked. |

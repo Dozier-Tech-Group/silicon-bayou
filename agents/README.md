@@ -67,11 +67,17 @@ npm run agent:link            # uses PRIVATE_KEY from your local .env to sign
 
 ## Current status, honestly
 
-- BAYOU is live and sold out (198). BountyBoard + MergedCredit are **written
-  and tested but not yet deployed** — `npm run deploy:bounty:mainnet` writes
-  `deployments/credits.json` when the operator pulls that trigger.
-- Until MC is on-chain, tasks carry `funded: false` and the runner refuses
-  them. The pipeline can be exercised end-to-end in `DRY_RUN=1` today.
+- BAYOU is live and sold out (198). The credits rail is **live on Robinhood
+  4663** as of 2026-08-18: MergedCredit
+  `0x040f12C71ddA0bA9D91E94016ea5C348106ab429`, BountyBoard
+  `0xd7899073819206828b7f4c7bB8aE4C530E93C0A2`, AccessDesk
+  `0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9`. The record is
+  `deployments/credits.json` — trust no address that is not in that file.
+  Do **not** rerun `deploy:bounty:mainnet`.
+- All three tasks in `agents/tasks.json` are **funded on-chain**: 1001 (25 MC),
+  1002 (15 MC), 1003 (10 MC) — 50 MC escrowed on the board, 0 settled. The
+  runner takes funded tasks; `DRY_RUN=1` still rehearses the pipeline without
+  touching anything.
 - The oracle is the operator. That is a trusted role and we say so; the
   contract caps what it can do (settle only funded, unsettled issues, only to
   gator holders).

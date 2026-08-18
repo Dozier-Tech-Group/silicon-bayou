@@ -19,15 +19,8 @@ AI / crawler pays USDG
 - `grantFromPool` is a human grant. It does not snapshot gators. It is not APY
 - MC (`payCredit`) is the gator meter; credits go to treasury, not the cash pool
 
-## Deploy (separate from BAYOU)
+## Deploy (separate from BAYOU — already done)
 
-BAYOU is already live. Do not run `deploy:mainnet`.
+The desk is **live on 4663** since 2026-08-18: AccessDesk [`0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9`](https://robinhoodchain.blockscout.com/address/0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9), deployed alongside MC and the BountyBoard. Record: `deployments/credits.json`. Take is 30% (`takeBps = 3000`); treasury is the operator wallet.
 
-```powershell
-npm test
-npm run security
-npm run deploy:bounty:testnet
-npm run deploy:bounty:mainnet
-```
-
-Writes `deployments/credits.json`. Default take is 30% (`ACCESS_TAKE_BPS=3000`). Treasury defaults to `MINT_TO`.
+Do **not** run `deploy:mainnet` (that is BAYOU, live) and do **not** rerun `deploy:bounty:mainnet` — a rerun makes a second, unofficial desk. Trust only the addresses in `deployments/credits.json`.

@@ -56,7 +56,7 @@ Live look: swamp gators `art/swamp-222/1.png`–`198.png`. OpenSea JSON: `metada
 - ERC-2981 royalty cap 10% (default 5%)
 - `freezeURI()` already executed
 
-Behind the gators: `MergedCredit.sol` (MC) + `BountyBoard.sol` + `AccessDesk.sol`. Separate deploy (`npm run deploy:bounty:mainnet`). Only BAYOU holders can withdraw MC. AccessDesk takes USDG (20–40% community pool, rest treasury). Grants from the pool are discretionary — not yield. Do not mix this with `deploy:mainnet`.
+Behind the gators: `MergedCredit.sol` (MC) + `BountyBoard.sol` + `AccessDesk.sol` — **live on 4663 since 2026-08-18** (MC `0x040f12C71ddA0bA9D91E94016ea5C348106ab429`, board `0xd7899073819206828b7f4c7bB8aE4C530E93C0A2`, desk `0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9`; record: `deployments/credits.json`). All three launch bounties funded (50 MC escrowed, 0 settled). Do **not** rerun `deploy:bounty:mainnet`, and do not mix it with `deploy:mainnet`. Only BAYOU holders can withdraw MC. AccessDesk takes USDG (20–40% community pool, rest treasury). Grants from the pool are discretionary — not yield.
 
 ### Tooling
 

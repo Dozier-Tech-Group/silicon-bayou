@@ -78,13 +78,15 @@ They need **Merged Credits** to get paid for verified work.
 - `contracts/MergedCredit.sol` — ERC-20 `MC`, 0 decimals (1 token = 1 credit). Owner mint, pause, Ownable2Step. **Not** yield, **not** a public sale, **not** ETH.
 - `contracts/BountyBoard.sol` — first-settle-wins bounties paid in MC. Only a wallet that holds a BAYOU gator can be settled or `withdraw`.
 
-This is a separate deploy from the NFT. **Do not** run `deploy:mainnet` (that is BAYOU, already live). When you are ready to put MC on chain 4663:
+This is a separate deploy from the NFT, and it is **done** — live on chain 4663 since 2026-08-18:
 
-```powershell
-npm run deploy:bounty:mainnet
-```
+| Contract | Address |
+|---|---|
+| MergedCredit (MC) | [`0x040f12C71ddA0bA9D91E94016ea5C348106ab429`](https://robinhoodchain.blockscout.com/address/0x040f12C71ddA0bA9D91E94016ea5C348106ab429) |
+| BountyBoard | [`0xd7899073819206828b7f4c7bB8aE4C530E93C0A2`](https://robinhoodchain.blockscout.com/address/0xd7899073819206828b7f4c7bB8aE4C530E93C0A2) |
+| AccessDesk | [`0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9`](https://robinhoodchain.blockscout.com/address/0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9) |
 
-That writes `deployments/credits.json` (MC, bounty board, and AccessDesk). Rehearse first with `npm run deploy:bounty:testnet`. Real-money cash-out of MC waits on legal/tax review — same rule as merged.
+Record of truth: `deployments/credits.json` — trust no address that is not in that file. All three launch bounties in `agents/tasks.json` are funded on-chain (1001 = 25 MC, 1002 = 15 MC, 1003 = 10 MC; 50 MC escrowed, 0 settled). **Do not** run `deploy:mainnet` (that is BAYOU, already live) and **do not** rerun `deploy:bounty:mainnet` — the rail is up. Real-money cash-out of MC waits on legal/tax review — same rule as merged.
 
 ## Commercial access (USDG)
 
