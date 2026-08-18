@@ -1,0 +1,591 @@
+<!--
+  MERGED PUBLIC — composite poster page (goes with www.mergedpublic.com)
+
+  Swapping in the real HD NFT artwork:
+    1. Drop the renders next to this file in a folder named `entities/`,
+       named by id: entities/MP-0001.png … entities/MP-0100.png
+    2. In the CONFIG block at the bottom of this file, set
+         const IMAGE_BASE = "entities/";
+       (it ships as null so no requests fire while the art is pending).
+    Any plate whose file is missing keeps its placeholder automatically.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Merged Public — 10,000 unique entities, algorithmically merged, forever public. Commemorative composite, plate 0001." />
+<title>Merged Public Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+<style>
+  :root {
+    --paper: #efeae0;
+    --paper-deep: #e6e0d2;
+    --paper-well: #ded7c6;
+    --ink: #1c1a16;
+    --ink-soft: #5a5548;
+    --ink-faint: #8d8676;
+    --rule: rgba(28, 26, 22, 0.8);
+    --rule-soft: rgba(28, 26, 22, 0.22);
+    --rule-faint: rgba(28, 26, 22, 0.12);
+    --seal: #8c6d2f;
+    --serif: "EB Garamond", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    padding: clamp(0.75rem, 3vw, 2.5rem);
+  }
+
+  /* ---------- the sheet ---------- */
+  .sheet {
+    max-width: 1240px;
+    margin: 0 auto;
+    border: 1px solid var(--rule);
+    outline: 1px solid var(--rule);
+    outline-offset: 3px;
+    background:
+      radial-gradient(ellipse 120% 90% at 50% 0%, rgba(255, 253, 246, 0.55), transparent 60%),
+      var(--paper);
+    padding: clamp(1rem, 3vw, 2.25rem);
+  }
+
+  .caps {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    padding-bottom: 1.25rem;
+  }
+  .mast-col { font-size: 0.6rem; line-height: 2.1; color: var(--ink-soft); }
+  .mast-col .caps { letter-spacing: 0.16em; }
+  .mast-col.right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.9rem; }
+
+  .monogram {
+    width: 3.4rem;
+    height: 4.1rem;
+    border: 1px solid var(--rule);
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.9rem;
+  }
+  .monogram span { position: relative; }
+  .monogram span::after {
+    content: "";
+    position: absolute;
+    inset: -0.35rem -0.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .mp-10k { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em; color: var(--ink); margin-top: 0.9rem; }
+
+  .mast-center { text-align: center; padding-top: 0.5rem; }
+  .mast-center h1 {
+    margin: 0;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 4.8vw, 3.5rem);
+    letter-spacing: 0.26em;
+    text-indent: 0.26em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .mast-sub {
+    margin: 0.7rem 0 0;
+    font-size: clamp(0.8rem, 1.6vw, 1.05rem);
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .mast-tag {
+    margin: 0.55rem 0 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.34em;
+    text-indent: 0.34em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .mast-ded {
+    margin: 1rem auto 0;
+    max-width: 34rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-style: italic;
+    font-size: 0.86rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  .mast-ded::before,
+  .mast-ded::after { content: ""; flex: 1; border-top: 1px solid var(--rule-soft); }
+
+  .roundel { width: 4.6rem; height: 4.6rem; }
+  .plate-no {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    border: 1px solid var(--rule);
+    padding: 0.3rem 0.7rem 0.3rem 0.9rem;
+  }
+
+  /* ---------- portrait grid ---------- */
+  .plate-frame { border: 1px solid var(--rule); padding: clamp(0.5rem, 1.4vw, 0.9rem); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+    gap: clamp(0.4rem, 1vw, 0.65rem) clamp(0.3rem, 0.8vw, 0.5rem);
+  }
+  /* wide screens: the plate resolves to a strict 10 × 10 composite */
+  @media (min-width: 980px) {
+    .grid { grid-template-columns: repeat(10, 1fr); }
+  }
+  figure.entity { margin: 0; }
+  .frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--rule-soft);
+    background:
+      linear-gradient(160deg, rgba(255, 253, 246, 0.5), transparent 55%),
+      var(--paper-deep);
+    overflow: hidden;
+  }
+  .frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0; /* keeps a layout box so lazy-loading still triggers; fades in on load */
+    transition: opacity 0.4s ease;
+  }
+  .frame img.loaded { opacity: 1; z-index: 1; }
+
+  /* placeholder: registration marks + bust silhouette, printed on the empty plate */
+  .frame::before {
+    content: "";
+    position: absolute;
+    inset: 14%;
+    background:
+      radial-gradient(circle at 50% 30%, var(--paper-well) 0 26%, transparent 27%),
+      radial-gradient(ellipse 55% 42% at 50% 92%, var(--paper-well) 0 60%, transparent 61%);
+    opacity: 0.9;
+  }
+  .frame::after {
+    content: "";
+    position: absolute;
+    inset: 6%;
+    background:
+      linear-gradient(var(--rule-soft) 0 0) top left / 1px 9px,
+      linear-gradient(var(--rule-soft) 0 0) top left / 9px 1px,
+      linear-gradient(var(--rule-soft) 0 0) top right / 1px 9px,
+      linear-gradient(var(--rule-soft) 0 0) top right / 9px 1px,
+      linear-gradient(var(--rule-soft) 0 0) bottom left / 1px 9px,
+      linear-gradient(var(--rule-soft) 0 0) bottom left / 9px 1px,
+      linear-gradient(var(--rule-soft) 0 0) bottom right / 1px 9px,
+      linear-gradient(var(--rule-soft) 0 0) bottom right / 9px 1px;
+    background-repeat: no-repeat;
+  }
+  figure.entity figcaption {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    color: var(--ink-soft);
+    margin-top: 0.35rem;
+  }
+  @media (hover: hover) {
+    figure.entity { transition: transform 0.25s ease; }
+    figure.entity:hover { transform: translateY(-3px); }
+    figure.entity:hover figcaption { color: var(--ink); }
+  }
+
+  /* ---------- legend ---------- */
+  .legend { border: 1px solid var(--rule); border-top: none; }
+  .legend-title {
+    margin: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-deep);
+  }
+  /* the classifications table locks to 4×2 / 8×1 / 2×4 so no category is ever orphaned */
+  .legend-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .legend-col {
+    padding: 0.9rem 1rem 1.1rem;
+    border-right: 1px solid var(--rule-faint);
+    border-bottom: 1px solid var(--rule-faint);
+  }
+  .legend-col:nth-child(4n) { border-right: none; }
+  .legend-col:nth-child(n+5) { border-bottom: none; }
+  @media (min-width: 1180px) {
+    .legend-cols { grid-template-columns: repeat(8, 1fr); }
+    .legend-col { border-bottom: none; }
+    .legend-col:nth-child(4n) { border-right: 1px solid var(--rule-faint); }
+    .legend-col:last-child { border-right: none; }
+  }
+  @media (max-width: 560px) {
+    .legend-cols { grid-template-columns: repeat(2, 1fr); }
+    .legend-col:nth-child(4n) { border-right: 1px solid var(--rule-faint); }
+    .legend-col:nth-child(2n) { border-right: none; }
+    .legend-col:nth-child(n+5) { border-bottom: 1px solid var(--rule-faint); }
+    .legend-col:nth-child(n+7) { border-bottom: none; }
+  }
+  .legend-col h3 {
+    margin: 0 0 0.7rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .legend-col ul { list-style: none; margin: 0; padding: 0; }
+  .legend-col li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0.22rem 0;
+  }
+  .swatch { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex: none; border: 1px solid var(--rule-soft); }
+  .tick { width: 0.42rem; height: 0.42rem; border: 1px solid var(--ink-faint); flex: none; }
+  .diamond { width: 0.44rem; height: 0.44rem; transform: rotate(45deg); flex: none; }
+
+  /* ---------- colophon ---------- */
+  .colophon {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1.2fr;
+    border: 1px solid var(--rule);
+    border-top: none;
+  }
+  .colo { padding: 1.2rem 1.4rem 1.4rem; border-right: 1px solid var(--rule-faint); }
+  .colo:last-child { border-right: none; }
+  .colo h3 {
+    margin: 0 0 0.8rem;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .formula {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .qr {
+    width: 4.2rem;
+    height: 4.2rem;
+    flex: none;
+    border: 1px solid var(--rule);
+    padding: 0.3rem;
+    display: grid;
+    place-items: center;
+  }
+  .qr svg { width: 100%; height: 100%; display: block; }
+  .formula-text { font-family: var(--mono); font-size: 0.58rem; line-height: 1.9; letter-spacing: 0.05em; color: var(--ink-soft); text-transform: uppercase; }
+  .formula-text .fx { color: var(--ink); }
+
+  .supply { text-align: center; }
+  .supply .big {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin: 0.4rem 0 0.2rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .supply .small { font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .preserved { text-align: center; }
+  .chains { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; }
+  .chain { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .chain svg { width: 1.6rem; height: 1.6rem; }
+  .chain span { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; color: var(--ink-soft); }
+
+  footer.sig {
+    text-align: center;
+    padding: 1.6rem 0 0.4rem;
+  }
+  .sig .mini-mono {
+    display: inline-grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.5rem;
+    border: 1px solid var(--rule);
+    font-size: 0.85rem;
+    margin-bottom: 0.55rem;
+  }
+  .sig p { margin: 0; font-size: 0.6rem; letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* ---------- mid widths ---------- */
+  @media (max-width: 900px) {
+    .colophon { grid-template-columns: 1fr; }
+    .colo { border-right: none; border-bottom: 1px solid var(--rule-faint); }
+    .colo:last-child { border-bottom: none; }
+  }
+
+  /* ---------- motion ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    figure.entity { animation: settle 0.5s ease backwards; }
+    @keyframes settle {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+
+  /* ---------- print: the sheet is meant to be held ---------- */
+  @media print {
+    body { padding: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    figure.entity { animation: none; }
+  }
+
+  /* ---------- small screens ---------- */
+  @media (max-width: 720px) {
+    .masthead { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+    .mast-col.right { align-items: center; text-align: center; }
+    .monogram { margin: 0 auto 0.9rem; }
+    .mast-center h1 {
+      white-space: normal;
+      font-size: clamp(1.35rem, 7vw, 2.4rem);
+      letter-spacing: 0.16em;
+      text-indent: 0.16em;
+    }
+    .mast-sub { letter-spacing: 0.28em; text-indent: 0.28em; }
+    .mast-tag { letter-spacing: 0.22em; text-indent: 0.22em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <!-- ═══════════ masthead ═══════════ -->
+  <header class="masthead">
+    <div class="mast-col">
+      <div class="monogram" aria-hidden="true"><span>MP</span></div>
+      <div class="caps">A study in decentralized identity</div>
+      <div class="caps">10,000 unique entities</div>
+      <div class="caps">Algorithmically merged</div>
+      <div class="caps">Forever public</div>
+      <div class="mp-10k">MP&nbsp;//&nbsp;10K</div>
+    </div>
+
+    <div class="mast-center">
+      <h1>Merged Public</h1>
+      <p class="mast-sub">10,000 unique entities</p>
+      <p class="mast-tag">Onchain&thinsp;.&nbsp;Merged&thinsp;.&nbsp;Public&thinsp;.</p>
+      <p class="mast-ded">How the Merged Public solved education&nbsp;&mdash;&nbsp;Louisiana first</p>
+    </div>
+
+    <div class="mast-col right">
+      <div>
+        <div class="caps">Merged Public Archive</div>
+        <div class="caps">MP-10000 Collection</div>
+        <div class="caps">Est. 2024</div>
+        <div class="caps">Onchain record</div>
+      </div>
+      <svg class="roundel" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <path id="arcTop" d="M 14 50 A 36 36 0 0 1 86 50" />
+          <path id="arcBot" d="M 20 50 A 30 30 0 0 0 80 50" />
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="1" />
+        <circle cx="50" cy="50" r="41" fill="none" stroke="var(--rule-soft)" stroke-width="1" />
+        <text font-family="EB Garamond, serif" font-size="10.5" letter-spacing="2.5" fill="var(--ink)">
+          <textPath href="#arcTop" startOffset="50%" text-anchor="middle">MERGED PUBLIC</textPath>
+        </text>
+        <text font-family="EB Garamond, serif" font-size="8.5" letter-spacing="3" fill="var(--ink-soft)">
+          <textPath href="#arcBot" startOffset="50%" text-anchor="middle">· ARCHIVE ·</textPath>
+        </text>
+        <text x="50" y="56" text-anchor="middle" font-family="EB Garamond, serif" font-size="17" fill="var(--ink)">MP</text>
+      </svg>
+      <div class="plate-no">0001</div>
+    </div>
+  </header>
+
+  <!-- ═══════════ the composite ═══════════ -->
+  <main class="plate-frame">
+    <noscript><p style="font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-align: center; color: var(--ink-soft);">THE COMPOSITE PLATE IS DRAWN BY JAVASCRIPT — ENABLE IT TO VIEW THE 100 ENTITIES.</p></noscript>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <!-- ═══════════ traits & classifications ═══════════ -->
+  <section class="legend" aria-label="Traits and classifications">
+    <h2 class="legend-title caps">Traits &amp; Classifications</h2>
+    <div class="legend-cols" id="legend"></div>
+  </section>
+
+  <!-- ═══════════ colophon ═══════════ -->
+  <section class="colophon">
+    <div class="colo">
+      <h3>Algorithmic merge formula</h3>
+      <div class="formula">
+        <div class="qr" aria-hidden="true">
+          <!-- placeholder mark, not a scannable code -->
+          <svg viewBox="0 0 44 44">
+            <g fill="none" stroke="var(--ink)" stroke-width="2">
+              <rect x="2" y="2" width="12" height="12" />
+              <rect x="30" y="2" width="12" height="12" />
+              <rect x="2" y="30" width="12" height="12" />
+            </g>
+            <g fill="var(--ink)">
+              <rect x="6" y="6" width="4" height="4" />
+              <rect x="34" y="6" width="4" height="4" />
+              <rect x="6" y="34" width="4" height="4" />
+              <rect x="20" y="8" width="3" height="3" /><rect x="26" y="14" width="3" height="3" />
+              <rect x="20" y="20" width="3" height="3" /><rect x="32" y="22" width="3" height="3" />
+              <rect x="14" y="20" width="3" height="3" /><rect x="38" y="30" width="3" height="3" />
+              <rect x="20" y="28" width="3" height="3" /><rect x="26" y="34" width="3" height="3" />
+              <rect x="32" y="38" width="3" height="3" /><rect x="20" y="38" width="3" height="3" />
+            </g>
+          </svg>
+        </div>
+        <div class="formula-text">
+          <span class="fx">ID = HASH(TRAITS &middot; SEED &middot; RARITY &middot; VARIATION)</span><br />
+          Every attribute is onchain. Every entity is unique.<br />
+          Verifiable. Permanent. Public.
+        </div>
+      </div>
+    </div>
+
+    <div class="colo supply">
+      <h3>Total supply</h3>
+      <div class="big">10,000</div>
+      <div class="small">Unique entities</div>
+    </div>
+
+    <div class="colo preserved">
+      <h3>Preserved onchain</h3>
+      <div class="chains">
+        <div class="chain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.1" aria-hidden="true">
+            <path d="M12 2 L19 12 L12 16 L5 12 Z" /><path d="M5 13.5 L12 22 L19 13.5 L12 17.5 Z" />
+          </svg>
+          <span>Ethereum</span>
+        </div>
+        <div class="chain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.1" aria-hidden="true">
+            <polygon points="12,2 21,7 21,17 12,22 3,17 3,7" /><path d="M3 7 L12 12 L21 7 M12 12 L12 22" />
+          </svg>
+          <span>Arweave</span>
+        </div>
+        <div class="chain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.1" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.5" /><text x="12" y="15.5" text-anchor="middle" font-family="EB Garamond, serif" font-size="9.5" fill="var(--ink)" stroke="none">a</text>
+          </svg>
+          <span>IPFS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="sig">
+    <div class="mini-mono" aria-hidden="true">MP</div>
+    <p>Merged Public &middot; One network for every institution</p>
+  </footer>
+</div>
+
+<script>
+  /* ═══ CONFIG ═══════════════════════════════════════════════════════════
+     IMAGE_BASE: null → placeholders only (no network requests).
+     When the HD renders are ready, set IMAGE_BASE = "entities/" and drop
+     files named MP-0001.png … MP-0100.png into that folder.            */
+  const IMAGE_BASE = null;
+  const FIRST = 1;   // first entity on this plate
+  const COUNT = 100; // entities per plate (plate 0001 shows the first 100 of 10,000)
+
+  const pad = (n) => "MP-" + String(n).padStart(4, "0");
+
+  const grid = document.getElementById("grid");
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < COUNT; i++) {
+    const id = pad(FIRST + i);
+    const fig = document.createElement("figure");
+    fig.className = "entity";
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      fig.style.animationDelay = (i * 8) + "ms";
+    }
+    const frame = document.createElement("div");
+    frame.className = "frame";
+    if (IMAGE_BASE) {
+      const img = document.createElement("img");
+      img.alt = "Merged Public entity " + id;
+      img.loading = "lazy";
+      img.addEventListener("load", () => img.classList.add("loaded"));
+      img.src = IMAGE_BASE + id + ".png";
+      frame.appendChild(img);
+    }
+    const cap = document.createElement("figcaption");
+    cap.textContent = id;
+    fig.appendChild(frame);
+    fig.appendChild(cap);
+    frag.appendChild(fig);
+  }
+  grid.appendChild(frag);
+
+  /* ═══ legend data (mirrors the printed poster) ═══ */
+  const DOT = { textured: "#6b675c", gradient: "#4f6b5e", geometric: "#7a7466", organic: "#3f3c33",
+                academic: "#41505e", tech: "#5c5470", minimal: "#a89e88", paper: "#c9bfa8" };
+  const RARITY = [["Common", "#2b2924"], ["Uncommon", "#3f6b4f"], ["Rare", "#3c5d80"],
+                  ["Epic", "#4d7d8a"], ["Legendary", "#5d4a78"], ["Mythic", "#a05a2c"],
+                  ["Exotic", "#7c3128"], ["One of One", "#a03434"]];
+  const LEGEND = [
+    ["Background", Object.keys(DOT).map(k => ({ t: k, dot: DOT[k] }))],
+    ["Face type", ["Human", "Android", "Cyborg", "Synthetic", "Enhanced", "Analog", "Hybrid", "Original"]],
+    ["Head gear", ["None", "Glasses", "Headset", "Hat", "Beanie", "Hijab", "Turban", "Goggles"]],
+    ["Eye wear", ["None", "Glasses", "Monocle", "Visor", "Sunglasses", "VR/AR", "Optic augment", "Readers"]],
+    ["Clothing", ["Classic", "Academic", "Techwear", "Lab coat", "Casual", "Field gear", "Maker", "Formal"]],
+    ["Accessories", ["Badges", "Books", "Tablet", "Tools", "Notebook", "Camera", "Plant", "Coffee"]],
+    ["Expression", ["Neutral", "Curious", "Focused", "Confident", "Friendly", "Inspired", "Calm", "Joyful"]],
+    ["Rarity level", RARITY.map(([t, c]) => ({ t, diamond: c }))],
+  ];
+
+  const legendEl = document.getElementById("legend");
+  for (const [title, items] of LEGEND) {
+    const col = document.createElement("div");
+    col.className = "legend-col";
+    const h = document.createElement("h3");
+    h.textContent = title;
+    col.appendChild(h);
+    const ul = document.createElement("ul");
+    for (const item of items) {
+      const li = document.createElement("li");
+      const mark = document.createElement("i");
+      if (item.dot) { mark.className = "swatch"; mark.style.background = item.dot; }
+      else if (item.diamond) { mark.className = "diamond"; mark.style.background = item.diamond; }
+      else { mark.className = "tick"; }
+      li.appendChild(mark);
+      li.appendChild(document.createTextNode(typeof item === "string" ? item : item.t));
+      ul.appendChild(li);
+    }
+    col.appendChild(ul);
+    legendEl.appendChild(col);
+  }
+</script>
+
+</body>
+</html>
