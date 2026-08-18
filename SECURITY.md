@@ -36,11 +36,20 @@ Out of scope for this MVP: public sale, bridges, KYC, staking, yield. Do not add
 
 `BountyBoard`:
 
+- Immutable `credit` (MC) and `bayou` (live BAYOU ERC-721)
 - Owner funds; owner **or** oracle settles; **first settle wins**
+- Settle and `withdraw` require `bayou.balanceOf(account) > 0` — gators need MC; wallets without a gator cannot pull
 - Winner **pulls** via `withdraw` (CEI + `nonReentrant`)
 - Pause stops fund / settle / withdraw
 
 `MergedCredit`: Ownable2Step + pause on mint/transfer. Owner can still mint credits — treat that key like cash.
+
+`AccessDesk`:
+
+- Canonical USDG in; `takeBps` locked to **20–40%** community pool, remainder to `treasury`
+- MC payments go 100% to treasury (credits are not cash)
+- `grantFromPool` is owner-only, one recipient — **not** a BAYOU `ownerOf` snapshot, not APY
+- Pause stops `payUsdg` / `payCredit`
 
 No delegatecall to untrusted targets. No upgradeable proxy.
 

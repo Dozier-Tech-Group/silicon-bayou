@@ -68,7 +68,7 @@ The other half, honestly: the frozen pointer targets **GitHub, not IPFS** — im
 
 **Will the pause power exist forever?** Plan of record: rotate ownership two-step to a multisig Safe, with pause as break-glass only. Renouncing ownership entirely (which would permanently remove pause and royalty control) becomes possible only after the freeze and is not currently planned — stated so nobody has to guess.
 
-**What about the other contracts in the repo?** `BountyBoard.sol` and `MergedCredit.sol` are alpha stubs. They are not part of this launch and nothing here depends on them; SECURITY.md documents their owner powers for whenever they are used.
+**What about Merged Credits and access fees?** The gators are the public collection. Behind them is `MergedCredit` (MC) — a non-cash ERC-20 for paying verified work on `BountyBoard`. Only a BAYOU holder can be settled or withdraw. Commercial use of compiled census data is a separate `AccessDesk`: USDG in, 20–40% community pool, remainder to treasury. Pool grants are discretionary; holding a gator is not a claim on that pool. No staking, no APY, no public sale of MC. Until `deployments/credits.json` has live addresses, MC and the desk are in-repo only. Real-money movement waits on legal, tax, and payment review.
 
 **No yield. Ever.** No staking, no APY, no emissions, no guaranteed returns. If rewards ever exist in later phases, PLAN.md commits that they would be payment for verified contribution — delivery evidence, attestations, accepted milestones — and real-money movement waits on legal, tax, and payment review.
 

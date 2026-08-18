@@ -7,13 +7,23 @@ describe("BountyBoard + MergedCredit", function () {
     const [owner, other, oracle] = await ethers.getSigners();
     const credit = await (await ethers.getContractFactory("MergedCredit")).deploy();
     await credit.waitForDeployment();
+    const bayou = await (await ethers.getContractFactory("SiliconBayou")).deploy(
+      "https://example.invalid/metadata/",
+    );
+    await bayou.waitForDeployment();
     const board = await (await ethers.getContractFactory("BountyBoard")).deploy(
       await credit.getAddress(),
+      await bayou.getAddress(),
     );
     await board.waitForDeployment();
     await credit.mint(owner.address, 1000);
     await credit.approve(await board.getAddress(), 1000);
-    return { owner, other, oracle, credit, board };
+    await bayou.mint(owner.address);
+    await bayou.mint(other.address);
+    await bayou.mint(oracle.address);
+    await bayou.mint(fixtures.testers[0].wallet);
+    await bayou.mint(fixtures.testers[1].wallet);
+    return { owner, other, oracle, credit, bayou, board };
   }
 
   async function expectRevert(promise) {
@@ -85,5 +95,18 @@ describe("BountyBoard + MergedCredit", function () {
     await expectRevert(board.connect(other).withdraw());
     await board.unpause();
     await board.connect(other).withdraw();
+  });
+
+  it("rejects settle and withdraw when the account holds no gator", async function () {
+    const { board, bayou, other } = await deploy();
+    const stranger = ethers.Wallet.createRandom().connect(ethers.provider);
+    await ethers.provider.send("hardhat_setBalance", [stranger.address, "0x56BC75E2D63100000"]);
+
+    await board.fund(11, 10);
+    await expectRevert(board.settle(11, stranger.address));
+
+    await board.settle(11, other.address);
+    await bayou.connect(other).transferFrom(other.address, stranger.address, 2);
+    await expectRevert(board.connect(other).withdraw());
   });
 });

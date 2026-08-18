@@ -7,7 +7,8 @@ import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 
 /// @title Merged Credits (MC)
-/// @notice Integer credit token for paying verified work. Not yield, not a stake reward.
+/// @notice Behind-the-scenes credit the Silicon Bayou gators use for verified work.
+///         Not yield, not a stake reward, not a public sale.
 /// @dev decimals() is 0 so 1 token = 1 MC, matching the public merged-public ledger.
 ///      Ownable2Step — no instant god-key handoff. Pause stops transfers/mints.
 contract MergedCredit is ERC20, Ownable2Step, Pausable {

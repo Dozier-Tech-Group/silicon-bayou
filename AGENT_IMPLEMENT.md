@@ -19,6 +19,7 @@ Keep the live collection honest and the repo fit for public clone:
 3. Holders are briefed before public social posts ([HOLDERS.md](HOLDERS.md)).
 4. Rotate contract ownership off the deploy EOA (Ownable2Step → Safe or operator). See [SECURITY.md](SECURITY.md) and [DEPLOYMENT.md](DEPLOYMENT.md).
 5. `npm test` and `npm run security` stay green.
+6. AccessDesk (USDG commercial access) is a **separate** deploy from BAYOU. 20–40% community pool, rest to treasury. No holder dividend. See [ACCESS.md](ACCESS.md).
 
 The mergedpublic.com `/bayou` page lives in a **sibling website repo**. Only open it when the operator asks to put a page on that site.
 
@@ -55,7 +56,7 @@ Live look: swamp gators `art/swamp-222/1.png`–`198.png`. OpenSea JSON: `metada
 - ERC-2981 royalty cap 10% (default 5%)
 - `freezeURI()` already executed
 
-Also in-tree (not required for the live drop): `MergedCredit.sol`, `BountyBoard.sol`.
+Behind the gators: `MergedCredit.sol` (MC) + `BountyBoard.sol` + `AccessDesk.sol`. Separate deploy (`npm run deploy:bounty:mainnet`). Only BAYOU holders can withdraw MC. AccessDesk takes USDG (20–40% community pool, rest treasury). Grants from the pool are discretionary — not yield. Do not mix this with `deploy:mainnet`.
 
 ### Tooling
 
