@@ -188,8 +188,8 @@
       }
       .collection {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.15rem;
+        grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+        gap: 0.7rem;
       }
       .card {
         display: block;
@@ -215,6 +215,7 @@
         aspect-ratio: 1 / 1;
         object-fit: cover;
         background: #0b1c16;
+        image-rendering: pixelated;
       }
       .media {
         position: relative;
@@ -241,11 +242,11 @@
       @media (prefers-reduced-motion: no-preference) {
         .media .loop { opacity: 1; }
       }
-      .body { padding: 1.05rem 1.1rem 1.2rem; }
+      .body { padding: 0.65rem 0.7rem 0.8rem; }
       .card h3 {
-        margin: 0 0 0.2rem;
+        margin: 0 0 0.15rem;
         font-family: "Space Grotesk", sans-serif;
-        font-size: 1.12rem;
+        font-size: 0.92rem;
       }
       .class {
         color: #14c8a6;
@@ -378,6 +379,20 @@
         margin: 0 0 0.2rem;
         font-family: "Space Grotesk", sans-serif;
       }
+      .dlg-copy {
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin: 0.55rem 0 0;
+        line-height: 1.5;
+      }
+      .dlg-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        margin-top: 0.85rem;
+        font-size: 0.9rem;
+      }
+      .dlg-links a { color: var(--edu); }
       .close {
         margin-top: 1rem;
         background: transparent;
@@ -389,7 +404,6 @@
         font: inherit;
       }
       @media (min-width: 720px) {
-        .collection { grid-template-columns: 1fr 1fr; }
         .network, .split { grid-template-columns: 1fr 1fr; }
       }
       @media (min-width: 960px) {
@@ -468,8 +482,9 @@
       <section id="collection">
         <h2>The collection</h2>
         <p class="section-copy">
-          Click a gator for the full working copy. The four class portraits are
-          the capability types. The live 198-token drop is on
+          Tokens 1–198 as frozen on Robinhood Chain — the same art OpenSea
+          serves. Engineering, Testing, Construction, and Capital are the
+          capability types, not a separate mint.
           <a href="https://opensea.io/collection/silicon-bayou" target="_blank" rel="noopener noreferrer">OpenSea</a>.
         </p>
         <div class="collection" id="gallery"></div>
@@ -562,81 +577,39 @@
           .replace(/'/g, "&#39;");
       }
 
-      const tokens = [
-        {
-          id: 1,
-          name: "Silicon Bayou #1",
-          cls: "Engineering Gator",
-          specialty: "Software & Electrical Systems",
-          description: "Louisiana alligator builder from Gator Parish, wired for software and electrical systems.",
-          scores: { Engineering: 92, Testing: 48, Construction: 36, Capital: 28 },
-          primary: "Engineering",
-          image: "../metadata/images/1.png",
-          animation: "tokens/1.html",
-        },
-        {
-          id: 2,
-          name: "Silicon Bayou #2",
-          cls: "Testing Gator",
-          specialty: "Inspection & Quality Assurance",
-          description: "Louisiana alligator inspector from Gator Parish, built for QA, safety, and verification.",
-          scores: { Engineering: 44, Testing: 94, Construction: 40, Capital: 30 },
-          primary: "Testing",
-          image: "../metadata/images/2.png",
-          animation: "tokens/2.html",
-        },
-        {
-          id: 3,
-          name: "Silicon Bayou #3",
-          cls: "Construction Gator",
-          specialty: "Field Construction & Welding",
-          description: "Louisiana alligator from Gator Parish in hard hat and field kit, built for site work and welding.",
-          scores: { Engineering: 38, Testing: 42, Construction: 93, Capital: 32 },
-          primary: "Construction",
-          image: "../metadata/images/3.png",
-          animation: "tokens/3.html",
-        },
-        {
-          id: 4,
-          name: "Silicon Bayou #4",
-          cls: "Capital Gator",
-          specialty: "Project Finance & Investment",
-          description: "Louisiana alligator financier from Gator Parish, dressed for project finance and investment.",
-          scores: { Engineering: 30, Testing: 34, Construction: 28, Capital: 95 },
-          primary: "Capital",
-          image: "../metadata/images/4.png",
-          animation: "tokens/4.html",
-        },
-      ];
+      const CONTRACT = "0xA81aEd6f3a5Faea95197786ba162e706Fd938d20";
+      const MAX_SUPPLY = 198;
 
-      function scoreRows(t) {
-        return Object.entries(t.scores)
-          .map(([k, v]) => {
-            const primary = k === t.primary ? " primary" : "";
-            const width = Number(v);
-            const safeWidth = Number.isFinite(width) ? Math.min(100, Math.max(0, width)) : 0;
-            return `<div class="attr${primary}"><span>${escapeHtml(k)}</span><span class="bar"><i style="width:${safeWidth}%"></i></span><b>${escapeHtml(v)}</b></div>`;
-          })
-          .join("");
+      function tokenRecord(id) {
+        const addr = CONTRACT.toLowerCase();
+        return {
+          id,
+          name: `Silicon Bayou #${id}`,
+          image: `../art/swamp-222/${id}.png`,
+          opensea: `https://opensea.io/item/robinhood/${addr}/${id}`,
+          explorer: `https://robinhoodchain.blockscout.com/token/${CONTRACT}/instance/${id}`,
+        };
       }
+
+      const tokens = Array.from({ length: MAX_SUPPLY }, (_, i) => tokenRecord(i + 1));
 
       const root = document.getElementById("gallery");
       const dialog = document.getElementById("inspect");
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      function livingInner(t) {
-        const still = `<img src="${escapeHtml(t.image)}" alt="${escapeHtml(t.name)}" />`;
-        if (reduceMotion) return still;
-        return `${still}<iframe class="loop" src="${escapeHtml(t.animation)}" title="${escapeHtml(t.name)} living portrait" tabindex="-1" aria-hidden="true"></iframe>`;
+      function stillInner(t) {
+        return `<img src="${escapeHtml(t.image)}" alt="${escapeHtml(t.name)}" loading="lazy" decoding="async" />`;
       }
 
       function openToken(t) {
-        const media = document.getElementById("inspect-media");
-        media.innerHTML = livingInner(t);
+        document.getElementById("inspect-media").innerHTML = stillInner(t);
         document.getElementById("inspect-title").textContent = t.name;
-        document.getElementById("inspect-class").textContent =
-          `${t.cls} · Gator Parish · ${t.specialty}`;
-        document.getElementById("inspect-attrs").innerHTML = scoreRows(t);
+        document.getElementById("inspect-class").textContent = "Swamp 198 · Gator Parish";
+        document.getElementById("inspect-attrs").innerHTML = `
+          <p class="dlg-copy">Live ERC-721 on Robinhood Chain — the same still frozen in metadata.</p>
+          <div class="dlg-links">
+            <a href="${escapeHtml(t.opensea)}" target="_blank" rel="noopener noreferrer">OpenSea</a>
+            <a href="${escapeHtml(t.explorer)}" target="_blank" rel="noopener noreferrer">Explorer</a>
+          </div>`;
         history.replaceState(null, "", `#${t.id}`);
         dialog.showModal();
       }
@@ -646,16 +619,12 @@
         el.type = "button";
         el.className = "card";
         el.id = `token-${t.id}`;
-        el.setAttribute("aria-label", `Open ${t.name}, ${t.cls}`);
+        el.setAttribute("aria-label", `Open ${t.name}`);
         el.innerHTML = `
-          <div class="media">${livingInner(t)}</div>
+          <div class="media">${stillInner(t)}</div>
           <div class="body">
             <h3>${escapeHtml(t.name)}</h3>
-            <div class="class">${escapeHtml(t.cls)} · Gator Parish</div>
-            <div class="attrs">
-              <div class="attr"><span>Specialty</span><span></span><b>${escapeHtml(t.specialty)}</b></div>
-              ${scoreRows(t)}
-            </div>
+            <div class="class">Swamp 198</div>
           </div>`;
         el.addEventListener("click", () => openToken(t));
         root.appendChild(el);

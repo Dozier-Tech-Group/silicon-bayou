@@ -13,7 +13,7 @@ function loadHtml(relPath) {
 }
 
 describe("gallery collection page", () => {
-  it("shows Silicon Bayou title and four gator cards", async () => {
+  it("shows Silicon Bayou title and 198 swamp gator cards", async () => {
     const { html, document, window } = loadHtml("gallery/index.html");
     await window.happyDOM.waitUntilComplete();
 
@@ -21,20 +21,23 @@ describe("gallery collection page", () => {
     expect(document.querySelector("h1")?.textContent).toMatch(/Silicon Bayou/);
 
     const cards = document.querySelectorAll(".card");
-    expect(cards.length).toBe(4);
+    expect(cards.length).toBe(198);
+    expect(document.querySelector("#token-1 img")?.getAttribute("src")).toMatch(
+      /art\/swamp-222\/1\.png/,
+    );
+    expect(document.querySelector("#token-198 img")?.getAttribute("src")).toMatch(
+      /art\/swamp-222\/198\.png/,
+    );
     const text = document.body.textContent;
-    expect(text).toMatch(/Engineering Gator/);
-    expect(text).toMatch(/Testing Gator/);
-    expect(text).toMatch(/Construction Gator/);
-    expect(text).toMatch(/Capital Gator/);
-    expect(text).toMatch(/Software & Electrical Systems/);
-    expect(text).toMatch(/Inspection & Quality Assurance/);
-    expect(text).toMatch(/Field Construction & Welding/);
-    expect(text).toMatch(/Project Finance & Investment/);
-    expect(text).toMatch(/Engineering/);
-    expect(text).toMatch(/Testing/);
-    expect(text).toMatch(/Construction/);
-    expect(text).toMatch(/Capital/);
+    expect(text).toMatch(/Silicon Bayou #1/);
+    expect(text).toMatch(/Silicon Bayou #198/);
+    expect(text).toMatch(/Swamp 198/);
+    expect(text).toMatch(/Gator Parish/);
+    expect(html).not.toMatch(/metadata\/images\/1\.png/);
+    expect(html).toMatch(/Engineering/);
+    expect(html).toMatch(/Testing/);
+    expect(html).toMatch(/Construction/);
+    expect(html).toMatch(/Capital/);
   });
 
   it("does not claim guaranteed yield", () => {
