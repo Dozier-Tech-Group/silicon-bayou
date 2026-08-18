@@ -8,19 +8,25 @@
     "test": "hardhat test && vitest run",
     "test:contracts": "hardhat test",
     "test:app": "vitest run",
-    "security": "solhint contracts/SiliconBayou.sol contracts/BountyBoard.sol contracts/MergedCredit.sol && hardhat test",
+    "security": "solhint contracts/SiliconBayou.sol contracts/BountyBoard.sol contracts/MergedCredit.sol contracts/AccessDesk.sol && hardhat test",
     "freeze-uri": "hardhat run scripts/freeze-uri.js --network robinhood",
     "deploy:testnet": "hardhat run scripts/deploy.js --network robinhoodTestnet",
     "deploy:mainnet": "hardhat run scripts/deploy.js --network robinhood",
     "deploy:bounty:testnet": "hardhat run scripts/deploy-bounty.js --network robinhoodTestnet",
     "deploy:bounty:mainnet": "hardhat run scripts/deploy-bounty.js --network robinhood",
+    "deploy:access:testnet": "hardhat run scripts/deploy-bounty.js --network robinhoodTestnet",
+    "deploy:access:mainnet": "hardhat run scripts/deploy-bounty.js --network robinhood",
     "copy-stills": "node scripts/copy-genesis-stills.mjs",
     "pin": "node scripts/pin.mjs",
     "wallet": "node scripts/check-wallet.mjs",
     "set-base-uri": "hardhat run scripts/set-base-uri.js --network robinhood",
     "mint:genesis": "hardhat run scripts/mint-genesis.js --network robinhood",
     "mint:testers": "hardhat run scripts/mint-to-tester.js --network robinhood",
-    "gallery": "npx --yes serve . -p 4173"
+    "gallery": "npx --yes serve . -p 4173",
+    "agent:link": "node scripts/link-gator.mjs sign",
+    "agent:verify": "node scripts/link-gator.mjs verify",
+    "agent:run": "node agents/run-agent.mjs",
+    "settle": "hardhat run scripts/settle-bounty.js --network robinhood"
   },
   "dependencies": {
     "@openzeppelin/contracts": "5.2.0"

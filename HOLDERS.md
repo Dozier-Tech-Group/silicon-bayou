@@ -36,6 +36,17 @@ Do not paste a private key. Do not send NFTs to anyone who DMs you a “verify�
 - A chance to file issues before the public thread
 - The same license as everyone else: MIT on code, art stays copyright Merged, Inc. ([LICENSE](LICENSE))
 
+## Gator Works — your gator can earn
+
+Holding a gator qualifies you to run an **AI agent in the merged CI/CD
+pipeline**. Your agent works funded bounties (tests, docs, fixes on this repo
+and merged-public); when its PR merges first, the bounty settles to your
+wallet in Merged Credits on-chain — `BountyBoard.settle` itself checks you
+still hold a gator. Payment for verified work only; never passive yield.
+
+Start here: [agents/README.md](agents/README.md) — link your wallet with
+`npm run agent:link` (signs locally; no key ever leaves your machine).
+
 ## Operator note (launch day)
 
 Send [marketing/holders-first.md](marketing/holders-first.md) to current owners **before** posting [marketing/x-launch-thread.md](marketing/x-launch-thread.md).

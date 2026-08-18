@@ -1,0 +1,6 @@
+{
+  "$schema": "Verified wallet-to-GitHub bindings for Gator Works agents.",
+  "message_template": "Silicon Bayou gator link v1: github=<github> wallet=<wallet>",
+  "how_to_join": "npm run agent:link  (see agents/README.md). Entries are accepted only after scripts/link-gator.mjs verify passes: signature recovers the wallet AND the wallet holds BAYOU on chain 4663.",
+  "agents": []
+}

@@ -69,6 +69,34 @@ Optional Foundry: `forge build --skip test --skip script` if `forge` is on PATH.
 
 No staking, no public sale, no proxy. Threat model: [SECURITY.md](SECURITY.md).
 
+## Behind the scenes: Merged Credits (MC)
+
+The gators are the public face. **Gator Works** ([agents/README.md](agents/README.md)) is the technology behind them: holders register a signed wallet-to-GitHub link, each registered gator gets an AI agent that works funded bounty tasks in the CI pipeline, and PRs that merge settle on the BountyBoard to the holder's wallet. Humans review every PR; credits move only when work merges.
+
+They need **Merged Credits** to get paid for verified work.
+
+- `contracts/MergedCredit.sol` — ERC-20 `MC`, 0 decimals (1 token = 1 credit). Owner mint, pause, Ownable2Step. **Not** yield, **not** a public sale, **not** ETH.
+- `contracts/BountyBoard.sol` — first-settle-wins bounties paid in MC. Only a wallet that holds a BAYOU gator can be settled or `withdraw`.
+
+This is a separate deploy from the NFT. **Do not** run `deploy:mainnet` (that is BAYOU, already live). When you are ready to put MC on chain 4663:
+
+```powershell
+npm run deploy:bounty:mainnet
+```
+
+That writes `deployments/credits.json` (MC, bounty board, and AccessDesk). Rehearse first with `npm run deploy:bounty:testnet`. Real-money cash-out of MC waits on legal/tax review — same rule as merged.
+
+## Commercial access (USDG)
+
+Compiled data on mergedpublic.com (the Louisiana spend census and similar) is licensed for commercial AI/crawl use through `AccessDesk.sol`:
+
+- Payer sends **USDG** on Robinhood 4663 (canonical `0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168` — not a lookalike USDC)
+- **20–40%** stays in a community pool on the desk; the rest goes to the operating treasury
+- Owner may later **grant** USDG from that pool (discretionary). Holding a gator does **not** entitle anyone to a cut
+- **MC** is the meter the gators use; `payCredit` sends credits to treasury in full
+
+Site terms: [mergedpublic.com/access](https://www.mergedpublic.com/access) (after that site deploy). Do not encode holder dividends.
+
 Owner-only scripts (`set-royalty`, `transfer-ownership`, `pause`) need a funded key in local `.env`. They do not mint more than 198.
 
 ## Art
@@ -87,8 +115,9 @@ Because metadata is GitHub-hosted on `master`, **do not rewrite** `metadata/swam
 ```text
 art/swamp-222/        Live token stills 1–198 (199–222 unmintable here)
 metadata/swamp/       Frozen OpenSea JSON
-contracts/            SiliconBayou.sol, BountyBoard.sol, MergedCredit.sol
+contracts/            SiliconBayou.sol, BountyBoard.sol, MergedCredit.sol, AccessDesk.sol
 deployments/          Live address and tx hashes
+ACCESS.md             Commercial USDG desk (not yield)
 gallery/              Local / GitHub Pages preview
 HOLDERS.md            Holder-first access
 CONTRIBUTING.md       How to clone, test, and PR
