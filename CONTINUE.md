@@ -56,7 +56,7 @@ Silicon Bayou (`BAYOU`) is the holdable swamp-gator layer. **Not** legal contrac
 ## Remaining work (do not redeploy BAYOU)
 
 1. **mergedpublic.com site deploy is still not published.** Sibling repo only; do not start a new site deploy unless a green PR is already waiting.
-2. **2-step ownership** off the deploy EOA toward a Safe (optional; or the operator EOA if Safe UI still lacks 4663). See [SECURITY.md](SECURITY.md). Sweep leftover deployer gas after rotation. Never fund the legacy `0x9747…` wallet.
+2. **2-step ownership** off the deploy EOA toward a Safe (optional; or the operator EOA if Safe UI still lacks 4663). See [SECURITY.md](SECURITY.md). **Staged 2026-08-18:** `node scripts/rotate-ownership.mjs` initiates the handover on all four contracts (BAYOU + credits rail); the operator then calls `acceptOwnership()` on each via Blockscout; `node scripts/sweep-deployer.mjs` sweeps leftover deployer gas only after every accept is confirmed. Never fund the legacy `0x9747…` wallet.
 3. **Gator Works** needs the repo secret `ANTHROPIC_API_KEY` before `.github/workflows/gator-agents.yml` will run real agent tasks. Workflow exists; it is a clean no-op without the key.
 4. **Holder-first open source** — [HOLDERS.md](HOLDERS.md). Brief owners before the public X thread.
 
