@@ -69,6 +69,17 @@ Optional Foundry: `forge build --skip test --skip script` if `forge` is on PATH.
 
 No staking, no public sale, no proxy. Threat model: [SECURITY.md](SECURITY.md).
 
+## Merged Public (MP)
+
+The second collection: **Merged Public**, 10,000 entities, live at
+[`0x5D000b230653E416FF41451525b144a6C2Ad7178`](https://robinhoodchain.blockscout.com/address/0x5D000b230653E416FF41451525b144a6C2Ad7178#code)
+on Robinhood Chain — launched pre-reveal 2026-08-19 with the generative provenance
+(seed + 110 trait weights + 6 rules) committed as an immutable onchain hash before any
+art existed. All 10,000 owner-minted to the treasury; every token serves the sealed
+metadata until `reveal()`. Record: `deployments/merged-public.robinhood.json`. Docs:
+[MP-VALUE.md](MP-VALUE.md) · [MP-GAME.md](MP-GAME.md) · [MP-LAUNCH.md](MP-LAUNCH.md).
+Same discipline as BAYOU: no yield, no APY, not legal instruments.
+
 ## Behind the scenes: Merged Credits (MC)
 
 The gators are the public face. **Gator Works** ([agents/README.md](agents/README.md)) is the technology behind them: holders register a signed wallet-to-GitHub link, each registered gator gets an AI agent that works funded bounty tasks in the CI pipeline, and PRs that merge settle on the BountyBoard to the holder's wallet. Humans review every PR; credits move only when work merges.

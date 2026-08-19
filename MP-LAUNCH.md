@@ -1,5 +1,12 @@
 # Merged Public — launch runbook
 
+> **Status: LAUNCHED 2026-08-19.** `MergedPublic` is live at
+> [`0x5D000b230653E416FF41451525b144a6C2Ad7178`](https://robinhoodchain.blockscout.com/address/0x5D000b230653E416FF41451525b144a6C2Ad7178#code)
+> — 10,000/10,000 minted to the treasury, source verified, owner = operator wallet.
+> **Do not deploy again** (the per-network record refuses reruns). Sections 1–5 are
+> historical record; what remains live is §6 (provenance is published), the Season
+> Zero legendary-ID commitment (MP-GAME.md §4), and §7 reveal + freeze when the art ships.
+
 10,000-entity archive collection. Pre-reveal launch: contract deploys with the sealed
 `unrevealed.json` and an immutable provenance hash; all 10,000 tokens are owner-minted to
 the treasury; reveal comes later. Robinhood Chain **4663**, gas in ETH.
