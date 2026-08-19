@@ -14,5 +14,7 @@
   "contractURITx": "0x36b713047db7a31f1d21a1adfccf711cc20d5e7e23dc8873f30b833bab3a4a90",
   "treasury": "0xBCCAecdBb4F0c7af32C8018486D0b52A474d9B4a",
   "royaltyTx": "0x3282fcee3555aeac6a6f66205cefe5d0d5548e18bd83f1d288ce5e7b6ae7da9f",
-  "mintedAt": "2026-08-19T04:06:48.259Z"
+  "mintedAt": "2026-08-19T04:06:48.259Z",
+  "ownershipPendingTo": "0xBCCAecdBb4F0c7af32C8018486D0b52A474d9B4a",
+  "ownershipTransferTx": "0x642f6e4c8af9e98e86a22f6ae37f3e38f37821fa73d050e9abb391754d79b635"
 }
