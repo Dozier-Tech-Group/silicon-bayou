@@ -19,9 +19,16 @@
   "owner": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
   "ownershipAccepted": "2026-08-19 — operator accepted via Blockscout; verified on-chain owner()=operator, pendingOwner()=0x0",
   "ipfs": {
-    "sealedImage": "ipfs://Qmcfky4x2r1L74BXcnakCEuHNmakqAKExUwBF4V8uHSV2s",
-    "unrevealed": "ipfs://QmRVfBB1CZXMZefiTKrQhRUpaKwe5P18X2mVLLo5x5rGR7",
-    "collection": "ipfs://Qmf8rhe9iQFN7u4TnDJ3E9E7QGWTW14bBSiFBpQts5YT4C",
-    "pinnedAt": "2026-08-19T04:46:02.150Z"
+    "sealedImage": "ipfs://QmZ6ySadSJYnB3DWwMdFHHqjK5fqBf9ATc22AGCeST7qYt",
+    "unrevealed": "ipfs://QmV16oCLgVzCzsPSVUbnEr4C1ZHyeaAMFvLvLqPugm79JX",
+    "collection": "ipfs://QmWTWxzksnhgrDifsK8nBLmshkPrQvKqDBgJQpEJfBRUDU",
+    "pinnedAt": "2026-08-19T06:08:36.238Z",
+    "note": "These are raw file CIDs, asserted equal to locally computed CIDv0 at pin time.",
+    "supersededWrapperCIDs": {
+      "reason": "First pin run (2026-08-19T04:46Z) got directory-wrapped by Pinata; these CIDs serve folder listings, not the documents. Chain must be repointed to the raw CIDs above.",
+      "sealedImage": "ipfs://Qmcfky4x2r1L74BXcnakCEuHNmakqAKExUwBF4V8uHSV2s",
+      "unrevealed": "ipfs://QmRVfBB1CZXMZefiTKrQhRUpaKwe5P18X2mVLLo5x5rGR7",
+      "collection": "ipfs://Qmf8rhe9iQFN7u4TnDJ3E9E7QGWTW14bBSiFBpQts5YT4C"
+    }
   }
 }

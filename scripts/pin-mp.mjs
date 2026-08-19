@@ -15,10 +15,19 @@
  *
  * Needs PINATA_JWT in .env. Never prints the token. Idempotent: re-pinning
  * identical bytes returns the same CID.
+ *
+ * HARD RULE: the CID Pinata returns must equal the CID computed locally from
+ * the exact bytes (ipfs-only-hash, CIDv0). Pinata has been observed wrapping
+ * single-file uploads in a directory — the wrapper CID then serves a folder
+ * listing instead of the document, which breaks tokenURI/contractURI parsing.
+ * The assertion makes that failure loud instead of silent.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const Hash = createRequire(import.meta.url)("ipfs-only-hash");
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 
@@ -40,9 +49,12 @@ const MP_DIR = join(root, "metadata", "mp");
 const RECORD = join(root, "deployments", "merged-public.robinhood.json");
 
 async function pin(path, name) {
+  const bytes = readFileSync(path);
+  const localCID = await Hash.of(bytes, { cidVersion: 0 });
   const form = new FormData();
-  form.append("file", new Blob([readFileSync(path)]), name);
-  form.append("pinataMetadata", JSON.stringify({ name: `merged-public/${name}` }));
+  form.append("file", new Blob([bytes]), name);
+  form.append("pinataMetadata", JSON.stringify({ name: `merged-public-${name}` }));
+  form.append("pinataOptions", JSON.stringify({ wrapWithDirectory: false, cidVersion: 0 }));
   const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
     method: "POST",
     headers: { Authorization: `Bearer ${JWT}` },
@@ -50,18 +62,30 @@ async function pin(path, name) {
   });
   if (!res.ok) throw new Error(`Pinata ${res.status} for ${name}: ${(await res.text()).slice(0, 200)}`);
   const { IpfsHash } = await res.json();
-  console.log(`pinned ${name}: ${IpfsHash}`);
+  if (IpfsHash !== localCID) {
+    throw new Error(
+      `HOLD: Pinata returned ${IpfsHash} for ${name} but the file's own CID is ${localCID} — ` +
+      `the upload got wrapped in a directory. Do NOT put the returned CID onchain.`
+    );
+  }
+  console.log(`pinned ${name}: ${IpfsHash} (matches local CID)`);
   return IpfsHash;
 }
 
-async function verify(cid, name) {
-  for (const gw of ["https://gateway.pinata.cloud/ipfs/", "https://ipfs.io/ipfs/"]) {
+// Trust nothing but the bytes: a gateway 200 can be a folder listing or an
+// interstitial page. Verified means the gateway returned the exact file.
+async function verify(cid, path, name) {
+  const want = readFileSync(path);
+  for (const gw of ["https://gateway.pinata.cloud/ipfs/", "https://ipfs.io/ipfs/", "https://dweb.link/ipfs/"]) {
     try {
-      const res = await fetch(gw + cid, { method: "HEAD", signal: AbortSignal.timeout(20000) });
-      if (res.ok) { console.log(`verified ${name} via ${gw}${cid}`); return true; }
+      const res = await fetch(gw + cid, { redirect: "follow", signal: AbortSignal.timeout(30000) });
+      if (!res.ok) continue;
+      const got = Buffer.from(await res.arrayBuffer());
+      if (got.equals(want)) { console.log(`verified ${name} byte-for-byte via ${gw}${cid}`); return true; }
+      console.log(`NOTE: ${gw}${cid} answered but with different bytes (listing/interstitial) — trying next gateway.`);
     } catch {}
   }
-  console.log(`WARNING: ${name} (${cid}) not yet resolving on public gateways — usually propagation lag, retry later.`);
+  console.log(`WARNING: ${name} (${cid}) not byte-verified on public gateways yet — the local-CID match above is the real guarantee; gateways usually catch up.`);
   return false;
 }
 
@@ -78,9 +102,9 @@ console.log("image fields rewritten to ipfs://" + imgCID);
 const unrevealedCID = await pin(join(MP_DIR, "unrevealed.json"), "unrevealed.json");
 const collectionCID = await pin(join(MP_DIR, "collection.json"), "collection.json");
 
-await verify(imgCID, "sealed.png");
-await verify(unrevealedCID, "unrevealed.json");
-await verify(collectionCID, "collection.json");
+await verify(imgCID, join(MP_DIR, "sealed.png"), "sealed.png");
+await verify(unrevealedCID, join(MP_DIR, "unrevealed.json"), "unrevealed.json");
+await verify(collectionCID, join(MP_DIR, "collection.json"), "collection.json");
 
 const record = JSON.parse(readFileSync(RECORD, "utf8"));
 record.ipfs = {

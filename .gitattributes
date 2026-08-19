@@ -1,2 +1,4 @@
 # The provenance file is an on-chain hash commitment: bytes must never be normalized.
 generator/merged-public/provenance.json -text
+# MP sealed metadata is pinned to IPFS by exact bytes (CIDs live onchain): no CRLF rewrites.
+metadata/mp/*.json -text
