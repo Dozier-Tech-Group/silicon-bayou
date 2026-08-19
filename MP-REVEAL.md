@@ -68,6 +68,14 @@ Build and test the machine before a single trait is painted:
   committed names. This is the tool auditors will race with at reveal.
 - **Gate A:** engine runs are bit-for-bit repeatable across machines, and the
   verifier passes the generated set clean.
+- **Gate A: PASSED 2026-08-19.** Three fresh-process engine runs produced
+  byte-identical output, independently reproduced by an adversarial verifier
+  fleet. The public verifier lives at `generator/merged-public/verify-mp.mjs`
+  (provenance-hash check incl. `--rpc` against the live contract, full
+  assignment-set validation, commitment verification); it passes the set
+  clean and caught 8/8 deliberately corrupted sets in mutation testing.
+  Engine and outputs stay in the private working area per the secrecy
+  boundary.
 
 ## Phase B — Season Zero commitment (before ANY clue, always before reveal)
 
@@ -82,6 +90,13 @@ Per MP-GAME.md §4 and MP-LAUNCH.md §7 step 0:
    voids the Hunt just as surely as leaking it.
 - **Gate B:** no Archive Game clue may be published before this lands. The
   Hunt does not open without it.
+- **Staged 2026-08-19, awaiting the operator.** The private
+  `commit-season-zero.mjs` draws the salt, writes
+  `game/season-zero/manifest.json`, and prints its keccak256;
+  `scripts/echo-manifest.mjs` (public) prints the echo transaction and
+  `--send` signs it with `TREASURY_PRIVATE_KEY`. Run order is law: back up
+  assignment + salt offline in two places FIRST, then commit the manifest,
+  then echo.
 
 ## Phase C — Art production (the human lane)
 
@@ -129,6 +144,15 @@ scale:
    `image` resolves, bytes match local.
 - **Gate E:** all of the above green, recorded in
   `deployments/merged-public.robinhood.json`.
+- **Tooling ready 2026-08-19.** `scripts/pin-mp-reveal.mjs` — local directory
+  CID computed first, hard assert against the returned CID, exit 3 until
+  gateway byte-verification completes (the reveal instructions print only on
+  a full pass). Known gap to close before reveal week: one throwaway
+  10,000-file parity pin to prove the HAMT-sharded path against Pinata
+  end-to-end (the local importer shards above 1,000 entries while the remote
+  shards by ~256KiB block size, so trees of ~1,001–4,000 small files will
+  loudly mismatch by design — the real 10,000-file trees are expected to
+  agree, but prove it cheaply first).
 
 ## Phase F — Reveal day (operator signs; order matters)
 

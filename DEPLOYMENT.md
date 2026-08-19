@@ -99,3 +99,9 @@ Solid arrows happened; dashed arrows are future flows.
 5. **Decide on 199–222.** The 24 special-edition images exist in the repo but
    are unmintable here. Either save them for a future second collection or
    explicitly park them.
+6. **Revoke the USDG conduit allowance.** Re-verified live 2026-08-19: an
+   unlimited USDG allowance from the operator to Seaport conduit
+   `0x963f00d3ff000064ffcba824b800c0000000c300` (the wallet's USDG balance is
+   currently 0 — a standing trap, not a live loss). One signature closes it:
+   `OPERATOR_PRIVATE_KEY=… node scripts/revoke-usdg-conduit.mjs --revoke`
+   (run it with no flags first for the read-only report). See SECURITY.md.

@@ -138,11 +138,18 @@ Do not deploy if either npm command fails. Do not mint in a “hardening” chan
 - No formal third-party audit. Tests are the gate, not a substitute for review before mainnet value.
 - Oracle (if set) can settle bounties; treat that key as privileged.
 - `MergedCredit` owner can mint arbitrary credits.
-- The operator/treasury wallet holds an **unlimited USDG allowance to the
-  shared Seaport conduit** (marketplace listing setup, 2026-08 audit finding):
-  a conduit-operator compromise drains the wallet's full USDG with no further
-  signature. Revoke (`approve(conduit, 0)`) when not actively trading; treat
-  every Seaport signature on this wallet as treasury-critical.
+- The operator wallet holds an **unlimited USDG allowance to the shared
+  Seaport conduit** `0x963f00d3ff000064ffcba824b800c0000000c300`
+  (marketplace listing setup, 2026-08 audit finding; **re-verified live
+  on-chain 2026-08-19** — the wallet's USDG balance is currently 0, so this
+  is a standing trap for future income, not a live loss): a conduit-operator
+  compromise drains the wallet's full USDG with no further signature.
+  Revoke with `node scripts/revoke-usdg-conduit.mjs` (read-only report by
+  default; `--revoke` signs with `OPERATOR_PRIVATE_KEY`) or manually via the
+  Blockscout token write tab (`approve(conduit, 0)`); treat every Seaport
+  signature on this wallet as treasury-critical. A second 2026-08 approval
+  (117.5 USDG to `0xb477…4af3`) was checked at the same time and is already
+  back at zero — no action needed.
 - The retired BAYOU deployer key (`0xBA98…aa71`) and the original census-gate
   Cloudflare login (gdozier110) are both lost. Neither controls anything
   (contracts rotated; worker migrated to the DTG account 2026-08-19), so both

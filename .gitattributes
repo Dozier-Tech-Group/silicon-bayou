@@ -2,3 +2,5 @@
 generator/merged-public/provenance.json -text
 # MP sealed metadata is pinned to IPFS by exact bytes (CIDs live onchain): no CRLF rewrites.
 metadata/mp/*.json -text
+# Season manifests are keccak256 hash commitments echoed on-chain: bytes must never be normalized.
+game/**/*.json -text

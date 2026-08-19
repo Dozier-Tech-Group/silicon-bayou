@@ -13,6 +13,9 @@ lib/
 .env
 .env.*
 !.env.example
+# MP reveal secrecy boundary (MP-REVEAL.md): engine, assignments, salt stay
+# out of the public repo until reveal day.
+private/
 *.log
 .DS_Store
 Thumbs.db

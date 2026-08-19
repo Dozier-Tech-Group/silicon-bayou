@@ -11,6 +11,7 @@ portraits plus 10 hand-made legendary 1/1s, on Robinhood Chain (4663).
 | `rules.json` | Exclusion rules R-01 through R-06 — the full rulebook, kept short on purpose. |
 | `provenance.json` | Canonical provenance: single-line JSON, recursively sorted keys, no extra whitespace, no trailing newline. **Byte-for-byte final.** |
 | `build-provenance.mjs` | Rebuilds `provenance.json` deterministically from `weights.json` + `rules.json` and prints its keccak256. |
+| `verify-mp.mjs` | The public verifier — the audit-race tool. Default: provenance bytes vs the recorded hash (`--rpc` adds the live on-chain check). `--assignment <file>`: full validation of a claimed 10,000-entity set (structure, trait membership, rules R-02–R-06, duplicate ban, min 2-trait distance). `--commitment`: verifies a revealed assignment + salt against the Season Zero manifest. Holds no secrets. |
 
 ## The audit path
 
