@@ -106,7 +106,8 @@ describe("fleet board page", () => {
   it("carries the standing compliance language and never the forbidden framing", () => {
     const html = readFileSync(resolve(root, "fleet-board/index.html"), "utf8");
     expect(html).toMatch(/payment for verified work, never for holding/);
-    expect(html).toMatch(/MC\s+moves only when work merges/);
+    expect(html).toMatch(/MC\s+settles only when work merges/);
+    expect(html).toMatch(/Settlement today reaches BAYOU-holding\s+wallets only/);
     expect(html).toMatch(/Not endorsed by Robinhood/);
     expect(html).toMatch(/it holds no keys, signs nothing, and never pays/);
     const lower = html.toLowerCase();
@@ -165,15 +166,16 @@ describe("fleet board data pipeline (stubbed sources)", () => {
     expect(text).toContain("MINT →");
     expect(text).toContain("PASS");
     expect(text).toContain("FAILURE");
-    expect(text).toContain("MC MOVES ONLY WHEN WORK MERGES");
+    expect(text).toContain("MC SETTLES ONLY WHEN WORK MERGES");
     // supply figures rendered as live numbers, not dashes
     expect(document.getElementById("supply-figures").textContent).toContain("10,000");
     expect(document.getElementById("supply-figures").textContent).toContain("198");
   });
 
-  it("shows honest empty states when sources return nothing", async () => {
+  it("shows honest empty states only after sources actually answered", async () => {
     const { board, document } = await loadBoard();
-    board.state.lastTick = Date.now();
+    board.state.scoutTick = Date.now();
+    board.state.githubTick = Date.now();
     board.state.bounties = [];
     board.state.transfers = [];
     board.state.runs = [];
@@ -182,5 +184,48 @@ describe("fleet board data pipeline (stubbed sources)", () => {
     expect(text).toContain("QUEUE CLEAR");
     expect(text).toContain("NO CREDIT MOVEMENTS YET");
     expect(text).toContain("NO FLEET RUNS RECORDED YET");
+  });
+
+  it("never claims an empty queue when Blockscout is unreachable", async () => {
+    const { board, document, window } = await loadBoard();
+    window.fetch = (url, opts) =>
+      String(url).includes("/api/v2/")
+        ? Promise.resolve({ ok: false, status: 500, json: () => Promise.resolve({}), headers: { get: () => null } })
+        : stubFetch(url, opts);
+    await board.githubTick(); // a GitHub-first render must not fake chain facts
+    let text = document.body.textContent;
+    expect(text).not.toContain("QUEUE CLEAR");
+    expect(text).not.toContain("NO CREDIT MOVEMENTS YET");
+    await board.chainTick(); // RPC ok, Blockscout 500s
+    text = document.body.textContent;
+    expect(text).not.toContain("QUEUE CLEAR");
+    expect(text).not.toContain("NO CREDIT MOVEMENTS YET");
+    expect(text).toContain("SOURCE UNREACHABLE");
+    expect(document.getElementById("block-height").textContent).toBe("40,258,129"); // chain data still live
+    expect(document.getElementById("supply-figures").textContent).not.toMatch(/OPEN BOUNTIES\s*0/);
+  });
+
+  it("follows Blockscout pagination so old bounties never fall off the board", async () => {
+    const page2Funded = { topics: [TOPIC_FUNDED, word(1000)], data: word(40),
+      block_timestamp: "2026-08-01T00:00:00.000000Z", transaction_hash: "0xfund0" };
+    const paged = (url) => {
+      const isPage2 = String(url).includes("block_number=");
+      return Promise.resolve({
+        ok: true, status: 200, headers: { get: () => null },
+        json: () => Promise.resolve(
+          isPage2
+            ? { items: [page2Funded], next_page_params: null }
+            : { items: FIXTURES.logs.items, next_page_params: { block_number: 1, index: 0, items_count: 50 } },
+        ),
+      });
+    };
+    const { board, window } = await loadBoard();
+    window.fetch = paged;
+    const all = await board.scoutAll("/addresses/x/logs");
+    expect(all.length).toBe(FIXTURES.logs.items.length + 1);
+    const bounties = board.decodeBounties(all);
+    const b1000 = bounties.find((x) => x.issueId === "1000");
+    expect(b1000).toBeTruthy();
+    expect(b1000.reward).toBe("40");
   });
 });

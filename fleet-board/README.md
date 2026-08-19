@@ -1,6 +1,6 @@
 # Fleet Operations Board
 
-The live transparency board for the Merged Public fleet, served at
+The live transparency board for the fleet behind mergedpublic.com, served at
 **https://www.mergedpublic.com/fleet/**. This directory is the **canonical
 source**; the website repo carries a byte-for-byte vendored copy at
 `public/fleet/` (keep them in sync — edit here first).
@@ -15,7 +15,7 @@ of the credits rail:
 | **SUPPLY**   | MP / BAYOU / MC figures, escrow, bounty counts | eth_call + Blockscout |
 | **DEMAND**   | the work queue — every bounty funded on the BountyBoard | BountyBoard event log |
 | **PIPELINE** | Gator Works fleet runs in CI                 | GitHub Actions API |
-| **LEDGER**   | every Merged Credit movement, labeled (mint / fund escrow / withdraw) | Blockscout token transfers |
+| **LEDGER**   | the latest Merged Credit movements, labeled (mint / fund escrow / withdraw) | Blockscout token transfers |
 
 ## How it works — the whole point
 

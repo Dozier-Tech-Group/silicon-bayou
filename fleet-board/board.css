@@ -247,6 +247,8 @@ a:focus-visible, button:focus-visible {
   padding: 0.4rem 0;
 }
 
+/* board.js doubles the ticker line; sliding by exactly half the track's own
+   width (= one copy) makes the loop seamless — no blank window, ever. */
 .tape-track {
   display: inline-block;
   white-space: nowrap;
@@ -254,13 +256,12 @@ a:focus-visible, button:focus-visible {
   font-size: 1.15rem;
   letter-spacing: 0.05em;
   color: var(--ink);
-  padding-left: 100%;
-  animation: tape 55s linear infinite;
+  animation: tape 45s linear infinite;
 }
 
 @keyframes tape {
   from { transform: translateX(0); }
-  to   { transform: translateX(-100%); }
+  to   { transform: translateX(-50%); }
 }
 
 /* ── how it works ─────────────────────────────────────────────────────── */
@@ -290,10 +291,21 @@ a:focus-visible, button:focus-visible {
   font-size: 0.75rem;
 }
 
-/* ── embed mode (?embed) — the board as a homepage section ────────────── */
+/* ── embed mode (?embed) — the board as a homepage section ─────────────
+   Compact enough to fit one viewport, so wheel input chains straight to the
+   host page instead of grinding an internal scroll. The long-form prose is
+   hidden but the compliance line ALWAYS stays visible. */
 
-body.embed .how { display: none; }
+body.embed .how { padding: 0.75rem 1.25rem 1rem; max-width: none; }
+body.embed .how h2,
+body.embed .how p:not(.compliance) { display: none; }
+body.embed .how .compliance { border-top: none; padding-top: 0; }
 body.embed .brand { font-size: clamp(1.3rem, 3.5vw, 1.9rem); }
+body.embed .panel { padding: 0.75rem 1rem 1rem; }
+body.embed .figures dd { font-size: 1.7rem; }
+/* cap long tables in the embed — the full board has no caps */
+body.embed #ledger-rows tr:nth-child(n + 7),
+body.embed #pipeline-rows tr:nth-child(n + 6) { display: none; }
 
 /* ── small screens ────────────────────────────────────────────────────── */
 

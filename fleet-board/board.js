@@ -105,6 +105,26 @@
     return res.json();
   }
 
+  /* Follow Blockscout pagination: each page hands back next_page_params to
+   * append as query params. Capped so one tick stays bounded. */
+  async function scoutAll(path, maxPages = 10) {
+    const items = [];
+    let params = null;
+    for (let i = 0; i < maxPages; i++) {
+      const qs = params
+        ? (path.includes("?") ? "&" : "?") +
+          new URLSearchParams(
+            Object.entries(params).filter(([, v]) => v !== null && v !== undefined),
+          ).toString()
+        : "";
+      const page = await scout(path + qs);
+      items.push(...(page.items || []));
+      params = page.next_page_params;
+      if (!params) break;
+    }
+    return items; // newest-first across all pages, as Blockscout returns them
+  }
+
   /* GitHub REST with a tiny ETag cache: a 304 answer is free — it does not
    * count against the keyless 60-requests-per-hour budget. */
   const etags = new Map();
@@ -184,8 +204,22 @@
     runs: [],
     taskTitles: new Map(), // issueId -> title, from agents/tasks.json
     sources: { chain: "pending", scout: "pending", github: "pending" },
+    // Set only when the matching source has ACTUALLY answered. "No data yet"
+    // and "verified empty" are different facts and render differently.
+    scoutTick: null,
+    githubTick: null,
     lastTick: null,
   };
+
+  /* Three-way placeholder: verified data may be empty; anything else is
+   * either still loading or a source outage — never claim a false zero. */
+  function placeholderRow(cols, source, reading, emptyText) {
+    const text =
+      source === "fail" ? "SOURCE UNREACHABLE — RETRYING…"
+      : source === "pending" ? reading
+      : emptyText;
+    return `<tr class="placeholder"><td colspan="${cols}">${text}</td></tr>`;
+  }
 
   /* ── rendering ────────────────────────────────────────────────────── */
 
@@ -206,8 +240,8 @@
       fig("BAYOU HOLDERS", live(state.holders.bayou), tokenUrl(CFG.contracts.bayou)) +
       fig("MC SUPPLY", live(state.mcSupply), tokenUrl(CFG.contracts.credit), "Merged Credits minted, read via eth_call") +
       fig("MC IN ESCROW", live(state.mcEscrow), addrUrl(bb), "MC held by the BountyBoard contract") +
-      fig("OPEN BOUNTIES", state.lastTick ? esc(fmt(open)) : "&mdash;", addrUrl(bb)) +
-      fig("SETTLED", state.lastTick ? esc(fmt(settled)) : "&mdash;", addrUrl(bb));
+      fig("OPEN BOUNTIES", state.scoutTick ? esc(fmt(open)) : "&mdash;", addrUrl(bb)) +
+      fig("SETTLED", state.scoutTick ? esc(fmt(settled)) : "&mdash;", addrUrl(bb));
   }
 
   function renderDemand() {
@@ -229,7 +263,8 @@
     });
     $("demand-rows").innerHTML = rows.length
       ? rows.join("")
-      : `<tr class="placeholder"><td colspan="5">QUEUE CLEAR — NO BOUNTIES FUNDED ON THE BOARD</td></tr>`;
+      : placeholderRow(5, state.scoutTick ? "ok" : state.sources.scout,
+          "READING THE EVENT LOG…", "QUEUE CLEAR — NO BOUNTIES FUNDED ON THE BOARD");
   }
 
   function renderLedger() {
@@ -244,7 +279,8 @@
     });
     $("ledger-rows").innerHTML = rows.length
       ? rows.join("")
-      : `<tr class="placeholder"><td colspan="4">NO CREDIT MOVEMENTS YET</td></tr>`;
+      : placeholderRow(4, state.scoutTick ? "ok" : state.sources.scout,
+          "READING TOKEN TRANSFERS…", "NO CREDIT MOVEMENTS YET");
   }
 
   function renderPipeline() {
@@ -259,7 +295,8 @@
     });
     $("pipeline-rows").innerHTML = rows.length
       ? rows.join("")
-      : `<tr class="placeholder"><td colspan="3">NO FLEET RUNS RECORDED YET</td></tr>`;
+      : placeholderRow(3, state.githubTick ? "ok" : state.sources.github,
+          "READING GITHUB ACTIONS…", "NO FLEET RUNS RECORDED YET");
   }
 
   function renderTicker() {
@@ -267,7 +304,7 @@
     if (state.block !== null) parts.push(`BLOCK ${fmt(state.block)}`);
     if (state.mcSupply !== null) parts.push(`MC SUPPLY ${fmt(state.mcSupply)}`);
     if (state.mcEscrow !== null) parts.push(`IN ESCROW ${fmt(state.mcEscrow)}`);
-    if (state.lastTick) {
+    if (state.scoutTick) {
       parts.push(`OPEN BOUNTIES ${state.bounties.filter((b) => !b.settled).length}`);
       parts.push(`SETTLED ${state.bounties.filter((b) => b.settled).length}`);
     }
@@ -278,9 +315,12 @@
       const c = classifyTransfer(t, CFG.contracts.bountyBoard);
       parts.push(`LATEST MOVEMENT: ${c.text} ${fmt(t.total?.value ?? 0)} MC`);
     }
-    parts.push("MC MOVES ONLY WHEN WORK MERGES");
+    parts.push("MC SETTLES ONLY WHEN WORK MERGES");
     const line = parts.join(" · ") + " · ";
-    $("ticker").textContent = line + line; // doubled so the loop never shows a gap
+    // Doubled + translateX(-50%) = a seamless loop; reduced-motion gets the
+    // line once, statically, so nothing reads duplicated.
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("ticker").textContent = reduced ? line : line + line;
   }
 
   function renderStatus() {
@@ -339,15 +379,16 @@
         scout(`/tokens/${c.credit}`),
         scout(`/tokens/${c.bayou}`),
         scout(`/tokens/${c.mergedPublic}`),
-        scout(`/addresses/${c.bountyBoard}/logs`),
+        scoutAll(`/addresses/${c.bountyBoard}/logs`), // paginated: old bounties never fall off
         scout(`/tokens/${c.credit}/transfers`),
       ]);
       state.holders.credit = Number(mc.holders_count ?? mc.holders) || 0;
       state.holders.bayou = Number(bayou.holders_count ?? bayou.holders) || 0;
       state.holders.mergedPublic = Number(mp.holders_count ?? mp.holders) || 0;
-      state.bounties = decodeBounties(logs.items || []);
+      state.bounties = decodeBounties(logs);
       state.transfers = transfers.items || [];
       state.sources.scout = "ok";
+      state.scoutTick = Date.now();
     } catch (e) {
       state.sources.scout = "fail";
       console.log("[fleet-board] blockscout read failed:", e.message);
@@ -364,6 +405,7 @@
       const runs = await github(`repos/${CFG.repo}/actions/workflows/gator-agents.yml/runs?per_page=8`);
       state.runs = runs.workflow_runs || [];
       state.sources.github = "ok";
+      state.githubTick = Date.now();
     } catch (e) {
       state.sources.github = "fail";
       console.log("[fleet-board] github read failed:", e.message);
@@ -386,6 +428,7 @@
   /* ── clock, countdown, scheduling ─────────────────────────────────── */
 
   let nextChainTick = 0;
+  let nextGithubTick = 0;
 
   function clockTick() {
     const now = new Date();
@@ -405,15 +448,17 @@
     setInterval(clockTick, 1000);
 
     const runChain = () => { nextChainTick = Date.now() + CFG.chainTickSeconds * 1000; chainTick(); };
+    const runGithub = () => { nextGithubTick = Date.now() + CFG.githubTickSeconds * 1000; githubTick(); };
     runChain();
-    githubTick();
+    runGithub();
     loadTaskTitles();
 
     setInterval(() => { if (!document.hidden) runChain(); }, CFG.chainTickSeconds * 1000);
-    setInterval(() => { if (!document.hidden) githubTick(); }, CFG.githubTickSeconds * 1000);
+    setInterval(() => { if (!document.hidden) runGithub(); }, CFG.githubTickSeconds * 1000);
     document.addEventListener("visibilitychange", () => {
       // returning to a hidden tab whose data went stale: refresh immediately
       if (!document.hidden && Date.now() > nextChainTick) runChain();
+      if (!document.hidden && Date.now() > nextGithubTick) runGithub();
     });
   }
 
@@ -421,7 +466,7 @@
    * poking around in the console — the whole pipeline is inspectable. */
   window.FleetBoard = {
     CFG, TOPIC, SEL, state,
-    decodeBounties, classifyTransfer, classifyRun,
+    decodeBounties, classifyTransfer, classifyRun, scoutAll,
     chainTick, githubTick, loadTaskTitles, renderAll, init,
   };
 
