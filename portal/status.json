@@ -1,0 +1,103 @@
+{
+  "updated": "2026-08-19",
+  "note": "Updated by build sessions from the repo records it cites — not a live feed.",
+  "lanes": [
+    {
+      "id": "bayou",
+      "name": "Silicon Bayou (BAYOU)",
+      "status": "live",
+      "summary": "198/198 minted on chain 4663, URI frozen, listed on OpenSea 2026-08-17, royalty receiver fixed the same day (tx 0x30de93de064a376dbe0a9e494d3d6a96dd846e95e7fec886882e1960f1c6b3c0).",
+      "record": {
+        "label": "DEPLOYMENT.md",
+        "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/DEPLOYMENT.md"
+      }
+    },
+    {
+      "id": "credits",
+      "name": "Merged Credits rail",
+      "status": "live",
+      "summary": "MergedCredit, BountyBoard, and AccessDesk live on chain 4663 since 2026-08-18, with 50 MC escrowed across three funded open bounties (1001 = 25 MC, 1002 = 15 MC, 1003 = 10 MC).",
+      "record": {
+        "label": "deployments/credits.json",
+        "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/deployments/credits.json"
+      }
+    },
+    {
+      "id": "mp",
+      "name": "Merged Public",
+      "status": "sealed pre-reveal",
+      "summary": "10,000 minted sealed to the treasury 2026-08-19 with the immutable provenance hash committed at deploy; the reveal follows the MP-REVEAL.md runbook, phase by phase, gate by gate.",
+      "record": {
+        "label": "deployments/merged-public.robinhood.json",
+        "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/deployments/merged-public.robinhood.json"
+      },
+      "phases": [
+        {
+          "id": "A",
+          "name": "Assignment engine + public verifier",
+          "state": "in-progress",
+          "gate": "Engine runs are bit-for-bit repeatable across machines and the public verifier passes the generated set clean.",
+          "note": "Engine + verifier fleet running 2026-08-19. The engine stays private until reveal by design (MP-REVEAL.md); the verifier is public from day one."
+        },
+        {
+          "id": "B",
+          "name": "Season Zero commitment",
+          "state": "todo",
+          "gate": "Gated on Phase A plus an operator signature for the on-chain echo — no Archive Game clue may be published before this lands."
+        },
+        {
+          "id": "C",
+          "name": "Art production",
+          "state": "todo",
+          "gate": "Every trait key in weights.json resolves to exactly one asset file (plus the hat-fit variants) and a random 100-entity contact sheet passes visual review.",
+          "note": "The human lane. Not started."
+        },
+        {
+          "id": "D",
+          "name": "Composite + metadata",
+          "state": "todo",
+          "gate": "Exactly 10,000 metadata files, every JSON parses, the public verifier passes the set, and 50 random tokens plus all 10 legendaries spot-render clean."
+        },
+        {
+          "id": "E",
+          "name": "Pin at directory scale",
+          "state": "in-progress",
+          "gate": "Locally computed directory CIDs match the returned CIDs, a redundant second pin exists, and at least 20 random tokens byte-verify through two public gateways.",
+          "note": "Pin tooling being built 2026-08-19, same discipline as scripts/pin-mp.mjs."
+        },
+        {
+          "id": "F",
+          "name": "Reveal day",
+          "state": "todo",
+          "gate": "Commitment opened publicly, reveal(baseURI) signed by the operator, tokenURI readback exact-matches, marketplace refresh swept."
+        },
+        {
+          "id": "G",
+          "name": "Soak + freeze",
+          "state": "todo",
+          "gate": "A 7-14 day soak with marketplaces rendering correctly and no metadata bug reports outstanding, then the irreversible freezeURI()."
+        }
+      ]
+    },
+    {
+      "id": "game",
+      "name": "The Archive Game",
+      "status": "design published",
+      "summary": "The rulebook is public in MP-GAME.md; Season Zero opens only when its manifest hash is published in this repo and echoed on chain 4663, which has not happened yet.",
+      "record": {
+        "label": "MP-GAME.md",
+        "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/MP-GAME.md"
+      }
+    },
+    {
+      "id": "site",
+      "name": "mergedpublic.com",
+      "status": "live",
+      "summary": "The census explorer and ops desk are live; the build transparency portal ships this week.",
+      "record": {
+        "label": "mergedpublic.com",
+        "url": "https://www.mergedpublic.com"
+      }
+    }
+  ]
+}

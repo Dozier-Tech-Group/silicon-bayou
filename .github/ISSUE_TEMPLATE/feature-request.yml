@@ -1,0 +1,45 @@
+name: Feature request
+description: Ask for something to exist on the merged network. Demand is measured in thumbs-up reactions on the issue.
+title: "[request] "
+labels:
+  - feature-request
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What should exist
+      description: Describe the thing you want built, as concretely as you can.
+      placeholder: A page that..., a tool that..., a record of...
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why / who benefits
+      description: Who would use this and what it would change for them.
+    validations:
+      required: true
+  - type: dropdown
+    id: lane
+    attributes:
+      label: Which lane
+      description: Where this belongs. Pick "other" if none fit.
+      options:
+        - merged.edu
+        - merged.sport
+        - merged.map
+        - merged.core
+        - Silicon Bayou
+        - Merged Public
+        - the Archive Game
+        - the website
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: links
+    attributes:
+      label: Links / references
+      description: Anything that shows what you mean — prior art, repo files, pages.
+    validations:
+      required: false

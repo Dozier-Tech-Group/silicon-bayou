@@ -1,0 +1,124 @@
+{
+  "updated": "2026-08-19",
+  "note": "A fleet is a group of AI agents launched together in one build session for one mission; standing entries are always-on automation, runs are dated launches.",
+  "standing": [
+    {
+      "id": "gator-lander",
+      "name": "Gator lander",
+      "role": "Auto-merge workflow that squash-merges green PRs across Dozier-Tech-Group every 30 minutes, with a deny-list guarding the frozen art and deploy paths.",
+      "status": "dormant",
+      "detail": "Dormant until the DTG_MERGE_PAT (or DTG_CI_PAT) repo secret is set."
+    },
+    {
+      "id": "gator-works-ci",
+      "name": "Gator Works CI agents",
+      "role": "CI agents that work funded BountyBoard tasks on behalf of registered BAYOU holders; merged PRs settle on-chain.",
+      "status": "dormant",
+      "detail": "Dormant until the ANTHROPIC_API_KEY repo secret is set."
+    },
+    {
+      "id": "dependabot",
+      "name": "Dependabot",
+      "role": "GitHub's dependency-update bot, watching the org's manifests.",
+      "status": "active",
+      "detail": "Active — merged website PRs #34-#40 this week."
+    }
+  ],
+  "runs": [
+    {
+      "id": "build-portal",
+      "date": "2026-08-19",
+      "name": "Build portal fleet",
+      "mission": "Ship the merged transparency portal: the data spine in this repo plus the pages that render it on mergedpublic.com/build.",
+      "agents": [
+        {
+          "role": "data spine (2 agents)",
+          "brief": "Author portal/status.json, portal/fleets.json, the letters index, and the feature-request intake in this public repo."
+        },
+        {
+          "role": "site (4 agents)",
+          "brief": "Build the /build pages on mergedpublic.com that fetch and render this data."
+        },
+        {
+          "role": "verification (3 agents)",
+          "brief": "Adversarial check of data accuracy, schema agreement between the two repos, and compliance language."
+        }
+      ],
+      "status": "running",
+      "outcomes": [],
+      "links": [
+        {
+          "label": "portal/ data",
+          "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/tree/master/portal"
+        }
+      ]
+    },
+    {
+      "id": "mp-phase-a-build",
+      "date": "2026-08-19",
+      "name": "MP Phase A build fleet",
+      "mission": "Build and adversarially verify the Merged Public assignment engine, public verifier, and reveal pin tooling ahead of the Season Zero commitment.",
+      "agents": [
+        {
+          "role": "builder",
+          "brief": "Assignment engine — stays private until reveal by design (MP-REVEAL.md)."
+        },
+        {
+          "role": "builder",
+          "brief": "Public verifier (verify-mp) — holds no secrets, public from day one."
+        },
+        {
+          "role": "builder",
+          "brief": "Directory-scale pin tool for the reveal image and metadata trees."
+        },
+        {
+          "role": "builder",
+          "brief": "USDG-revoke and manifest-echo scripts for the operator to sign."
+        },
+        {
+          "role": "verifier",
+          "brief": "Determinism re-run — engine output must be bit-for-bit repeatable."
+        },
+        {
+          "role": "verifier",
+          "brief": "Mutation tests — the verifier must catch deliberately corrupted sets."
+        },
+        {
+          "role": "verifier",
+          "brief": "Script safety review of everything the operator will be asked to sign."
+        }
+      ],
+      "status": "running",
+      "outcomes": [],
+      "links": [
+        {
+          "label": "MP-REVEAL.md",
+          "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/MP-REVEAL.md"
+        }
+      ]
+    },
+    {
+      "id": "six-lane-estate-audit",
+      "date": "2026-08-19",
+      "name": "Six-lane estate audit",
+      "mission": "Audit the whole estate — contracts, keys, website, and operations — across six lanes and record every finding.",
+      "agents": [
+        {
+          "role": "auditors (6 lanes)",
+          "brief": "One audit lane each across the estate; findings recorded in SECURITY.md and the session report."
+        }
+      ],
+      "status": "done",
+      "outcomes": [
+        "Website hardening shipped: CSP, HSTS, robots, worker origin gate (merged-website PR #33).",
+        "Open finding recorded in SECURITY.md: an unlimited USDG allowance from the operator wallet to a shared Seaport conduit; revoke pending an operator signature."
+      ],
+      "links": [
+        {
+          "label": "SECURITY.md",
+          "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/SECURITY.md"
+        }
+      ]
+    }
+  ]
+}

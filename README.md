@@ -37,6 +37,10 @@ The four capability classes — Engineering, Testing, Construction, Capital — 
 
 Roadmap that is **not built**: [PLAN.md](PLAN.md). Do not implement it unless asked.
 
+### Build portal
+
+The build itself is public at [mergedpublic.com/build](https://www.mergedpublic.com/build) (shipping this week). It shows lane-by-lane status, the agent fleets that ran, and open feature requests — every number traceable to a repo file, a GitHub API response, or an on-chain record. The data behind it is `portal/` and `letters/` in this repo, updated by build sessions.
+
 ## Install
 
 Node.js 20+. Hardhat is the compile/test path.
