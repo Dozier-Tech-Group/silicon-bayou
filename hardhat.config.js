@@ -27,7 +27,6 @@ module.exports = {
     robinhoodTestnet: {
       url:
         process.env.RH_TESTNET_RPC_URL ||
-        process.env.RPC_URL ||
         "https://rpc.testnet.chain.robinhood.com",
       chainId: 46630,
       accounts,

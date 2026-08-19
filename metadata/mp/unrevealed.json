@@ -1,0 +1,12 @@
+{
+  "name": "Merged Public — Sealed",
+  "description": "This entity is sealed in the Merged Public archive until reveal. Its provenance — seed 20260818, trait weights, and merge rules — was committed onchain as an immutable hash at deploy, verifiable before a single image existed.",
+  "image": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/mp/sealed.png",
+  "external_url": "https://www.mergedpublic.com",
+  "attributes": [
+    {
+      "trait_type": "Status",
+      "value": "Sealed"
+    }
+  ]
+}
