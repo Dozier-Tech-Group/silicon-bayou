@@ -44,8 +44,12 @@
           "brief": "Adversarial check of data accuracy, schema agreement between the two repos, and compliance language."
         }
       ],
-      "status": "running",
-      "outcomes": [],
+      "status": "done",
+      "outcomes": [
+        "The data spine went live in this repo (portal/, letters/ with letter 001, the feature-request intake) on 2026-08-19.",
+        "The /build portal shipped as merged-website PR #41, awaiting the operator's merge — merge is the ship decision.",
+        "Three adversarial verifiers filed findings (a mislabeled request-form URL, unlabeled session-updated stats, a self-contradicting correction policy, and more) — all fixed before the PR opened."
+      ],
       "links": [
         {
           "label": "portal/ data",
@@ -88,12 +92,44 @@
           "brief": "Script safety review of everything the operator will be asked to sign."
         }
       ],
-      "status": "running",
-      "outcomes": [],
+      "status": "done",
+      "outcomes": [
+        "Gate A passed: three fresh-process engine runs byte-identical, and an independent verifier reproduced the output byte-for-byte.",
+        "The public verifier generator/merged-public/verify-mp.mjs shipped — it caught 8 of 8 deliberately corrupted assignment sets in mutation testing and passes live against the on-chain provenance hash.",
+        "The directory-scale pin tool proved its core guarantee on a real test pin: the locally computed directory CID matched the pin service's byte-for-byte.",
+        "The script-safety verifier found real defects in the operator scripts (a key-echoing error path, silent unknown-flag fallthrough) — closed by the hardening fleet the same day."
+      ],
       "links": [
         {
           "label": "MP-REVEAL.md",
           "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/MP-REVEAL.md"
+        }
+      ]
+    },
+    {
+      "id": "mp-scripts-hardening",
+      "date": "2026-08-19",
+      "name": "MP scripts hardening fleet",
+      "mission": "Close the nine findings from the Phase A script-safety review and prove each one closed by independent re-execution, not by trusting the fixer.",
+      "agents": [
+        {
+          "role": "fixer",
+          "brief": "Apply the enumerated hardening list to the owner scripts, the pin tool, the public verifier, and the commitment script."
+        },
+        {
+          "role": "adversarial re-verifier",
+          "brief": "Re-demonstrate every finding closed: fake-key leak probes on every failure path, misspelled-flag refusals before any network call, sample-selection proofs."
+        }
+      ],
+      "status": "done",
+      "outcomes": [
+        "All nine findings closed: key handling is value-free on every failure path, unknown flags refuse before any network or key handling, and the reveal verification sample always includes tokens 1 and 10000.",
+        "Regression sweep clean: the live allowance report, the deterministic pin dry-run, and the public verifier all still pass."
+      ],
+      "links": [
+        {
+          "label": "SECURITY.md",
+          "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/SECURITY.md"
         }
       ]
     },

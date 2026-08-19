@@ -35,15 +35,16 @@
         {
           "id": "A",
           "name": "Assignment engine + public verifier",
-          "state": "in-progress",
+          "state": "done",
           "gate": "Engine runs are bit-for-bit repeatable across machines and the public verifier passes the generated set clean.",
-          "note": "Engine + verifier fleet running 2026-08-19. The engine stays private until reveal by design (MP-REVEAL.md); the verifier is public from day one."
+          "note": "Gate A passed 2026-08-19: fresh-process engine runs byte-identical and independently reproduced; the public verifier (generator/merged-public/verify-mp.mjs) passes the set clean and survived mutation testing. The engine stays private until reveal by design (MP-REVEAL.md)."
         },
         {
           "id": "B",
           "name": "Season Zero commitment",
-          "state": "todo",
-          "gate": "Gated on Phase A plus an operator signature for the on-chain echo — no Archive Game clue may be published before this lands."
+          "state": "in-progress",
+          "gate": "Gated on Phase A plus an operator signature for the on-chain echo — no Archive Game clue may be published before this lands.",
+          "note": "Tooling staged 2026-08-19; what remains is the operator's: back up the assignment and salt offline, publish the manifest, sign the treasury echo."
         },
         {
           "id": "C",
@@ -63,7 +64,7 @@
           "name": "Pin at directory scale",
           "state": "in-progress",
           "gate": "Locally computed directory CIDs match the returned CIDs, a redundant second pin exists, and at least 20 random tokens byte-verify through two public gateways.",
-          "note": "Pin tooling being built 2026-08-19, same discipline as scripts/pin-mp.mjs."
+          "note": "Tooling ready and adversarially verified 2026-08-19 (scripts/pin-mp-reveal.mjs — local CID first, hard assert against the pin service). The gate itself runs at reveal; one throwaway 10,000-file parity pin remains before reveal week."
         },
         {
           "id": "F",
