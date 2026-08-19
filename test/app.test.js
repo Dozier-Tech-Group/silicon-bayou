@@ -7,7 +7,12 @@ const root = resolve(import.meta.dirname, "..");
 
 function loadHtml(relPath) {
   const html = readFileSync(resolve(root, relPath), "utf8");
-  const window = new Window({ url: "https://alpha.example/gallery/" });
+  // happy-dom >=20 disables script evaluation by default (its VM-escape CVE
+  // fix). These tests render only first-party gallery HTML, so opt back in.
+  const window = new Window({
+    url: "https://alpha.example/gallery/",
+    settings: { enableJavaScriptEvaluation: true },
+  });
   window.document.write(html);
   return { html, window, document: window.document };
 }
