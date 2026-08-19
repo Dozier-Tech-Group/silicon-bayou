@@ -1,0 +1,55 @@
+name: Gator lander
+
+# Org-wide "land on default branch" loop. Safe by construction:
+# - no-op until DTG_MERGE_PAT or DTG_CI_PAT is configured (same gate as Gator Works)
+# - never force-pushes, never deletes branches, never reruns failed workflows
+# - skip strings and deny-list live in agents/land-decision.mjs (public)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Log decisions only; do not merge or comment"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "13,43 * * * *" # every 30 minutes, offset from the hour
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  land:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for org merge PAT
+        id: gate
+        env:
+          MERGE_PAT: ${{ secrets.DTG_MERGE_PAT }}
+          CI_PAT: ${{ secrets.DTG_CI_PAT }}
+        run: |
+          if [ -z "${MERGE_PAT}${CI_PAT}" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "DTG_MERGE_PAT / DTG_CI_PAT secret not configured - Gator lander is dormant."
+            echo "Add a PAT with repo + pull request write across Dozier-Tech-Group."
+            echo "Prefer repo secret DTG_MERGE_PAT; DTG_CI_PAT also works if it already has those scopes."
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.enabled == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.enabled == 'true'
+        with:
+          node-version: 20
+
+      - name: Land green PRs
+        if: steps.gate.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DTG_MERGE_PAT || secrets.DTG_CI_PAT }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '0' }}
+          LAND_ORG: Dozier-Tech-Group
+        run: node agents/land-prs.mjs

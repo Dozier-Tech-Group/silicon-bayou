@@ -26,6 +26,7 @@
     "agent:link": "node scripts/link-gator.mjs sign",
     "agent:verify": "node scripts/link-gator.mjs verify",
     "agent:run": "node agents/run-agent.mjs",
+    "agent:land": "node agents/land-prs.mjs",
     "settle": "hardhat run scripts/settle-bounty.js --network robinhood",
     "fund-bounties": "hardhat run scripts/fund-bounties.js --network robinhood"
   },

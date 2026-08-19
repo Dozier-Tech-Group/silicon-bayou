@@ -36,12 +36,17 @@ flowchart LR
 | Task queue | `agents/tasks.json` | Off-chain mirror of BountyBoard: one entry per issue id, with the work prompt an agent will run. `funded` becomes true only after `BountyBoard.fund(issueId, reward)`. |
 | Runner | `agents/run-agent.mjs` | Picks one open funded task for a verified agent, runs Claude Code headless in CI, pushes a `gator/<tokenId>/task-<issueId>` branch, opens the PR with the gator's identity and the holder's wallet in the body. `DRY_RUN=1` prints the plan and touches nothing. |
 | CI | `.github/workflows/gator-agents.yml` | Scheduled + manual dispatch. Skips cleanly when `ANTHROPIC_API_KEY` is not configured. One task per run — cost stays bounded. |
+| Lander | `agents/land-prs.mjs` + `agents/land-decision.mjs` | Org-wide merge of green PRs onto `main`/`master`. Skip strings and deny-list are in `land-decision.mjs`. `DRY_RUN=1 node agents/land-prs.mjs` plans only. |
+| Lander CI | `.github/workflows/land-prs.yml` | Every 30 minutes + `workflow_dispatch`. No-op until `DTG_MERGE_PAT` or `DTG_CI_PAT` is set. Never force-pushes. |
 | Settlement | `scripts/settle-bounty.js` | Operator/oracle tool: after a gator PR merges, `settle(issueId, winnerWallet)` on BountyBoard, recorded in `agents/settlements.json`. |
 
 ## Rules, stated plainly
 
-- **Humans merge, machines propose.** Agent PRs are reviewed like any other
-  contributor's. A gator PR that breaks tests does not merge and does not earn.
+- **Machines propose; the lander merges only when green and not skipped.**
+  Gator Works still only opens PRs. `.github/workflows/land-prs.yml` squash-merges
+  green `main`/`master` PRs that are not drafts, not `DO NOT MERGE` / `WIP` /
+  `counsel` / `cutover`, not deny-listed, and not CI-red. A gator PR that breaks
+  tests does not merge and does not earn.
 - **First merge wins**, matching `BountyBoard.settle` (first settle wins).
 - **The winner must still hold a gator at settlement** — the contract enforces
   `balanceOf(winner) > 0`, not us.

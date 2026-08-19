@@ -58,6 +58,8 @@ Do **not** run `npm run deploy:mainnet` or `deploy:testnet` unless the operator 
 
 Do **not** force push. Do **not** change git config. Do **not** commit `.env`. Do not commit other agents' dirty files unless the operator asked. Prefer a commit that is only the files you were told to land.
 
+**Gator lander** (`.github/workflows/land-prs.yml`, `agents/land-prs.mjs`) squash-merges green PRs onto `main`/`master` across Dozier-Tech-Group every 30 minutes. It skips drafts, `DO NOT MERGE` / `WIP` / `counsel` / `cutover`, red or pending CI, and deny-list files (live swamp art/metadata, `.env`, `deploy:mainnet`, BAYOU supply/URI). It never force-pushes. Dormant until repo secret `DTG_MERGE_PAT` or `DTG_CI_PAT` is set.
+
 ## Out of scope unless asked
 
 SBIR engine, crew staking, 10k pixel drop, full KYC, fake bridges, reward tokens, public sale, write-access into merged-public / merged.core.
