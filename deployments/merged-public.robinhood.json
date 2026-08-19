@@ -17,5 +17,11 @@
   "mintedAt": "2026-08-19T04:06:48.259Z",
   "ownershipTransferTx": "0x0e7fbd134d8ab768d1c82f8ffeb75e3de2a3afa490e1299cb1786d1ef7f1e9b1",
   "owner": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
-  "ownershipAccepted": "2026-08-19 \u2014 operator accepted via Blockscout; verified on-chain owner()=operator, pendingOwner()=0x0"
+  "ownershipAccepted": "2026-08-19 — operator accepted via Blockscout; verified on-chain owner()=operator, pendingOwner()=0x0",
+  "ipfs": {
+    "sealedImage": "ipfs://Qmcfky4x2r1L74BXcnakCEuHNmakqAKExUwBF4V8uHSV2s",
+    "unrevealed": "ipfs://QmRVfBB1CZXMZefiTKrQhRUpaKwe5P18X2mVLLo5x5rGR7",
+    "collection": "ipfs://Qmf8rhe9iQFN7u4TnDJ3E9E7QGWTW14bBSiFBpQts5YT4C",
+    "pinnedAt": "2026-08-19T04:46:02.150Z"
+  }
 }
