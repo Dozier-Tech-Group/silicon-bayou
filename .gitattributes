@@ -1,0 +1,2 @@
+# The provenance file is an on-chain hash commitment: bytes must never be normalized.
+generator/merged-public/provenance.json -text
