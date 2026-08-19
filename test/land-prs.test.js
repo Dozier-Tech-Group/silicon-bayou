@@ -13,6 +13,8 @@ import {
 function greenPr(overrides = {}) {
   return {
     isDraft: false,
+    authorAssociation: "OWNER",
+    isCrossRepository: false,
     title: "docs: fix typo in README",
     body: "Small copy edit.",
     labels: [],
@@ -169,6 +171,26 @@ describe("decideLand", () => {
       }),
     );
     expect(yieldClaim.reason).toMatch(/yield\/APY/);
+  });
+
+  it("never merges fork or non-member PRs, even when green", () => {
+    const fork = decideLand(greenPr({ isCrossRepository: true }));
+    expect(fork.action).toBe("comment");
+    expect(fork.marker).toBe(MARKERS.SKIP_EXTERNAL);
+
+    const stranger = decideLand(greenPr({ authorAssociation: "FIRST_TIME_CONTRIBUTOR" }));
+    expect(stranger.action).toBe("comment");
+    expect(stranger.marker).toBe(MARKERS.SKIP_EXTERNAL);
+
+    const bot = decideLand(greenPr({ authorAssociation: "CONTRIBUTOR" }));
+    expect(bot.marker).toBe(MARKERS.SKIP_EXTERNAL);
+  });
+
+  it("fails closed when authorship is missing entirely", () => {
+    const unknown = decideLand(greenPr({ authorAssociation: undefined, isCrossRepository: undefined }));
+    expect(unknown.action).toBe("comment");
+    expect(unknown.marker).toBe(MARKERS.SKIP_EXTERNAL);
+    expect(unknown.reason).toMatch(/unknown/);
   });
 
   it("merges a green, mergeable PR that is not skipped", () => {

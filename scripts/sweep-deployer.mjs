@@ -55,6 +55,19 @@ const provider = new JsonRpcProvider(RPC, 4663);
 const signer = new Wallet(key, provider);
 const signerAddress = await signer.getAddress();
 
+// .env sometimes holds a different role's key (e.g. the Merged Public deployer
+// staged for launch). Sweeping the wrong wallet would drain that launch gas to
+// the operator while looking like success — so pin the exact address to retire.
+const EXPECTED_DEPLOYER = "0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71";
+if (signerAddress.toLowerCase() !== EXPECTED_DEPLOYER.toLowerCase()) {
+  console.error(
+    `Refusing to sweep: .env PRIVATE_KEY derives to ${signerAddress},\n` +
+      `not the retiring deployer ${EXPECTED_DEPLOYER}.\n` +
+      "Re-export the deployer key into .env for this one run, then delete it."
+  );
+  process.exit(3);
+}
+
 let blocked = false;
 for (const [name, address] of CONTRACTS) {
   const owner = await new Contract(address, ABI, provider).owner();

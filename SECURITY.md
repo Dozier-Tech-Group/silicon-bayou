@@ -63,6 +63,38 @@ No delegatecall to untrusted targets. No upgradeable proxy.
 
 Cancel a bad transfer by calling `transferOwnership(address(0))` before accept.
 
+## Operational rules for the live contracts (2026-08 audit)
+
+The four deployed contracts are immutable, so these are runbook law, not code:
+
+- **`renounceOwnership` is never called. On any contract.** SiliconBayou's URI is
+  already frozen, so its only renounce guard is satisfied — `pause()` +
+  `renounceOwnership()` would freeze every holder's transfers forever.
+  MergedCredit/BountyBoard/AccessDesk inherit one-step renounce unguarded:
+  renouncing MC while paused bricks all credit movement (escrow included);
+  renouncing AccessDesk strands the community pool permanently. Future deploys
+  carry MergedPublic's `PausedRenounce`-style guard (or revert outright).
+- **Voiding a bounty:** BountyBoard has no `cancel()`. To void a dead bounty,
+  the owner settles it to the operator wallet and records it as a cancellation
+  in the off-chain ledger so the synthetic `Settled` event is never counted as
+  work. Fund only issues that are expected to settle. Future deploys add
+  `cancel(issueId)` (owner-only, unsettled-only, refund + event).
+- **Winners keep a gator until they withdraw.** `withdraw()` re-checks gator
+  ownership; selling the last gator before withdrawing strands the MC with no
+  recovery path.
+- **issueId namespace:** bounty keys are a flat uint256. Before Gator Works
+  spans a second repo, derive `issueId = uint256(keccak256(repoFullName,
+  issueNumber))` in fund/settle scripts and record the mapping in
+  `agents/tasks.json` — raw issue numbers collide across repos.
+- **USDG is an upgradeable third-party proxy.** AccessDesk splits on the
+  nominal amount, so a future fee-on-transfer upgrade would silently drain the
+  community pool; a blocklisted treasury halts `payUsdg` until `setTreasury`.
+  Watch USDG proxy-upgrade events; `setTreasury` is the escape hatch.
+- **Sweeping the deployer:** `scripts/sweep-deployer.mjs` refuses to sign with
+  any key that does not derive to the retiring deployer `0xBA98…aa71` — `.env`
+  may legitimately hold a different role's key (e.g. the Merged Public
+  deployer staged for launch).
+
 ## Freeze URI at deploy
 
 Launch metadata is GitHub HTTPS (`metadata/swamp/{id}.json`). `freezeURI()` already ran after minting 1–198. There is no unfreeze. Do not rewrite those JSON/PNG files on `master` — OpenSea follows GitHub raw even though the contract URI is frozen.

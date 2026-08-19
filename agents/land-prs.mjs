@@ -78,6 +78,12 @@ function loadPr(repo, number) {
   ]);
   const files = ghJson(["api", "--paginate", `repos/${repo}/pulls/${number}/files`], []);
   const comments = ghJson(["api", "--paginate", `repos/${repo}/issues/${number}/comments`], []);
+  // Authorship for the fail-closed external-author gate. A failed fetch or a
+  // deleted fork head repo yields "unknown"/cross — i.e. skip, never merge.
+  const rest = ghJson(["api", `repos/${repo}/pulls/${number}`], {});
+  const headRepo = rest?.head?.repo?.full_name || "";
+  const authorAssociation = rest?.author_association || "";
+  const isCrossRepository = headRepo.toLowerCase() !== repo.toLowerCase();
   const checks = (pr.statusCheckRollup || []).map((check) => ({
     name: check.name || check.context || "check",
     status: check.status,
@@ -87,6 +93,8 @@ function loadPr(repo, number) {
   }));
   return {
     ...pr,
+    authorAssociation,
+    isCrossRepository,
     labels: (pr.labels || []).map((label) => label.name || label),
     files: (Array.isArray(files) ? files : []).map((file) => ({
       filename: file.filename,

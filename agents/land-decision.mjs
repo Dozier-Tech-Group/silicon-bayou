@@ -7,6 +7,14 @@
 
 export const DEFAULT_BRANCHES = new Set(["main", "master"]);
 
+/**
+ * Only org-trusted authors on same-repo branches may auto-merge. Everything
+ * else — fork PRs, first-time contributors, bots (Dependabot included), and
+ * PRs where authorship could not be determined — waits for a human. Fail
+ * closed: a missing/unknown association is treated as external.
+ */
+export const TRUSTED_AUTHOR_ASSOCIATIONS = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
+
 export const MARKERS = {
   SKIP_DO_NOT_MERGE: "skipped-do-not-merge",
   SKIP_WIP: "skipped-wip",
@@ -14,6 +22,7 @@ export const MARKERS = {
   SKIP_CUTOVER: "skipped-cutover",
   SKIP_OPERATOR: "skipped-needs-operator",
   SKIP_DENY: "skipped-deny-list",
+  SKIP_EXTERNAL: "skipped-external-author",
   BLOCK_CI: "blocked-ci",
   BLOCK_PAT: "blocked-missing-DTG_CI_PAT",
   BLOCK_CONFLICTS: "blocked-conflicts",
@@ -245,6 +254,14 @@ export function decideLand(pr) {
 
   if (pr.baseRefName && !DEFAULT_BRANCHES.has(pr.baseRefName)) {
     return { action: "skip", reason: `base ${pr.baseRefName}`, marker: null, comment: null };
+  }
+
+  if (pr.isCrossRepository || !TRUSTED_AUTHOR_ASSOCIATIONS.has(pr.authorAssociation)) {
+    return alreadyCommented(commentBodies, {
+      id: MARKERS.SKIP_EXTERNAL,
+      comment: "Gator lander: skipped: external or unverified author — a human must review and merge",
+      reason: `external author (${pr.authorAssociation || "unknown"}${pr.isCrossRepository ? ", fork" : ""})`,
+    });
   }
 
   const textSkip = matchSkipText(title, body, labels);

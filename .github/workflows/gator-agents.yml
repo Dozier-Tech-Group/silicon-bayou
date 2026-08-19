@@ -56,9 +56,11 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Dispatch inputs reach the runner ONLY as env vars — never spliced
+          # into this script, where a crafted input would execute as shell.
+          GATOR_TASK: ${{ inputs.task }}
+          GATOR_AGENT: ${{ inputs.agent }}
         run: |
           git config user.name "gator-works[bot]"
           git config user.email "gator-works@users.noreply.github.com"
-          node agents/run-agent.mjs \
-            ${{ inputs.task && format('--task {0}', inputs.task) || '' }} \
-            ${{ inputs.agent && format('--agent {0}', inputs.agent) || '' }}
+          node agents/run-agent.mjs

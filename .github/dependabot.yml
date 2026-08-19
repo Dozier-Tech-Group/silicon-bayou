@@ -1,0 +1,18 @@
+# Weekly dependency watch. Updates are reviewed, never auto-merged — the
+# Gator lander's external-author gate holds Dependabot PRs for a human.
+# npm majors are ignored on purpose: hardhat/OZ upgrades are a decision,
+# not a bump (mirrors dtg-atelier's policy).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly

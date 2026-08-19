@@ -26,6 +26,17 @@ function arg(name, fallback) {
   return i > -1 ? process.argv[i + 1] : fallback;
 }
 
+// CI passes dispatch inputs as env vars (never spliced into shell). Both only
+// ever index into repo-committed JSON, but validate shapes anyway.
+function pickInput(cli, env, pattern, label) {
+  const v = arg(cli, process.env[env] || undefined);
+  if (v !== undefined && v !== "" && !pattern.test(v)) {
+    console.error(`Invalid --${cli}/${env} value (must match ${pattern}); refusing.`);
+    process.exit(1);
+  }
+  return v || undefined;
+}
+
 function sh(cmd, opts = {}) {
   if (DRY) {
     console.log("  [dry-run] " + cmd);
@@ -37,7 +48,7 @@ function sh(cmd, opts = {}) {
 const registry = JSON.parse(readFileSync(join(ROOT, "agents", "registry.json"), "utf8"));
 const queue = JSON.parse(readFileSync(join(ROOT, "agents", "tasks.json"), "utf8"));
 
-const agentName = arg("agent");
+const agentName = pickInput("agent", "GATOR_AGENT", /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/, "github username");
 const agent = agentName
   ? registry.agents.find((a) => a.github === agentName)
   : registry.agents[0];
@@ -46,7 +57,8 @@ if (!agent) {
   process.exit(0);
 }
 
-const taskId = arg("task") ? Number(arg("task")) : null;
+const taskInput = pickInput("task", "GATOR_TASK", /^\d{1,12}$/, "numeric issueId");
+const taskId = taskInput ? Number(taskInput) : null;
 const task = queue.tasks.find(
   (t) => (taskId ? t.issueId === taskId : true) && t.status === "open" && (t.funded || DRY)
 );
@@ -74,7 +86,9 @@ sh(`git -C "${cwd}" checkout -b ${branch}`);
 // 2. the agent does the work (headless Claude Code, edits auto-accepted,
 //    bounded turns so a stuck task cannot burn unlimited budget)
 const prompt = `${task.prompt}\n\nYou are working as Silicon Bayou Gator #${tokenId} on bounty issue ${task.issueId}. Keep the diff minimal and the repo's tests green.`;
-sh(`npx --yes @anthropic-ai/claude-code -p ${JSON.stringify(prompt)} --permission-mode acceptEdits --max-turns 40`, { cwd, stdio: "inherit" });
+// Pinned so a compromised upstream publish can never silently land in a run
+// that holds ANTHROPIC_API_KEY + a write token. Bump deliberately.
+sh(`npx --yes @anthropic-ai/claude-code@2.1.235 -p ${JSON.stringify(prompt)} --permission-mode acceptEdits --max-turns 40`, { cwd, stdio: "inherit" });
 
 // 3. commit + PR with the gator identity; the oracle settles from this body
 const status = DRY ? "" : sh(`git -C "${cwd}" status --porcelain`);
