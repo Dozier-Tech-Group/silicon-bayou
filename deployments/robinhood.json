@@ -239,7 +239,7 @@
   "freezeURITx": "0xe9357891ff78349a9bfc708972fdfd1140747faa25609e93639ec5da9fb6a0a4",
   "uriFrozen": true,
   "openseaItem": "https://opensea.io/item/robinhood/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20/1",
-  "next": "Interim: 2-step rotation to operator EOA 0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d in flight (pendingOwner set on all 4 contracts 2026-08-18; accepts pending). Re-run the 2-step to a Gnosis Safe when chain 4663 is supported. Do NOT run deploy:mainnet again.",
+  "next": "Rotation COMPLETE 2026-08-19: operator 0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d owns all five contracts (accepts verified on-chain, pendings clear). Deployer key 0xBA98\u2026aa71 is LOST; its 0.0023 ETH is written off and sweep-deployer.mjs is permanently retired. Optional future hop: 2-step to a Safe/multisig when chain 4663 tooling supports it. Do NOT run deploy:mainnet again.",
   "royaltyReceiver": "0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d",
   "royaltyBps": 500,
   "setRoyaltyTx": "0x30de93de064a376dbe0a9e494d3d6a96dd846e95e7fec886882e1960f1c6b3c0"

@@ -14,7 +14,7 @@ against the public RPC (`https://rpc.mainnet.chain.robinhood.com`) on
 | Metadata | `uriFrozen() = true` — permanently locked to `https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/swamp/{id}.json` |
 | Deploy tx | [`0x766d…717e`](https://robinhoodchain.blockscout.com/tx/0x766d5bcdf0788dff618625aec9ffac0e944652a7246564459732857423a6717e) — status 1, block 39,071,035 |
 | First mint tx | `0xaa6b…dfb9a` — status 1, block 39,071,059 (minting ran as batches; `MAX_BATCH` = 33, deployer nonce ended at 8: deploy + 6 batches + freeze) |
-| Owner | `0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71` (deploy EOA — rotation to a Safe still pending, `pendingOwner` = 0x0) |
+| Owner | Operator `0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d` — **2-step rotation completed 2026-08-19** (`pendingOwner` = 0x0; re-rotate to a Safe when chain 4663 tooling supports it) |
 | Royalty (ERC-2981) | 5% (500 bps) to operator `0x2948…D11d` — **fixed 2026-08-17**, tx [`0x30de…b3c0`](https://robinhoodchain.blockscout.com/tx/0x30de93de064a376dbe0a9e494d3d6a96dd846e95e7fec886882e1960f1c6b3c0) |
 | Paused | false |
 | OpenSea | **[opensea.io/collection/silicon-bayou](https://opensea.io/collection/silicon-bayou)** (listed 2026-08-17) |
@@ -35,7 +35,7 @@ them would require a decision to launch a second contract.
 | BountyBoard | [`0xd7899073819206828b7f4c7bB8aE4C530E93C0A2`](https://robinhoodchain.blockscout.com/address/0xd7899073819206828b7f4c7bB8aE4C530E93C0A2) — wired to live BAYOU; settle/withdraw require holding a gator |
 | AccessDesk | [`0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9`](https://robinhoodchain.blockscout.com/address/0x7EEc6e95179B8ae86CEbA24025ae35BaDbf0d4e9) — treasury = operator `0x2948…D11d`, take 3000 bps |
 | Funded bounties | 1001 (25 MC), 1002 (15 MC), 1003 (10 MC) — open, unsettled; see `agents/tasks.json` |
-| Owners | All three on deploy EOA `0xBA98…aa71` — **rotate with BAYOU** (2-step to operator) |
+| Owners | All three on operator `0x2948…D11d` — **rotated with BAYOU, accepts completed 2026-08-19** |
 
 The off-chain half is Gator Works (`agents/README.md`): holders link wallets by
 signature, agents work funded tasks in CI, the oracle settles merged PRs.
@@ -44,7 +44,7 @@ signature, agents work funded tasks in CI, the oracle settles merged PRs.
 
 | Wallet | Role | Robinhood 4663 | Base 8453 |
 |---|---|---|---|
-| `0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71` | Throwaway deployer; current contract **owner** and **royalty receiver** | 0.0023 ETH (leftover gas) | 0 |
+| `0xBA98546Ea9E60Ff469bE7735c0a482C86865aa71` | Retired throwaway deployer — **key LOST** (confirmed 2026-08-19). Owns nothing; its leftover gas is written off. | 0.0023 ETH (stranded) | 0 |
 | `0x29486Fc6B2E7184Dd4aF4d310D4f85F4262fD11d` | Operator; holds all 198 BAYOU; gas source that funded the launch | 0.0042 ETH | 0.0018 ETH |
 | `0x97471f8Aa113aF7043B599Ccfb1702F2F78CF8a5` | Legacy wallet — key not exportable. **Do not fund**; it may leak outbound. | 0.0037 ETH (stranded) | 0.0005 ETH (stranded) |
 | `0xA81a…8d20` (contract) | Holds no ETH by design (no public sale, no payable functions) | 0 | — |
@@ -52,8 +52,9 @@ signature, agents work funded tasks in CI, the oracle settles merged PRs.
 ## Where the ETH goes
 
 There is **no mint revenue** — all 198 were owner-minted for gas only. The only
-ETH movements in this system are (a) gas, (b) the pending sweep of leftover
-deployer gas, and (c) future OpenSea sale proceeds + 5% royalties.
+ETH movements in this system are (a) gas and (b) future OpenSea sale proceeds +
+5% royalties. (The once-planned deployer sweep is off: the key is lost and its
+0.0023 ETH is written off.)
 
 ```mermaid
 flowchart LR
@@ -62,10 +63,10 @@ flowchart LR
     end
 
     subgraph RH["Robinhood Chain (4663)"]
-        DEP["Throwaway deployer 0xBA98…aa71<br/>owner + royalty receiver<br/>0.0023 ETH leftover"]
-        OPR["Operator 0x2948…D11d<br/>holds all 198 BAYOU<br/>0.0042 ETH"]
+        DEP["Retired deployer 0xBA98…aa71<br/>key LOST — owns nothing<br/>0.0023 ETH stranded"]
+        OPR["Operator 0x2948…D11d<br/>owner of all 5 contracts<br/>holds the BAYOU treasury"]
         GAS(("network gas<br/>(burned)"))
-        SAFE["Gnosis Safe<br/>(to be created)"]
+        SAFE["Gnosis Safe<br/>(future, when 4663 tooling lands)"]
         LEG["Legacy 0x9747…F8a5<br/>0.0037 ETH stranded<br/>DO NOT FUND"]
     end
 
@@ -74,26 +75,25 @@ flowchart LR
     OPB -->|"DONE: relay.link bridge 0.005 ETH"| DEP
     DEP -->|"DONE: deploy + 6 mint batches + freezeURI"| GAS
     DEP -->|"DONE 2026-08-17: setDefaultRoyalty to operator"| GAS
-    DEP -.->|"TODO: sweep leftover ~0.0023 ETH"| OPR
+    DEP -->|"DONE 2026-08-19: transferOwnership 2-step, operator accepted ×4"| OPR
     BUYER -.->|"future: sale price"| OPR
     BUYER -.->|"future: 5% royalty (receiver fixed to operator)"| OPR
-    DEP -.->|"TODO: transferOwnership 2-step"| SAFE
+    OPR -.->|"future: re-rotate to a Safe"| SAFE
 ```
 
-Solid arrows happened; dashed arrows are pending or future flows.
+Solid arrows happened; dashed arrows are future flows.
 
 ## Open action items (in order)
 
 1. ~~Redirect royalties~~ **DONE 2026-08-17** — `setDefaultRoyalty(operator, 500)`,
    tx `0x30de…b3c0`, verified via `royaltyInfo`.
-2. **Rotate ownership off the deploy EOA** (2-step, `scripts/transfer-ownership.js`):
-   deployer runs `transferOwnership(newOwner)`, then the new owner calls
-   `acceptOwnership()` from its own wallet (Blockscout → Contract → Write).
-   Practical note: the hosted Safe{Wallet} UI does not list Robinhood Chain
-   (4663) as of this writing, so rotating to the operator EOA now and
-   revisiting a Safe when tooling supports the chain is the realistic path.
-3. **Sweep the deployer.** After rotation, send the remaining ~0.0023 ETH from
-   `0xBA98…aa71` back to the operator and retire the key.
+2. ~~Rotate ownership off the deploy EOA~~ **DONE 2026-08-19** — 2-step
+   completed to the operator EOA on all contracts (Safe{Wallet} still lacks
+   chain 4663; re-rotate to a Safe when tooling supports it). Verified
+   on-chain: `owner()` = operator, `pendingOwner()` = 0x0, all five.
+3. ~~Sweep the deployer~~ **RETIRED 2026-08-19** — the deployer key is lost
+   (no copy exists); the remaining ~0.0023 ETH is written off. The key owns
+   nothing, so a lost key is a closed risk, not an open one.
 4. **Leave the legacy wallet alone.** `0x9747…F8a5` still holds ~0.0042 ETH
    across chains; treat it as lost. Never route new funds there.
 5. **Decide on 199–222.** The 24 special-edition images exist in the repo but

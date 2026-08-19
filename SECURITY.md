@@ -65,7 +65,8 @@ Cancel a bad transfer by calling `transferOwnership(address(0))` before accept.
 
 ## Operational rules for the live contracts (2026-08 audit)
 
-The four deployed contracts are immutable, so these are runbook law, not code:
+The five deployed contracts (BAYOU, MergedCredit, BountyBoard, AccessDesk,
+MergedPublic) are immutable, so these are runbook law, not code:
 
 - **`renounceOwnership` is never called. On any contract.** SiliconBayou's URI is
   already frozen, so its only renounce guard is satisfied — `pause()` +
@@ -90,10 +91,11 @@ The four deployed contracts are immutable, so these are runbook law, not code:
   nominal amount, so a future fee-on-transfer upgrade would silently drain the
   community pool; a blocklisted treasury halts `payUsdg` until `setTreasury`.
   Watch USDG proxy-upgrade events; `setTreasury` is the escape hatch.
-- **Sweeping the deployer:** `scripts/sweep-deployer.mjs` refuses to sign with
-  any key that does not derive to the retiring deployer `0xBA98…aa71` — `.env`
-  may legitimately hold a different role's key (e.g. the Merged Public
-  deployer staged for launch).
+- **The deployer sweep is permanently retired.** The old deployer key
+  `0xBA98…aa71` is lost (confirmed 2026-08-19, no copy exists); its ~0.0023
+  ETH is written off. `sweep-deployer.mjs` refuses to sign with any other key
+  by design — `.env` legitimately holds a different role's key (the Merged
+  Public deployer). A lost key that owns nothing is a closed risk.
 
 ## Freeze URI at deploy
 
@@ -136,3 +138,12 @@ Do not deploy if either npm command fails. Do not mint in a “hardening” chan
 - No formal third-party audit. Tests are the gate, not a substitute for review before mainnet value.
 - Oracle (if set) can settle bounties; treat that key as privileged.
 - `MergedCredit` owner can mint arbitrary credits.
+- The operator/treasury wallet holds an **unlimited USDG allowance to the
+  shared Seaport conduit** (marketplace listing setup, 2026-08 audit finding):
+  a conduit-operator compromise drains the wallet's full USDG with no further
+  signature. Revoke (`approve(conduit, 0)`) when not actively trading; treat
+  every Seaport signature on this wallet as treasury-critical.
+- The retired BAYOU deployer key (`0xBA98…aa71`) and the original census-gate
+  Cloudflare login (gdozier110) are both lost. Neither controls anything
+  (contracts rotated; worker migrated to the DTG account 2026-08-19), so both
+  are closed risks — documented here so nobody hunts for them.
