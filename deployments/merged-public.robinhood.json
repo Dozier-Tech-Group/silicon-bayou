@@ -1,0 +1,18 @@
+{
+  "network": "robinhood",
+  "chainId": 4663,
+  "status": "minted",
+  "address": "0x5D000b230653E416FF41451525b144a6C2Ad7178",
+  "deployer": "0x35b28a9d449FEdC150D455a7622a594ED7D33B66",
+  "unrevealedURI": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/mp/unrevealed.json",
+  "provenanceHash": "0x9c123f7aa01c529a0bdba61bdd241b62e79a3452d294afae7d833e03d97bf952",
+  "provenanceFile": "generator/merged-public/provenance.json",
+  "deployTx": "0x3cbe8d29137318ca0495f417736823e9abeb68711bebf8c436e1f691afbb3a9e",
+  "explorer": "https://robinhoodchain.blockscout.com/address/0x5D000b230653E416FF41451525b144a6C2Ad7178",
+  "explorerDeployTx": "https://robinhoodchain.blockscout.com/tx/0x3cbe8d29137318ca0495f417736823e9abeb68711bebf8c436e1f691afbb3a9e",
+  "contractURI": "https://raw.githubusercontent.com/Dozier-Tech-Group/silicon-bayou/master/metadata/mp/collection.json",
+  "contractURITx": "0x36b713047db7a31f1d21a1adfccf711cc20d5e7e23dc8873f30b833bab3a4a90",
+  "treasury": "0xBCCAecdBb4F0c7af32C8018486D0b52A474d9B4a",
+  "royaltyTx": "0x3282fcee3555aeac6a6f66205cefe5d0d5548e18bd83f1d288ce5e7b6ae7da9f",
+  "mintedAt": "2026-08-19T04:06:48.259Z"
+}
