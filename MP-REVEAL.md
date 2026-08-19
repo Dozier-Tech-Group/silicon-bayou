@@ -153,6 +153,16 @@ scale:
   shards by ~256KiB block size, so trees of ~1,001–4,000 small files will
   loudly mismatch by design — the real 10,000-file trees are expected to
   agree, but prove it cheaply first).
+- **Parity pin attempted 2026-08-19 — BLOCKED by the Pinata plan, and that
+  is itself a finding.** The 10,000-file test upload was refused with "would
+  exceed your account's pin limit" (free tier caps ~500 files per account;
+  the account holds only 6 pins / 1.6 MB, so it is the count cap, not
+  usage). No smaller test substitutes: sharding needs > 1,000 entries.
+  Consequence: **a paid Pinata plan is a hard reveal prerequisite** — the
+  real metadata and image trees are 10,000 files each and hit the same cap.
+  After upgrading, re-run: local CID for the standing fixture must be
+  `QmPKnauZSjciDTH7KeEeYz7FnbuYE4jFXDn95mHBZMcNmp`; the tool's assert stays
+  the gate. This hardens point 4 above from "budget it" to "blocked on it."
 
 ## Phase F — Reveal day (operator signs; order matters)
 

@@ -44,7 +44,7 @@
           "name": "Season Zero commitment",
           "state": "in-progress",
           "gate": "Gated on Phase A plus an operator signature for the on-chain echo — no Archive Game clue may be published before this lands.",
-          "note": "Tooling staged 2026-08-19; what remains is the operator's: back up the assignment and salt offline, publish the manifest, sign the treasury echo."
+          "note": "Package generated and hash-verified three ways 2026-08-19 (the manifest and its commitment hash are staged locally); what remains is the operator's: back up the assignment and salt offline, publish the manifest, sign the treasury echo."
         },
         {
           "id": "C",
@@ -64,7 +64,7 @@
           "name": "Pin at directory scale",
           "state": "in-progress",
           "gate": "Locally computed directory CIDs match the returned CIDs, a redundant second pin exists, and at least 20 random tokens byte-verify through two public gateways.",
-          "note": "Tooling ready and adversarially verified 2026-08-19 (scripts/pin-mp-reveal.mjs — local CID first, hard assert against the pin service). The gate itself runs at reveal; one throwaway 10,000-file parity pin remains before reveal week."
+          "note": "Tooling ready and adversarially verified 2026-08-19 (scripts/pin-mp-reveal.mjs — local CID first, hard assert against the pin service). The 10,000-file parity test was attempted and refused by the pin service's free-tier file cap — a paid pinning plan is now a confirmed hard prerequisite for reveal week (MP-REVEAL.md Phase E)."
         },
         {
           "id": "F",
@@ -94,7 +94,7 @@
       "id": "site",
       "name": "mergedpublic.com",
       "status": "live",
-      "summary": "The census explorer and ops desk are live; the build transparency portal ships this week.",
+      "summary": "The census explorer, the ops desk, and the build transparency portal are live — the portal renders this repo's records at mergedpublic.com/build.",
       "record": {
         "label": "mergedpublic.com",
         "url": "https://www.mergedpublic.com"

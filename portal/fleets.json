@@ -26,6 +26,53 @@
   ],
   "runs": [
     {
+      "id": "estate-ops",
+      "date": "2026-08-19",
+      "name": "Estate ops fleet",
+      "mission": "Execute the operator queue in order: ship the portal, stage the Season Zero commitment, prove pin parity at scale, clean up, audit DNS, fix site vulnerabilities.",
+      "agents": [
+        {
+          "role": "ship",
+          "brief": "Merge the portal PR, watch the production deploy, verify the live bundle and headers."
+        },
+        {
+          "role": "season-zero",
+          "brief": "Generate the commitment package, verify it three independent ways, stage the backups — stop at the operator's signature line."
+        },
+        {
+          "role": "parity-pin",
+          "brief": "Attempt the 10,000-file sharding parity pin against the pin service."
+        },
+        {
+          "role": "dns-audit",
+          "brief": "Read-only DNSSEC and CAA posture audit of mergedpublic.com with an ordered enablement plan."
+        },
+        {
+          "role": "vuln-fix",
+          "brief": "Fix the site's open Dependabot security alerts on a reviewed branch."
+        }
+      ],
+      "status": "done",
+      "outcomes": [
+        "The build transparency portal is LIVE at mergedpublic.com/build — PR #41 merged, the deploy succeeded, and the new bundle and security headers were verified serving in production.",
+        "The Season Zero commitment package is generated and hash-verified three independent ways; it now waits only on the operator's offline backup, the manifest commit, and the treasury echo (no clue drops before then).",
+        "The 10,000-file parity pin was REFUSED by the pin service's free-tier file cap — a paid pinning plan is now a confirmed hard prerequisite for reveal week, recorded in MP-REVEAL.md.",
+        "DNS posture established read-only: DNS on Azure DNS, registrar GoDaddy, DNSSEC off, no CAA records; an ordered enablement plan was delivered to the operator (CAA first, then zone signing, then the DS record).",
+        "All four open Dependabot alerts on the website (1 high, 3 moderate — vite and esbuild) are fixed in PR #42 with a clean build and zero audit findings; left open for human review because the fix requires a vite 5-to-6 major jump.",
+        "The wedged workflow run is still queued at GitHub and was left untouched; its authorized deletion waits until GitHub marks it completed."
+      ],
+      "links": [
+        {
+          "label": "The live portal",
+          "url": "https://www.mergedpublic.com/build"
+        },
+        {
+          "label": "MP-REVEAL.md",
+          "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/MP-REVEAL.md"
+        }
+      ]
+    },
+    {
       "id": "build-portal",
       "date": "2026-08-19",
       "name": "Build portal fleet",
