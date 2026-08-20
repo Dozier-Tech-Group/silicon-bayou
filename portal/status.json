@@ -44,7 +44,7 @@
           "name": "Season Zero commitment",
           "state": "in-progress",
           "gate": "Gated on Phase A plus an operator signature for the on-chain echo — no Archive Game clue may be published before this lands.",
-          "note": "Package generated and hash-verified three ways 2026-08-19 (the manifest and its commitment hash are staged locally); what remains is the operator's: back up the assignment and salt offline, publish the manifest, sign the treasury echo."
+          "note": "Manifest published to this repo 2026-08-20 after the commitment was hash-verified three independent ways and the assignment + salt were backed up in two locations (one off-machine). The one remaining step is the operator's treasury echo on chain 4663 — no Archive Game clue before it lands."
         },
         {
           "id": "C",
@@ -84,7 +84,7 @@
       "id": "game",
       "name": "The Archive Game",
       "status": "design published",
-      "summary": "The rulebook is public in MP-GAME.md; Season Zero opens only when its manifest hash is published in this repo and echoed on chain 4663, which has not happened yet.",
+      "summary": "The rulebook is public in MP-GAME.md, and the Season Zero manifest is now published in this repo (2026-08-20) with the Legendary Hunt commitment on record; the season activates only when the manifest's hash is echoed from the treasury on chain 4663 — that echo has not been sent yet, so no clues are live.",
       "record": {
         "label": "MP-GAME.md",
         "url": "https://github.com/Dozier-Tech-Group/silicon-bayou/blob/master/MP-GAME.md"
