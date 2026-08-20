@@ -73,16 +73,25 @@ Optional Foundry: `forge build --skip test --skip script` if `forge` is on PATH.
 
 No staking, no public sale, no proxy. Threat model: [SECURITY.md](SECURITY.md).
 
-## Merged Public (MP)
+## Merged Public (MP) — moved
 
-The second collection: **Merged Public**, 10,000 entities, live at
-[`0x5D000b230653E416FF41451525b144a6C2Ad7178`](https://robinhoodchain.blockscout.com/address/0x5D000b230653E416FF41451525b144a6C2Ad7178#code)
-on Robinhood Chain — launched pre-reveal 2026-08-19 with the generative provenance
-(seed + 110 trait weights + 6 rules) committed as an immutable onchain hash before any
-art existed. All 10,000 owner-minted to the treasury; every token serves the sealed
-metadata until `reveal()`. Record: `deployments/merged-public.robinhood.json`. Docs:
-[MP-VALUE.md](MP-VALUE.md) · [MP-GAME.md](MP-GAME.md) · [MP-LAUNCH.md](MP-LAUNCH.md).
-Same discipline as BAYOU: no yield, no APY, not legal instruments.
+**As of 2026-08-20, Merged Public is a separate project with its own home:**
+[Dozier-Tech-Group/merged-public-archive](https://github.com/Dozier-Tech-Group/merged-public-archive).
+Its contracts, provenance commitment, sealed metadata, game rules, reveal
+runbook, and work board (`MergedPublicBoard`, gated on holding a Merged Public
+identity) live there now, along with
+[DECOUPLING.md](https://github.com/Dozier-Tech-Group/merged-public-archive/blob/main/DECOUPLING.md),
+the dated record of the separation.
+
+MP's collection — 10,000 entities at
+[`0x5D000b230653E416FF41451525b144a6C2Ad7178`](https://robinhoodchain.blockscout.com/address/0x5D000b230653E416FF41451525b144a6C2Ad7178#code),
+launched pre-reveal 2026-08-19 with provenance committed on-chain before any art
+existed — is unchanged on chain; only its repository home and its rails moved.
+The MP files still present in this repository are the pre-move copies and are
+being retired here; the archive repo is canonical.
+
+Both projects belong to the same organization, and neither gates, rails, or
+rewards run through the other. No yield, no APY, not legal instruments.
 
 ## Behind the scenes: Merged Credits (MC)
 
