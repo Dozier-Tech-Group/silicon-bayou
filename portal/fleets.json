@@ -58,7 +58,7 @@
         "The Season Zero commitment package is generated and hash-verified three independent ways; it now waits only on the operator's offline backup, the manifest commit, and the treasury echo (no clue drops before then).",
         "The 10,000-file parity pin was REFUSED by the pin service's free-tier file cap — a paid pinning plan is now a confirmed hard prerequisite for reveal week, recorded in MP-REVEAL.md.",
         "DNS posture established read-only: DNS on Azure DNS, registrar GoDaddy, DNSSEC off, no CAA records; an ordered enablement plan was delivered to the operator (CAA first, then zone signing, then the DS record).",
-        "All four open Dependabot alerts on the website (1 high, 3 moderate — vite and esbuild) are fixed in PR #42 with a clean build and zero audit findings; left open for human review because the fix requires a vite 5-to-6 major jump.",
+        "All four open Dependabot alerts on the website (1 high, 3 moderate — vite and esbuild) were fixed in PR #42 (a vite 5-to-6 major jump, build clean, zero audit findings) and merged on the operator's go the same evening — deploy verified in production.",
         "The wedged workflow run is still queued at GitHub and was left untouched; its authorized deletion waits until GitHub marks it completed."
       ],
       "links": [
