@@ -131,8 +131,9 @@ describe("fleet board page", () => {
     // lose to physical content); the head guard must redirect the former.
     const html = readFileSync(resolve(root, "fleet-board/index.html"), "utf8");
     const guard = html.indexOf("location.replace(location.pathname");
-    const css = html.indexOf("board.css");
+    const css = html.indexOf('<link rel="stylesheet" href="board.css">');
     expect(guard).toBeGreaterThan(-1);
+    expect(css).toBeGreaterThan(-1);
     expect(guard).toBeLessThan(css); // guard runs before any asset reference
     expect(html).toContain("\\.html$"); // .html paths (local preview) exempt
   });
