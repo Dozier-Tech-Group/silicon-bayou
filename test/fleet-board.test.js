@@ -125,6 +125,17 @@ describe("fleet board page", () => {
     }
     expect(html).toContain("Dozier-Tech-Group/silicon-bayou/tree/master/fleet-board");
   });
+
+  it("normalizes a slashless URL before relative assets resolve", () => {
+    // Azure SWA serves physical dirs at both /fleet and /fleet/ (route rules
+    // lose to physical content); the head guard must redirect the former.
+    const html = readFileSync(resolve(root, "fleet-board/index.html"), "utf8");
+    const guard = html.indexOf("location.replace(location.pathname");
+    const css = html.indexOf("board.css");
+    expect(guard).toBeGreaterThan(-1);
+    expect(guard).toBeLessThan(css); // guard runs before any asset reference
+    expect(html).toContain("\\.html$"); // .html paths (local preview) exempt
+  });
 });
 
 describe("fleet board data pipeline (stubbed sources)", () => {
