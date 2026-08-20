@@ -9,7 +9,11 @@ module.exports = {
   solidity: {
     version: "0.8.24",
     settings: {
-      evmVersion: "shanghai",
+      // cancun: required by OZ 5.6+ (Bytes.sol uses mcopy). Robinhood Chain
+      // 4663 verified Cancun-capable 2026-08-19 via an eth_call
+      // state-override mcopy probe. Live contracts are unaffected — this
+      // governs future compiles only.
+      evmVersion: "cancun",
       optimizer: { enabled: true, runs: 200 },
     },
   },
