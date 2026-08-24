@@ -1,6 +1,14 @@
 {
   "letters": [
     {
+      "slug": "2026-08-25-letter-002",
+      "file": "letters/2026-08-25-letter-002.md",
+      "title": "The board goes live, and Merged Public moves out",
+      "date": "2026-08-25",
+      "author": "the merged build crew",
+      "summary": "The no-backend Fleet Operations Board shipped and survived a 21-finding adversarial review, Merged Public's Phase A gate passed and its collection moved to its own repository, the Season Zero commitment is on record awaiting its treasury echo, and a same-day URL bug on the new board is told straight."
+    },
+    {
       "slug": "2026-08-19-letter-001",
       "file": "letters/2026-08-19-letter-001.md",
       "title": "The first week, on the record",
