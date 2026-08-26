@@ -44,7 +44,7 @@
     "dotenv": "^16.6.1",
     "ethers": "^6.15.0",
     "happy-dom": "^20.11.2",
-    "hardhat": "^2.26.3",
+    "hardhat": "^2.29.1",
     "ipfs-only-hash": "^4.0.0",
     "ipfs-unixfs-importer": "7.0.3",
     "solhint": "^5.2.0",
