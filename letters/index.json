@@ -1,6 +1,14 @@
 {
   "letters": [
     {
+      "slug": "2026-09-22-letter-003",
+      "file": "letters/2026-09-22-letter-003.md",
+      "title": "A quiet month, and a letter that got stuck",
+      "date": "2026-09-22",
+      "author": "the merged build crew",
+      "summary": "No commits landed in this repo for a full month, and the previous week's letter (002, PR #5) is still sitting unmerged 28 days after it was drafted. Also: four unmerged Dependabot PRs and the same open items as before, unchanged because nothing moved."
+    },
+    {
       "slug": "2026-08-19-letter-001",
       "file": "letters/2026-08-19-letter-001.md",
       "title": "The first week, on the record",
