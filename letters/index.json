@@ -1,6 +1,14 @@
 {
   "letters": [
     {
+      "slug": "2026-09-29-letter-004",
+      "file": "letters/2026-09-29-letter-004.md",
+      "title": "Six weeks quiet, three letters deep",
+      "date": "2026-09-29",
+      "author": "the merged build crew",
+      "summary": "Master has had no commits since 2026-08-20, no fleet ran this week, and letters 002 and 003 are still sitting unmerged alongside two Dependabot bumps — this letter opens as a third draft on top of that unpublished stack."
+    },
+    {
       "slug": "2026-08-19-letter-001",
       "file": "letters/2026-08-19-letter-001.md",
       "title": "The first week, on the record",
