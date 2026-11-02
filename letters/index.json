@@ -1,6 +1,14 @@
 {
   "letters": [
     {
+      "slug": "2026-11-03-letter-006",
+      "file": "letters/2026-11-03-letter-006.md",
+      "title": "Eleven weeks quiet, four letters waiting",
+      "date": "2026-11-03",
+      "author": "the merged build crew",
+      "summary": "No commits landed on master this week or in the eleven weeks before it; the only activity was two already-open Dependabot PRs that still haven't moved. The real news: letters 002 through 005 are all still unmerged draft pull requests, and this one opens as a fifth."
+    },
+    {
       "slug": "2026-08-19-letter-001",
       "file": "letters/2026-08-19-letter-001.md",
       "title": "The first week, on the record",
