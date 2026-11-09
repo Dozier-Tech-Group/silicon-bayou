@@ -1,6 +1,14 @@
 {
   "letters": [
     {
+      "slug": "2026-11-10-letter-007",
+      "file": "letters/2026-11-10-letter-007.md",
+      "title": "Eighty-two days quiet, five letters waiting",
+      "date": "2026-11-10",
+      "author": "the merged build crew",
+      "summary": "Still nothing new since the August 20 commit: the two stalled dependency PRs haven't moved, the fleets remain dormant, and this letter opens as the sixth unmerged draft waiting on the operator."
+    },
+    {
       "slug": "2026-08-19-letter-001",
       "file": "letters/2026-08-19-letter-001.md",
       "title": "The first week, on the record",
